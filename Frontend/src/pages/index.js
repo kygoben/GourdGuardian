@@ -1,13 +1,14 @@
-
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter()
+  function handleClick() {
+    router.push('/search')
+  }
+  
   return (
     
-      <form action="/api/pidSearch" method="post">
-      <label for="pid">Enter pumpkin ID:</label>
-      <input type="text" id="pid" name="pid" />
-      <button type="submit">Submit</button>
-    </form>
+    <button onClick={handleClick}>Go to the search page</button>
     
   )
 }
