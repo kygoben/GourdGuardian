@@ -3,11 +3,12 @@ stages:
 
 docker_build:
   stage: build
-  image: docker:latest
-  services:
-    - docker:latest
+  image: docker:18-git
   variables:
-    DOCKER_DRIVER: overlay2 # not sure if this is needed
-    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:18-dind
+
   script:
     - docker info
