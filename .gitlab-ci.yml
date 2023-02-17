@@ -11,5 +11,3 @@ docker_build:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker info
-    - docker build -t kgoben/jacktrack .
-    - docker push kgoben/jacktrack
