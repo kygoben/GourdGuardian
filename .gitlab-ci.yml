@@ -10,5 +10,6 @@ docker_build:
     DOCKER_DRIVER: overlay2 # not sure if this is needed
     DOCKER_TLS_CERTDIR: "/certs"
   script:
+    - docker info
     - docker build -t kgoben/jacktrack .
     - docker push kgoben/jacktrack
