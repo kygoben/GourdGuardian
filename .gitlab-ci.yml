@@ -3,7 +3,7 @@ stages:
 
 docker_build:
   stage: build
-  image: docker:latest
+  image: circleci/python:2.7.14
   services:
     - docker:dind
   variables:
