@@ -87,6 +87,7 @@ INSERT INTO users VALUES ('admin','Admin','admin','admin');
 -- stencils
 -- catagory #1
 INSERT INTO stencils VALUES ('1-1','Abrams A1 Tank','1','','Jball/PG','abcdef.stencil','admin','',0,1);
+INSERT INTO stencils VALUES ('1-1','Abrams A1 Tank','1','','Jball/PG','abcdef.stencil','admin','',0,2); -- test commit
 INSERT INTO stencils VALUES ('1-2','Arches National Park','1','','Jball/PG','abcdef.stencil','admin','',0,1);
 INSERT INTO stencils VALUES ('1-3','Bull Rider','1','','Jball/PG','abcdef.stencil','admin','',0,1);
 INSERT INTO stencils VALUES ('1-4','Cowboy','1','','Jball/PG','abcdef.stencil','admin','',0,1);
