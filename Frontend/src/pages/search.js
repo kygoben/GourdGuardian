@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import Image from 'next/image';
+import styles from '@/styles/Home.module.css';
+import PumpkinData from '@/components/Pumpkin';
 
 function search() {
 const router = useRouter()
@@ -11,7 +14,7 @@ const router = useRouter()
             console.log("test")
             console.log(res);
             if (res.status == 200){
-                router.push('/confirmPumpkin')
+                router.push('/pumpkinData')
             }
         } catch (err) {
             console.log(err);
@@ -19,8 +22,10 @@ const router = useRouter()
     };
 
     return (
+        <div className={styles.pidForm}>
+        <PumpkinData></PumpkinData>
         <button onClick={callAPI}>This is my pumpkin</button>
-    );
+    </div>);
 }
 
 export default search;
