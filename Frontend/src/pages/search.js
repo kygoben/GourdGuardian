@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import Image from 'next/image';
-import styles from '@/styles/Home.module.css';
+import styles from '@/styles/Common.module.css';
 import PumpkinData from '@/components/Pumpkin';
 
 function search() {
