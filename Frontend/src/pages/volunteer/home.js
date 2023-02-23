@@ -4,14 +4,14 @@ import styles from '@/styles/Common.module.css';
 
 export default function Home() {
   const sid = 0;
-  const title = "title";
+  const title = "title1";
 
   const router = useRouter();
 
   const fetchTodos = async () => {
     const response = await fetch("/api/stencil/1-1");
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     router.push({
       pathname: '/volunteer/confirm',
       query: {

@@ -5,21 +5,21 @@ import PumpkinData from '@/components/Pumpkin';
 import axios from 'axios'
 import withRouter from 'next/router';
 
-const confirm = (props) => {
+const confirm = () => {
     const router = useRouter()
     console.log(router.query);
     
     const callAPI = async () => {
         axios.get('/api/stencil/1')
             .then((response) => {
-                console.log(response)
+                // console.log(response)
                 router.push('/volunteer/pumpkinData')
             })
     };
 
     return (
         <div className={styles.pidForm}>
-            <PumpkinData></PumpkinData>
+            <PumpkinData title={router.query.title} sid={router.query.sid}></PumpkinData>
             <button onClick={callAPI}>This is my pumpkin</button>
         </div>);
 }
