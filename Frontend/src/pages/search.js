@@ -3,22 +3,22 @@ import React from 'react';
 import Image from 'next/image';
 import styles from '@/styles/Common.module.css';
 import PumpkinData from '@/components/Pumpkin';
+import axios from 'axios'
 
 function search() {
+
 const router = useRouter()
     const callAPI = async () => {
+
+
+        axios.get('/api/todos')
+    .then((response) => {
+      console.log(response)
+
+      
+      router.push('/pumpkinData')
+})
         
-        try {
-            const res = await fetch(`/api/pidSearch`);
-            // const data = await res.json();
-            console.log("test")
-            console.log(res);
-            if (res.status == 200){
-                router.push('/pumpkinData')
-            }
-        } catch (err) {
-            console.log(err);
-        }
     };
 
     return (
