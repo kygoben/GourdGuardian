@@ -2,31 +2,22 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/Common.module.css';
 import HeaderComponent from '../components/Pumpkin';
-import { useState } from "react"; 
+import { useState } from "react";
 
-export default function Home() {
- const router = useRouter()
-  const [todos, settodos] = useState([]);
- 
-  const fetchTodos = async () => {
-    const response = await fetch("/api/todos");
-    const data = await response.json();
-    settodos(data);
-  router.push('/search')
-
-  };
+export default function index() {
 
 
- 
-  // function handleClick() {
-  //   router.push('/search')
-  // }
-  
+  const router = useRouter()
+  const callAPI = async () => {
+    router.push('/volunteer/home')
+
+  };
+
+
   return (
-  <div className={styles.pidForm}>
-  <div style={{ fontSize: 50 }}>Please enter the pumpkin ID:</div>
-  <div><input type="text" id="pid" name="pid" style={{ fontSize: 50 }}/></div>
-  <div><button onClick={fetchTodos} style={{ fontSize: 50 }}>Comfirm</button></div>
-  </div>
+    <div className={styles.pidForm}>
+
+      <button onClick={callAPI} style={{ fontSize: 50 }}>Click here to go to volunteer page</button>
+    </div>
   )
 }

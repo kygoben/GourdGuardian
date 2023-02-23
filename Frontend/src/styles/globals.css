@@ -3,14 +3,14 @@ button {
     color: white;
     border: white;
     border-radius: 20px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 html {
     background-color: orange;
     display: flex;
     height: 100vh;
-    width: 100vw; 
+    width: 100vw;
     align-items: center;
     justify-content: center;
     flex-direction: column;
