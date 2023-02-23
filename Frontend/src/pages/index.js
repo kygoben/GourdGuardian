@@ -1,8 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/Common.module.css';
-import HeaderComponent from '../components/Pumpkin';
-import { useState } from "react";
 
 export default function index() {
 

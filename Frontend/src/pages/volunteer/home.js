@@ -1,17 +1,24 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/Common.module.css';
-import { useState } from "react";
 
 export default function Home() {
-  const router = useRouter()
-  const [todos, settodos] = useState([]);
+  const sid = 0;
+  const title = "title";
+
+  const router = useRouter();
 
   const fetchTodos = async () => {
-    const response = await fetch("/api/stencil");
+    const response = await fetch("/api/stencil/1-1");
     const data = await response.json();
-    settodos(data);
-    router.push('/volunteer/confirm')
+    console.log(data);
+    router.push({
+      pathname: '/volunteer/confirm',
+      query: {
+        sid: sid,
+        title: title
+      }
+    })
 
   };
 

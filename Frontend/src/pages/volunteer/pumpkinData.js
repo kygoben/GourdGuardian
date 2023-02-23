@@ -8,7 +8,7 @@ function pumpkinData() {
     const callAPI = async () => {
 
         try {
-            const res = await fetch(`/api/stencil`);
+            const res = await fetch(`/api/stencil/1`);
             // const data = await res.json();
             console.log("test")
             console.log(res);
