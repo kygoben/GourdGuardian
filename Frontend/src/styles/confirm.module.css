@@ -27,7 +27,7 @@
 }
 
 .button {
-  font-size: 40px;
+  font-size: 30px;
   background-color: #EFA846;
   border: white;
   border-radius: 50px;
@@ -37,8 +37,9 @@
 
 .instructions {
   color: black;
-  font-size: 60px;
+  font-size: 20px;
   margin: 10px;
+  text-align: center;
 }
 
 .input {
@@ -49,13 +50,3 @@
   cursor: pointer;
   margin: 10px;
 }
-
-.back {
-
-}
-
-.back:visited { 
-  text-decoration: none; 
-  color: black; 
-  margin: 10px;
- }

@@ -20,8 +20,10 @@ const confirm = () => {
     return (
         <div className={styles.pidForm}>
             <div className={styles.popup}>
-            <PumpkinData title={router.query.title} sid={router.query.sid}></PumpkinData>
-            <button onClick={callAPI}>This is my pumpkin</button>
+            <PumpkinData title={router.query.title} sid={router.query.sid} category={router.query.category}></PumpkinData>
+            <div className={styles.instructions}>Is this your stencil?</div>
+            <button className={styles.button} onClick={callAPI}>Yes!</button>
+            <a href='/volunteer/enterID'><button className={styles.button}>No</button></a>
         </div></div>);
 }
 

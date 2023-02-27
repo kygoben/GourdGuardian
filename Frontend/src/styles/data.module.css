@@ -1,0 +1,16 @@
+.id {
+  font-size: 30px;
+  /* color: rgb(65, 65, 65); */
+  text-align: center;
+}
+
+.title {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.category {
+  font-size: 20px;
+  text-align: center;
+}

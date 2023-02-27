@@ -4,8 +4,9 @@ import styles from '@/styles/home.module.css';
 import Link from 'next/link';
 
 export default function Home() {
-  const sid = 0;
-  const title = "title1";
+  const sid = "11-34";
+  const title = "Mockingjay";
+  const category = "Hunger Games"
 
   const router = useRouter();
 
@@ -17,7 +18,8 @@ export default function Home() {
       pathname: '/volunteer/confirm',
       query: {
         sid: sid,
-        title: title
+        title: title,
+        category: category
       }
     })
 

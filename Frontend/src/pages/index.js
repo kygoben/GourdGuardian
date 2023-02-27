@@ -7,7 +7,7 @@ export default function index() {
 
   const router = useRouter()
   const callAPI = async () => {
-    router.push('/volunteer/home')
+    router.push('/volunteer/enterID')
 
   };
 
