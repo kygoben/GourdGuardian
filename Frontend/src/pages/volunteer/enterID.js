@@ -4,23 +4,18 @@ import styles from '@/styles/home.module.css';
 import Link from 'next/link';
 
 export default function Home() {
-  const sid = "11-34";
-  const title = "Mockingjay";
-  const category = "Hunger Games"
 
   const router = useRouter();
 
   const fetchTodos = async () => {
     const response = await fetch("/api/stencil/1-1");
-    const data = await response.json();
-    // console.log(data);
+    const query = await response.json();
+    
+    console.log(query.category);
     router.push({
       pathname: '/volunteer/confirm',
-      query: {
-        sid: sid,
-        title: title,
-        category: category
-      }
+      query: query
+      
     })
 
   };
