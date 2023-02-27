@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import styles from '@/styles/Common.module.css';
+import styles from '@/styles/home.module.css';
+import Link from 'next/link';
 
 export default function Home() {
   const sid = 0;
@@ -24,9 +25,10 @@ export default function Home() {
 
   return (
     <div className={styles.pidForm}>
-      <div style={{ fontSize: 50 }}>Please enter the pumpkin ID:</div>
-      <div><input type="text" id="pid" name="pid" style={{ fontSize: 50 }} /></div>
-      <div><button onClick={fetchTodos} style={{ fontSize: 50 }}>Comfirm</button></div>
+      <div className={styles.instructions}>Enter Stencil ID</div>
+      <div><input type="text" id="pid" name="pid" className={styles.input} /></div>
+      <div><button onClick={fetchTodos} className={styles.button}>Comfirm</button></div>
+      <Link className={styles.back} href="/">Back to Home Page</Link>
     </div>
   )
 }

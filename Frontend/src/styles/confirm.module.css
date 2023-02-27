@@ -1,0 +1,61 @@
+.pidForm {
+  /* display: flex;
+    align-items: center;
+    justify-content: center;
+    height:fit-content;
+    flex-direction: column;
+    vertical-align: middle;
+    position: fixed;
+  top: 50%;
+  left: 50%; */
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #575555;
+  padding: 0;
+  margin: -10px;
+}
+
+.popup {
+  background-color: white;
+  padding: 100px;
+  border-radius: 50px;
+  box-shadow: -15px 15px #323030;
+}
+
+.button {
+  font-size: 40px;
+  background-color: #EFA846;
+  border: white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.instructions {
+  color: black;
+  font-size: 60px;
+  margin: 10px;
+}
+
+.input {
+  font-size: 30px;
+  background-color: #FBF5EA;
+  border: white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.back {
+
+}
+
+.back:visited { 
+  text-decoration: none; 
+  color: black; 
+  margin: 10px;
+ }

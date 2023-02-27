@@ -1,4 +1,4 @@
-button {
+/* button {
     background-color: green;
     color: white;
     border: white;
@@ -7,11 +7,11 @@ button {
 }
 
 html {
-    background-color: orange;
+    background-color: white;
     display: flex;
     height: 100vh;
     width: 100vw;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-}
+} */

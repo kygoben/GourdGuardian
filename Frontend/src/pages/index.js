@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import styles from '@/styles/Common.module.css';
+import styles from '@/styles/home.module.css';
 
 export default function index() {
 
