@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import styles from '@/styles/Common.module.css';
+import styles from '@/styles/data.module.css';
 import PumpkinData from '@/components/Pumpkin';
 
 function pumpkinData() {

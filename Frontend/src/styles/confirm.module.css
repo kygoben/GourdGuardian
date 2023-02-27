@@ -24,6 +24,11 @@
   border-radius: 50px;
   cursor: pointer;
   margin: 10px;
+  text-align: center;
+}
+
+.buttons {
+  text-align: center;
 }
 
 .instructions {
