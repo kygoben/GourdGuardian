@@ -25,6 +25,19 @@
   cursor: pointer;
   margin: 10px;
   text-align: center;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.buttonNo {
+  font-size: 30px;
+  background-color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+  text-align: center;
+  padding-left: 60px;
+  padding-right: 60px;
 }
 
 .buttons {

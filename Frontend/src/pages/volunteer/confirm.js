@@ -23,7 +23,7 @@ const confirm = () => {
             <PumpkinData title={router.query.title} sid={router.query.sid} category={router.query.category}></PumpkinData>
             <div className={styles.instructions}>Is this your stencil?</div>
             <div className={styles.buttons}><button className={styles.button} onClick={callAPI}>Yes!</button></div>
-            <div className={styles.buttons}><a href='/volunteer/enterID'><button className={styles.button}>No</button></a></div>
+            <div className={styles.buttons}><a href='/volunteer/enterID'><button className={styles.buttonNo}>No</button></a></div>
         </div></div>);
 }
 
