@@ -8,8 +8,9 @@ async function findAll(){
 async function findById(id){
     const [rows, ] = await connPool.query(`
     SELECT *
-    FROM stencils
-    WHERE sid = ?`, [id]);
+    FROM stencils, category
+    WHERE sid = ?
+    and stencils.cid = category.cid`, [id]);
     
     return rows[0];
 }
