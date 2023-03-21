@@ -8,11 +8,7 @@ const pumpkinData= () => {
     console.log(router.query);
     
     const callAPI = async () => {
-        axios.get('/api/stencil/1')
-            .then((response) => {
-                // console.log(response)
-                router.push('/volunteer/pumpkinData')
-            })
+        router.push('/volunteer/end')
     };
 
 
