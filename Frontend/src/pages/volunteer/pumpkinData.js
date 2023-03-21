@@ -3,28 +3,39 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/data.module.css';
 import PumpkinData from '@/components/Pumpkin';
 
-function pumpkinData() {
+const pumpkinData= () => {
     const router = useRouter()
+    console.log(router.query);
+    
     const callAPI = async () => {
-
-        try {
-            const res = await fetch(`/api/stencil/1`);
-            // const data = await res.json();
-            console.log("test")
-            console.log(res);
-            if (res.status == 200) {
-                router.push('/volunteer/end')
-            }
-        } catch (err) {
-            console.log(err);
-        }
+        axios.get('/api/stencil/1')
+            .then((response) => {
+                // console.log(response)
+                router.push('/volunteer/pumpkinData')
+            })
     };
 
 
+
     return (
-        <div className={styles.pidForm}>
-            <PumpkinData></PumpkinData>
-            <button onClick={callAPI}>I have finished carving</button>
+        <div>
+            <div className={styles.section}><PumpkinData className={styles.section} sid= {'11-34'} title= {'Mockingjay'} category= {'Hunger Games'}></PumpkinData>
+            </div><div className={styles.section}>
+            <div>Status:</div>
+            <div>Tracing</div>
+            <div>In Progress</div>
+            </div>
+
+            <div className={styles.section}>
+            <div>Time Elapsed</div>
+            <div>24:37</div>
+            </div>
+
+            <div className={styles.section}><div>Are you done tracing?</div>
+            <button className={styles.button} onClick={callAPI}>Yes</button>
+            <button className={styles.buttonNo}onClick={callAPI}>No</button>
+            </div>
+
         </div>
     );
 }
