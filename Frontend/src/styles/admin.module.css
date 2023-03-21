@@ -1,0 +1,14 @@
+.title{
+    text-align: center;
+}
+.layout{
+    border-bottom: grey;
+    border-radius: 10px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.button{
+    align-self: center;
+    
+}
