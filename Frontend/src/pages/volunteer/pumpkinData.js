@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styles from '@/styles/data.module.css';
 import PumpkinData from '@/components/Pumpkin';
+import ReactPlayer from 'react-player';
 
 const pumpkinData= () => {
     const router = useRouter()
@@ -10,6 +11,8 @@ const pumpkinData= () => {
     const callAPI = async () => {
         router.push('/volunteer/end')
     };
+
+
 
 
 
@@ -23,12 +26,13 @@ const pumpkinData= () => {
             </div>
 
             <div className={styles.section}>
-            <div>Time Elapsed</div>
-            <div>24:37</div>
+            <div>Embedded video here</div>
+            <ReactPlayer url='https://youtu.be/eK8nUfCZeGs' />
             </div>
 
             <div className={styles.section}><div>Are you done tracing?</div>
             <button className={styles.button} onClick={callAPI}>Yes</button>
+            <button className={styles.button} onClick={callAPI}>I didn't finish</button>
             <button className={styles.buttonNo}onClick={callAPI}>No</button>
             </div>
 
