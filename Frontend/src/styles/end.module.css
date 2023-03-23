@@ -98,6 +98,11 @@
   text-align: center;
 }
 
-.back {
-  background-image: '/Frontend/public/pumpkin2.jpg';
+.container {
+  padding: 90px;
+  padding-top: 130px;
+  background-image: url('/pumpkin2.jpg');
+  background-size: contain;
+  background-position-x: center;
+  background-repeat: no-repeat;
 }
