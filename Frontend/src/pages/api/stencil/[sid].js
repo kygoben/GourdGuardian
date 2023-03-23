@@ -1,3 +1,16 @@
-export default function handler(req, res) {
-  res.status(200).json({ sid: '11-34', title: 'Mockingjay', category: 'Hunger Games'});
+import excuteQuery from '/lib/db.js';
+
+export default async function handler(req, res) {
+
+  const { sid } = req.query
+  try {
+    const result = await excuteQuery({
+      query: 'SELECT sid, title, cid FROM stencils WHERE sid = ?',
+      values: [ sid ],
+    });
+    console.log(result);
+    res.status(200).json(result[0]);
+  } catch (err) {
+    console.log(err);
+  }
 }

@@ -8,7 +8,9 @@ export default function Home() {
   const router = useRouter();
 
   const fetchTodos = async () => {
-    const response = await fetch("/api/stencil/1-1");
+    const sid = '1-12';
+    console.log(sid);
+    const response = await fetch('/api/stencil/'+sid);
     const query = await response.json();
     
     console.log(query.category);
