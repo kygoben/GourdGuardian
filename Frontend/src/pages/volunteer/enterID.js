@@ -13,8 +13,7 @@ export default function Home() {
     
     //errors if invalid id
     const query = await response.json();
-    
-    console.log(query.category);
+
     router.push({
       pathname: '/volunteer/confirm',
       query: query
@@ -27,7 +26,7 @@ export default function Home() {
     <div className={styles.pidForm}>
       <div className={styles.instructions}>Enter Stencil ID</div>
       <div><input type="text" id="pid" name="pid" className={styles.input} /></div>
-      <div><button onClick={getStencil} className={styles.button}>Comfirm</button></div>
+      <div><button onClick={getStencil} className={styles.button}>Confirm</button></div>
       <Link className={styles.back} href="/">Back to Home Page</Link>
     </div>
   )

@@ -7,13 +7,14 @@ import withRouter from 'next/router';
 
 const confirm = () => {
     const router = useRouter()
-    console.log(router.query);
     
     const callAPI = async () => {
         axios.get('/api/stencil/1')
             .then((response) => {
                 // console.log(response)
-                router.push('/volunteer/pumpkinData')
+                router.push({
+                    pathname: '/volunteer/pumpkinData',
+                query: router.query})
             })
     };
 
