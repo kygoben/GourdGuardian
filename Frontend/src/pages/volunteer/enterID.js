@@ -7,10 +7,11 @@ export default function Home() {
 
   const router = useRouter();
 
-  const fetchTodos = async () => {
-    const sid = '1-12';
-    console.log(sid);
+  const getStencil = async () => {
+    const sid = document.getElementById("pid").value;
     const response = await fetch('/api/stencil/'+sid);
+    
+    //errors if invalid id
     const query = await response.json();
     
     console.log(query.category);
@@ -26,7 +27,7 @@ export default function Home() {
     <div className={styles.pidForm}>
       <div className={styles.instructions}>Enter Stencil ID</div>
       <div><input type="text" id="pid" name="pid" className={styles.input} /></div>
-      <div><button onClick={fetchTodos} className={styles.button}>Comfirm</button></div>
+      <div><button onClick={getStencil} className={styles.button}>Comfirm</button></div>
       <Link className={styles.back} href="/">Back to Home Page</Link>
     </div>
   )
