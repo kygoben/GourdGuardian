@@ -10,6 +10,7 @@ const confirm = () => {
 
   const callAPI = async () => {
     axios.get("/api/stencil/1").then((response) => {
+      console.log(router.query);
       router.push({
         pathname: "/volunteer/pumpkinData",
         query: router.query,
@@ -23,7 +24,7 @@ const confirm = () => {
         <PumpkinData
           title={router.query.title}
           sid={router.query.sid}
-          category={router.query.category}
+          category={router.query.cname}
         ></PumpkinData>
         <div className={styles.instructions}>Is this your stencil?</div>
         <div className={styles.buttons}>

@@ -8,6 +8,7 @@ export default function Home() {
 
   const getStencil = async () => {
     const sid = document.getElementById("pid").value;
+    console.log(sid);
     const response = await fetch("/api/stencil/" + sid);
 
     //errors if invalid id

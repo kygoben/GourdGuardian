@@ -8,16 +8,15 @@ const pumpkinData = () => {
   const router = useRouter();
 
   const callAPI = async () => {
-    router.push("/volunteer/end");
+    router.push({
+      pathname: "/volunteer/end",
+      query: router.query,
+    });
   };
 
   const updateStatus = async () => {
     fetch("/api/stencil/" + router.query.sid, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(objectWithData),
+      method: "POST"
     });
   };
 
@@ -28,7 +27,7 @@ const pumpkinData = () => {
           className={styles.section}
           sid={router.query.sid}
           title={router.query.title}
-          category={"Hunger Games"}
+          category={router.query.cname}
         ></PumpkinData>
       </div>
       <div className={styles.section}>
@@ -39,7 +38,7 @@ const pumpkinData = () => {
 
       <div className={styles.section}>
         <div>Embedded video here</div>
-        <ReactPlayer url="https://youtu.be/eK8nUfCZeGs" />
+        {/* <ReactPlayer url="https://youtu.be/eK8nUfCZeGs" /> */}
       </div>
 
       <div className={styles.section}>
@@ -47,7 +46,7 @@ const pumpkinData = () => {
         <button className={styles.button} onClick={callAPI}>
           Yes
         </button>
-        <button className={styles.button} onClick={callAPI}>
+        <button className={styles.button} onClick={updateStatus}>
           I didn't finish
         </button>
         <button className={styles.buttonNo} onClick={callAPI}>
