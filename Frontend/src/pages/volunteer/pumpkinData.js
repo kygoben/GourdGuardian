@@ -16,7 +16,7 @@ const pumpkinData = () => {
 
   const updateStatus = async () => {
     fetch("/api/stencil/" + router.query.sid, {
-      method: "POST"
+      method: "POST",
     });
   };
 

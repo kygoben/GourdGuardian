@@ -23,11 +23,15 @@ function end() {
       </div>
       {/* <Image src={'/pumpkin2.jpg'} alt="sucks" width='400' height='400' /> */}
       <div className={styles.buttons}>
-        <button className={styles.button} onClick={callAPI} >Enter new stencil ID</button>
+        <button className={styles.button} onClick={callAPI}>
+          Enter new stencil ID
+        </button>
         <button className={styles.buttonNo}>
           Take a picture with your pumpkin!
         </button>
-        <button className={styles.button} onClick={callAPI}>Go back to home screen</button>
+        <button className={styles.button} onClick={callAPI}>
+          Go back to home screen
+        </button>
       </div>
     </div>
   );
