@@ -41,7 +41,7 @@ create table stencils(
 
 -- fourth table to be created
 -- after stencil created
-create table status(
+create table sstatus(
 	sid varchar(8) NOT NULL, -- stencil id
     printing varchar(1), -- is printed
 	cutting varchar(1), -- is cut
