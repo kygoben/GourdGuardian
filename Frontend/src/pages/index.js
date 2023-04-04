@@ -1,21 +1,18 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import styles from '@/styles/home.module.css';
+import React from "react";
+import Link from "next/link";
+import styles from "@/styles/home.module.css";
 
 export default function index() {
 
-
-  const router = useRouter()
-  const callAPI = async () => {
-    router.push('/volunteer/thankYou')
-
-  };
-
-
   return (
     <div className={styles.pidForm}>
-
-      <button onClick={callAPI} style={{ fontSize: 50 }}>Click here to go to volunteer page</button>
+      <p>
+      <Link className={styles.back} href="/volunteer/thankYou">
+        Click here to go to volunteer page
+      </Link></p>
+      <Link className={styles.back} href="/admin/home">
+        Click here to go to admin page
+      </Link>
     </div>
-  )
+  );
 }

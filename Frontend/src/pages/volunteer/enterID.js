@@ -14,13 +14,13 @@ export default function Home() {
 
       const response = await fetch("/api/stencil/" + sid);
       console.log(response.status);
-      if(response.status==404){
+      if(response.status==404 || response.status==400){
         console.log("test");
         error = 1;
         console.log(error);
         router.push({
           pathname: "/volunteer/enterID",
-          query: {'error' : '404'}
+          query: {'error' : '400'}
         });
       }else{
       const query = await response.json();
@@ -49,7 +49,7 @@ console.log(router.query)
           Confirm
         </button>
       </div>
-      <Link className={styles.back} href="/">
+      <Link className={styles.back} href="/volunteer/thankYou">
         Back to Home Page
       </Link>
     </div>
