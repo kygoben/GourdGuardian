@@ -2,6 +2,7 @@
 module.exports = {
   content: [
     "C:\Users\kygob\Workspace\sddec23-01\Frontend\src\pages\admin\home.js",
+    // "C:\Users\kygob\Workspace\sddec23-01\Frontend\src\pages\volunteer\end.js",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
