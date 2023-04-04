@@ -5,22 +5,37 @@ import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
+  let error = 0;
+  let message;
 
   const getStencil = async () => {
     const sid = document.getElementById("pid").value;
-    console.log(sid);
-    const response = await fetch("/api/stencil/" + sid);
 
-    //errors if invalid id
-    const query = await response.json();
 
-    console.log(query);
+      const response = await fetch("/api/stencil/" + sid);
+      console.log(response.status);
+      if(response.status==404){
+        console.log("test");
+        error = 1;
+        console.log(error);
+        router.push({
+          pathname: "/volunteer/enterID",
+          query: {'error' : '404'}
+        });
+      }else{
+      const query = await response.json();
 
-    router.push({
-      pathname: "/volunteer/confirm",
-      query: query,
-    });
+      router.push({
+        pathname: "/volunteer/confirm",
+        query: query,
+      });}    
   };
+console.log(router.query)
+  if (router.query.error) {
+    message = <text>Invalid ID</text>;
+  } else {
+    message = <text></text>;
+  }
 
   return (
     <div className={styles.pidForm}>
@@ -28,6 +43,7 @@ export default function Home() {
       <div>
         <input type="text" id="pid" name="pid" className={styles.input} />
       </div>
+      {message}
       <div>
         <button onClick={getStencil} className={styles.button}>
           Confirm

@@ -2,7 +2,6 @@ import React from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/data.module.css";
 import PumpkinData from "@/components/Pumpkin";
-import ReactPlayer from "react-player";
 
 const pumpkinData = () => {
   const router = useRouter();
