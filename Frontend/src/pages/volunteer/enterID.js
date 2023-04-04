@@ -34,9 +34,9 @@ export default function Home() {
   };
 console.log(router.query)
   if (router.query.error) {
-    message = <text style='color:red;'>Invalid ID</text>;
+    message = <text className="text-red-500 text-3xl">Invalid ID</text>;
   } else {
-    message = <text></text>;
+    message = <div></div>;
   }
 
   return (
