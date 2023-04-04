@@ -17,6 +17,7 @@ create table users(
     name varchar(50) NOT NULL,
 	user_role varchar(10) NOT NULL,
     password varchar(50) NOT NULL, -- should we hash the password?
+	stage varchar(10), -- set by the admin
     primary key (uid),
     unique (name)
 	);
