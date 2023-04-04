@@ -14,7 +14,7 @@ export default function Home() {
 
       const response = await fetch("/api/stencil/" + sid);
       console.log(response.status);
-      if(response.status==404){
+      if(response.status==400){
         console.log("test");
         error = 1;
         console.log(error);
