@@ -42,6 +42,15 @@ const pumpkinData = () => {
   }else if(router.query.status==3){
     status = "Completed"
   }
+let nextTask
+  if(router.query.status==1){
+    nextTask = "Start"
+  }
+  else if(router.query.status==2){
+    nextTask = "Finish"
+  }else if(router.query.status==3){
+    nextTask = "none to do, already finsihed"
+  }
 
   console.log(router.query)
 
@@ -68,9 +77,9 @@ const pumpkinData = () => {
       </div>
 
       <div className={styles.section}>
-        <div>Are you done tracing?</div>
+        {/* <div>Are you done {stage}?</div> */}
         <button className={styles.button} onClick={callAPI}>
-          Yes
+          {nextTask} {stage}
         </button>
         <button className={styles.button} onClick={updateStatus}>
           I didn't finish

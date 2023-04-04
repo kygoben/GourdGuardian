@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       values: [sid],
     });
     // console.log(result);
-    res.status(200).json(result[0]);
+    res.status(200).json({"stage":"3", "status": "2"});
   } catch (err) {
     console.log(err);
   }

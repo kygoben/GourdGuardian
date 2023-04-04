@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 import React from "react";
 import styles from "@/styles/confirm.module.css";
 import PumpkinData from "@/components/Pumpkin";
-import axios from "axios";
-import withRouter from "next/router";
 
 export function confirm() {
   const router = useRouter();

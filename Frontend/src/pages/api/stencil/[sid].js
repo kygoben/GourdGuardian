@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         values: [sid],
       });
       // console.log(result);
-      if(result) {
+      if(result[0]) {
         res.status(200).json(result[0]);  
       } else {
         res.status(400).json(result[0]);
