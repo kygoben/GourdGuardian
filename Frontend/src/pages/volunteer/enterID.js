@@ -24,6 +24,7 @@ export default function Home() {
           query: {'error' : '400'}
         });
       }else{
+        console.log(response);
       const query = await response.json();
 
       router.push({

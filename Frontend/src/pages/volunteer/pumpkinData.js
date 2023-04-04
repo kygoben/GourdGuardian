@@ -6,6 +6,8 @@ import PumpkinData from "@/components/Pumpkin";
 const pumpkinData = () => {
   const router = useRouter();
 
+  
+
   const callAPI = async () => {
     router.push({
       pathname: "/volunteer/end",
@@ -19,6 +21,30 @@ const pumpkinData = () => {
     });
   };
 
+  let stage = "Error"
+  let status = "Error"
+  if(router.query.stage==1){
+    stage = "Printing"
+  }
+  else if(router.query.stage==2){
+    stage = "Cutting"
+  }else if(router.query.stage==3){
+    stage = "Tracing"
+  }else if(router.query.stage==4){
+    stage = "Carving"
+  }
+
+  if(router.query.status==1){
+    status = "Not Started"
+  }
+  else if(router.query.status==2){
+    status = "In progress"
+  }else if(router.query.status==3){
+    status = "Completed"
+  }
+
+  console.log(router.query)
+
   return (
     <div>
       <div className={styles.section}>
@@ -30,9 +56,10 @@ const pumpkinData = () => {
         ></PumpkinData>
       </div>
       <div className={styles.section}>
+        <div>Stage:</div>
+        <div>{stage}</div>
         <div>Status:</div>
-        <div>Tracing</div>
-        <div>In Progress</div>
+        <div>{status}</div>
       </div>
 
       <div className={styles.section}>

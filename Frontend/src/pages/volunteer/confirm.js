@@ -5,17 +5,21 @@ import PumpkinData from "@/components/Pumpkin";
 import axios from "axios";
 import withRouter from "next/router";
 
-const confirm = () => {
+export function confirm() {
   const router = useRouter();
 
   const callAPI = async () => {
-    axios.get("/api/stencil/1").then((response) => {
+    
       console.log(router.query);
+
+      const response = await fetch("/api/status/" + router.query.sid);
+      const query = await response.json();
+
+      Object.assign(query, router.query)
       router.push({
         pathname: "/volunteer/pumpkinData",
-        query: router.query,
+        query: query
       });
-    });
   };
 
   return (
