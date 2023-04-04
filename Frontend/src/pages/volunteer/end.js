@@ -22,7 +22,7 @@ function end() {
         ></PumpkinData>
       </div>
       {/* <Image src={'/pumpkin2.jpg'} alt="sucks" width='400' height='400' /> */}
-      <div className={styles.buttons}>
+      <div className="flex justify-center">
         <button className={styles.button} onClick={callAPI}>
           Enter new stencil ID
         </button>

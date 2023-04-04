@@ -8,18 +8,26 @@ const pumpkinData = () => {
 
   
 
-  const callAPI = async () => {
+  const endScreen = async () => {
     router.push({
       pathname: "/volunteer/end",
       query: router.query,
     });
   };
 
+  const newStencil = async () => {
+    router.push({
+      pathname: "/volunteer/enterID",
+    });
+  };
+
   const updateStatus = async () => {
-    fetch("/api/stencil/" + router.query.sid, {
+    fetch("/api/status/" + router.query.sid, {
       method: "POST",
     });
   };
+
+  let buttons
 
   let stage = "Error"
   let status = "Error"
@@ -38,18 +46,43 @@ const pumpkinData = () => {
     status = "Not Started"
   }
   else if(router.query.status==2){
-    status = "In progress"
+    status = "In progress..."
   }else if(router.query.status==3){
     status = "Completed"
   }
 let nextTask
   if(router.query.status==1){
     nextTask = "Start"
+
+    buttons = <div className={styles.section}>
+      <button className={styles.button} onClick={endScreen}>
+          {nextTask} {stage}
+        </button>
+        <button className={styles.button} onClick={newStencil}>
+          Exit
+        </button>
+    </div>
   }
   else if(router.query.status==2){
     nextTask = "Finish"
+
+    buttons = <div className={styles.section}>
+      <button className={styles.button} onClick={endScreen}>
+          {nextTask} {stage}
+        </button>
+        <button className={styles.button} onClick={updateStatus}>
+          I would like to stop early
+        </button>
+        <button className={styles.button} onClick={newStencil}>
+          Exit
+        </button>
+    </div>
   }else if(router.query.status==3){
     nextTask = "none to do, already finsihed"
+    
+    buttons = <div className={styles.section}><button className={styles.button} onClick={newStencil}>
+          Exit
+        </button></div>
   }
 
   console.log(router.query)
@@ -65,29 +98,11 @@ let nextTask
         ></PumpkinData>
       </div>
       <div className={styles.section}>
-        <div>Stage:</div>
-        <div>{stage}</div>
-        <div>Status:</div>
-        <div>{status}</div>
+        <text>Status</text>
+        <text className="font-bold text-4xl">{stage}</text>
+        <text className="font-grey">{status}</text>
       </div>
-
-      <div className={styles.section}>
-        <div>Embedded video here</div>
-        {/* <ReactPlayer url="https://youtu.be/eK8nUfCZeGs" /> */}
-      </div>
-
-      <div className={styles.section}>
-        {/* <div>Are you done {stage}?</div> */}
-        <button className={styles.button} onClick={callAPI}>
-          {nextTask} {stage}
-        </button>
-        <button className={styles.button} onClick={updateStatus}>
-          I didn't finish
-        </button>
-        <button className={styles.buttonNo} onClick={callAPI}>
-          No
-        </button>
-      </div>
+      {buttons}
     </div>
   );
 };
