@@ -33,7 +33,7 @@ export default function Home() {
   };
 console.log(router.query)
   if (router.query.error) {
-    message = <text>Invalid ID</text>;
+    message = <text style='color:red;'>Invalid ID</text>;
   } else {
     message = <text></text>;
   }
