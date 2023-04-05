@@ -42,7 +42,13 @@ export default async function handler(req, res) {
         query: "SELECT * FROM sstatus where sid = ?;",
         values: [sid],
       });
-      res.status(200).json({ stage: "3", status: "2" });
+
+      let stage = await excuteQuery({
+        query: "SELECT password FROM users where uid = admin;"
+      });
+
+      stage = 4;
+      // res.status(200).json({ stage: "3", status: "2" });
       // console.log(result);
       console.log(result[0]);
 
@@ -61,27 +67,27 @@ export default async function handler(req, res) {
       // Status: 1 not started, 2 started, 3 finished
       // finished tracing
       // next stage carving
-      if (tracing_confirmed) {
+      if (stage == 4) {
         resStage = 4;
-        if (carving_start)
-          resStatus = 2;
-        else if (carving_end)
+        if (carving_end)
           resStatus = 3;
+        else if (carving_start)
+          resStatus = 2;
         else
           resStatus = 1;
         // finished cutting
         // next stage tracing
-      } else if (cutting == '1') {
+      } else if (stage == 3) {
         resStage = 3;
-        if (tracing_start)
-          resStatus = 2;
-        else if (tracing_end)
+        if (tracing_end)
           resStatus = 3;
+        else if (tracing_start)
+          resStatus = 2;
         else
           resStatus = 1;
       // finished printing
       // next stage cutting
-      } else if (printing == '1') {
+      } else if (stage == 2) {
         resStage = 2; 
       } else {
         resStage = 1;
@@ -91,6 +97,7 @@ export default async function handler(req, res) {
       // do the same for the cutting
       // if record is not found => create the status
       var returnResult = {"stage" : resStage, "status" : resStatus};
+      console.log(returnResult);
       res.status(200).json(returnResult);
       
     } catch (err) {
