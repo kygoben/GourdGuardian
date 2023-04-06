@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         query: "SELECT password FROM users where uid = admin;"
       });
 
-      stage = 4;
+      stage = 3;
       // res.status(200).json({ stage: "3", status: "2" });
       // console.log(result);
       console.log(result[0]);

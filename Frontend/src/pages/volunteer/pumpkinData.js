@@ -25,6 +25,11 @@ const pumpkinData = () => {
     fetch("/api/status/" + router.query.sid, {
       method: "POST",
     });
+
+    router.push({
+      pathname: "/volunteer/end",
+      query: router.query,
+    });
   };
 
   let buttons
@@ -55,7 +60,7 @@ let nextTask
     nextTask = "Start"
 
     buttons = <div className={styles.section}>
-      <button className={styles.button} onClick={endScreen}>
+      <button className={styles.button} onClick={updateStatus}>
           {nextTask} {stage}
         </button>
         <button className={styles.button} onClick={newStencil}>
@@ -67,10 +72,10 @@ let nextTask
     nextTask = "Finish"
 
     buttons = <div className={styles.section}>
-      <button className={styles.button} onClick={endScreen}>
+      <button className={styles.button} onClick={updateStatus}>
           {nextTask} {stage}
         </button>
-        <button className={styles.button} onClick={updateStatus}>
+        <button className={styles.button} onClick={endScreen}>
           I would like to stop early
         </button>
         <button className={styles.button} onClick={newStencil}>
