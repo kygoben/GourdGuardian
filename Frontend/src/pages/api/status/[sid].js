@@ -1,4 +1,12 @@
 import excuteQuery from "/lib/db.js";
+// import { supabase } from "../utils/supabase";
+
+
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://clxlobjerfduuexkucih.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default async function handler(req, res) {
   const { sid } = req.query;
@@ -98,7 +106,14 @@ export default async function handler(req, res) {
       // if record is not found => create the status
       var returnResult = {"stage" : resStage, "status" : resStatus};
       console.log(returnResult);
-      res.status(200).json(returnResult);
+
+      
+      let { data: stencils, error } = await supabase
+        .from('stencils')
+        .select('sid')
+
+      console.log(data);
+      res.status(200).json(data);
       
     } catch (err) {
       console.log(err);

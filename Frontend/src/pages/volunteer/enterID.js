@@ -3,6 +3,12 @@ import { useRouter } from "next/router";
 import styles from "@/styles/home.module.css";
 import Link from "next/link";
 
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = 'https://clxlobjerfduuexkucih.supabase.co'
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 export default function Home() {
   const router = useRouter();
   let error = 0;
@@ -13,8 +19,17 @@ export default function Home() {
 
 
       const response = await fetch("/api/stencil/" + sid);
+
+      let { data: stencils, error } = await supabase
+        .from('stencils')
+        .select('*')
+        .eq('sid', '1-1')
+
+      console.log(stencils[0]);
+      
+
       console.log(response.status);
-      if(response.status==404 || response.status==400){
+      if(stencils.length < 1){
 
         console.log("test");
         error = 1;
@@ -25,7 +40,7 @@ export default function Home() {
         });
       }else{
         console.log(response);
-      const query = await response.json();
+      const query = stencils[0];
 
       router.push({
         pathname: "/volunteer/confirm",
