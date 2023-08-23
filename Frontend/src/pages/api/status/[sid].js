@@ -1,5 +1,5 @@
 import excuteQuery from "/lib/db.js";
-// import { supabase } from "../utils/supabase";
+import { supabase } from "../utils/supabase";
 
 
 import { createClient } from '@supabase/supabase-js'

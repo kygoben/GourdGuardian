@@ -13,17 +13,13 @@ export default function landingPage() {
   };
 
   return (
-    <>
-      <header className={styles.header}>
-        <h1 className={styles.title}>
-          Thank you for volunteering at Reiman Gardens
-        </h1>
-      </header>
-      <main className={styles.mainContent}>
-        <button onClick={handleEnterID} className={styles.button}>
-          Log a pumpkin
-        </button>
-      </main>
-    </>
+    <div className={styles.container}>
+      <h1 className={styles.title}>
+        Thank you for volunteering at Reiman Gardens
+      </h1>
+      <button onClick={handleEnterID} className={styles.button}>
+        Log a pumpkin
+      </button>
+    </div>
   );
 }
