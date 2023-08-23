@@ -7,16 +7,9 @@ export function confirm() {
   const router = useRouter();
 
   const callAPI = async () => {
-    
-      console.log(router.query);
-
-      const response = await fetch("/api/status/" + router.query.sid);
-      const query = await response.json();
-
-      Object.assign(query, router.query)
       router.push({
         pathname: "/volunteer/pumpkinData",
-        query: query
+        query: router.query
       });
   };
 

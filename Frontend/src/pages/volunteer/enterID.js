@@ -1,58 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/home.module.css";
 import Link from "next/link";
-
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = 'https://clxlobjerfduuexkucih.supabase.co'
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+import styles from "@/styles/home.module.css";
+import { supabase } from "../../../supabaseConnection.js";
 
 export default function Home() {
   const router = useRouter();
-  let error = 0;
-  let message;
 
-  const getStencil = async () => {
+  const handleGetStencil = async () => {
     const sid = document.getElementById("pid").value;
 
+    const { data: stencils, error } = await supabase
+      .from("stencils")
+      .select("*")
+      .eq("sid", sid);
 
-      const response = await fetch("/api/stencil/" + sid);
+    if (error) {
+      // Handle the error appropriately
+      console.error("Error fetching stencil:", error);
+      return;
+    }
 
-      let { data: stencils, error } = await supabase
-        .from('stencils')
-        .select('*')
-        .eq('sid', '1-1')
-
-      console.log(stencils[0]);
-      
-
-      console.log(response.status);
-      if(stencils.length < 1){
-
-        console.log("test");
-        error = 1;
-        console.log(error);
-        router.push({
-          pathname: "/volunteer/enterID",
-          query: {'error' : '400'}
-        });
-      }else{
-        console.log(response);
+    if (stencils.length < 1) {
+      router.push({
+        pathname: "/volunteer/enterID",
+        query: { error: "400" },
+      });
+    } else {
       const query = stencils[0];
-
       router.push({
         pathname: "/volunteer/confirm",
         query: query,
-      });}    
+      });
+    }
   };
-console.log(router.query)
-  if (router.query.error) {
-    message = <text className="text-red-500 text-3xl">Invalid ID</text>;
-  } else {
-    message = <div></div>;
-  }
+
+  const renderErrorMessage = () => {
+    if (router.query.error) {
+      return (
+        <p className="text-red-500 text-3xl">Invalid ID</p>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className={styles.pidForm}>
@@ -60,15 +50,16 @@ console.log(router.query)
       <div>
         <input type="text" id="pid" name="pid" className={styles.input} />
       </div>
-      {message}
+      {renderErrorMessage()}
       <div>
-        <button onClick={getStencil} className={styles.button}>
+        <button onClick={handleGetStencil} className={styles.button}>
           Confirm
         </button>
       </div>
-      <Link className={styles.back} href="/volunteer/thankYou">
-        Back to Home Page
+      <Link href="/volunteer/thankYou" passHref>
+        <div className={styles.back}>Back to Home Page</div>
       </Link>
+
     </div>
   );
 }
