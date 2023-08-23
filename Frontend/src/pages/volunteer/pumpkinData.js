@@ -146,7 +146,7 @@ const pumpkinData = () => {
           setNextStage("Finish");
         }else if(!sstatus.carving_confirmed){
           setStatus("To be Confirmed");
-        }else if(!sstatus.carving_confirmed){
+        }else if(sstatus.carving_confirmed){
           setStatus("Complete");
         }
       }
