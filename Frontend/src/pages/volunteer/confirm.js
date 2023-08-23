@@ -14,7 +14,7 @@ export function confirm() {
   };
 
   return (
-    <div className={styles.pidForm}>
+    <div className={styles.container}>
       <div className={styles.popup}>
         <PumpkinData
           title={router.query.title}
@@ -22,16 +22,13 @@ export function confirm() {
           category={router.query.cname}
         ></PumpkinData>
         <div className={styles.instructions}>Is this your stencil?</div>
-        <div className={styles.buttons}>
-          <button className={styles.button} onClick={callAPI}>
-            Confirm
-          </button>
-        </div>
-        <div className={styles.buttons}>
-          <a href="/volunteer/enterID">
-            <button className={styles.buttonNo}>Go Back</button>
-          </a>
-        </div>
+        <button className={styles.button} onClick={callAPI}>
+          Confirm
+        </button>
+        <a href="/volunteer/enterID">
+          <button className={styles.buttonNo}>Go Back</button>
+        </a>
+
       </div>
     </div>
   );
