@@ -20,12 +20,6 @@ const pumpkinData = () => {
     });
   };
 
-  const newStencil = async () => {
-    router.push({
-      pathname: "/volunteer/enterID",
-    });
-  };
-
   const updateStatus = async () => {
     fetch("/api/status/" + router.query.sid, {
       method: "POST",
@@ -117,7 +111,10 @@ const pumpkinData = () => {
   let buttons
   if(sstage < 3){
     buttons = <div className={styles.section}>
-        <button className={styles.button} href="/volunteer/enterID">
+        <button className={styles.button} 
+        onClick={() => {
+          router.push("/volunteer/enterID");
+        }}>
         Back to Home Page
         </button>
         </div>
