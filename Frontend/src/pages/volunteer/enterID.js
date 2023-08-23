@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/home.module.css";
+import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
 import { supabase } from '../../../supabaseConnection.js';
 
@@ -35,20 +35,22 @@ export default function Home() {
     message = <div></div>;
   }
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      getStencil();
+    }
+  };
+
   return (
-    <div className={styles.pidForm}>
-      <div className={styles.instructions}>Enter Stencil ID</div>
-      <div>
-        <input type="text" id="pid" name="pid" className={styles.input} />
-      </div>
+    <div className={styles.container}>
+      <h1 className={styles.title}>Enter Stencil ID</h1>
+      <input type="text" id="pid" name="pid" className={styles.input} onKeyDown={handleKeyPress}/>
       {message}
-      <div>
-        <button onClick={getStencil} className={styles.button}>
-          Confirm
-        </button>
-      </div>
+      <button onClick={getStencil} className={styles.button}>
+        Confirm
+      </button>
       <Link className={styles.back} href="/volunteer/thankYou">
-        Back to Home Page
+        Go Back
       </Link>
     </div>
   );

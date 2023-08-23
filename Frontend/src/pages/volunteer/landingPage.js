@@ -15,10 +15,10 @@ export default function landingPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>
-        Thank you for volunteering at Reiman Gardens
+        Thank you for volunteering at Reiman Gardens!
       </h1>
       <button onClick={handleEnterID} className={styles.button}>
-        Log a pumpkin
+        Log a pumpkin!
       </button>
     </div>
   );

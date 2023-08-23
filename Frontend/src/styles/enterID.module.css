@@ -1,0 +1,46 @@
+.title {
+    font-size: 2.5rem;
+}
+
+.button {
+    margin-top: 7%;
+    font-size: 2.5rem;
+    background-color: #EFA846;
+    border-radius: 2rem;
+    cursor: pointer;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15%;
+    align-items: center;
+    text-align: center;
+}
+
+.input {
+    margin-top: 5%;
+    font-size: 2rem;
+    text-align: center;
+    background-color: #FBF5EA;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+
+  .back {
+    margin-top: 7%;
+    font-size: 2rem;
+    border-radius: 2rem;
+    border-color: black;
+    border-width: .01rem;
+    cursor: pointer;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  
+  .back:visited { 
+    text-decoration: none; 
+    color: black; 
+   }
