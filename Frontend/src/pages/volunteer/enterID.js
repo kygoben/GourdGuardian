@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
-import { supabase } from '../../../supabaseConnection.js';
+import { supabase } from "../../../supabaseConnection.js";
 
 export default function Home() {
   const router = useRouter();
@@ -12,21 +12,22 @@ export default function Home() {
     const sid = document.getElementById("pid").value;
 
     let { data: stencils, error } = await supabase
-      .from('stencils')
-      .select('*')
-      .eq('sid', sid)
+      .from("stencils")
+      .select("*")
+      .eq("sid", sid);
 
-    if(stencils.length < 1){
+    if (stencils.length < 1) {
       router.push({
         pathname: "/volunteer/enterID",
-        query: {'error' : '400'}
+        query: { error: "400" },
       });
-    }else{
+    } else {
       const query = stencils[0];
       router.push({
         pathname: "/volunteer/confirm",
         query: query,
-    });}    
+      });
+    }
   };
 
   if (router.query.error) {
@@ -44,7 +45,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Enter Stencil ID</h1>
-      <input type="text" id="pid" name="pid" className={styles.input} onKeyDown={handleKeyPress}/>
+      <input
+        type="text"
+        id="pid"
+        name="pid"
+        className={styles.input}
+        onKeyDown={handleKeyPress}
+      />
       {message}
       <button onClick={getStencil} className={styles.button}>
         Confirm

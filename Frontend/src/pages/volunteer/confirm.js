@@ -7,10 +7,10 @@ export function confirm() {
   const router = useRouter();
 
   const callAPI = async () => {
-      router.push({
-        pathname: "/volunteer/pumpkinData",
-        query: router.query
-      });
+    router.push({
+      pathname: "/volunteer/pumpkinData",
+      query: router.query,
+    });
   };
 
   return (
@@ -28,10 +28,9 @@ export function confirm() {
         <a href="/volunteer/enterID">
           <button className={styles.buttonNo}>Go Back</button>
         </a>
-
       </div>
     </div>
   );
-};
+}
 
 export default confirm;

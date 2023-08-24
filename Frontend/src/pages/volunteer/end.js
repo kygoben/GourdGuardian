@@ -13,7 +13,9 @@ function end() {
 
   return (
     <div className="flex flex-col justify-center">
-      <h1 className="text-center text-3xl">Please make sure the stencil code is written on the back</h1>
+      <h1 className="text-center text-3xl">
+        Please make sure the stencil code is written on the back
+      </h1>
       <div className={styles.container}>
         <PumpkinData
           sid={router.query.sid}
