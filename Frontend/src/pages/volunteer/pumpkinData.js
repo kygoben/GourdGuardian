@@ -43,7 +43,7 @@ const pumpkinData = () => {
           //start time
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_start: time })
+            .update({ tracing_start: time})
             .eq("sid", sstatus.sid)
             .select();
 

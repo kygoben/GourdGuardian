@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
 import { supabase } from "../../../supabaseConnection.js";
+import { cookies } from 'next/headers'
+import { parse } from 'cookie';
 
 export default function Home() {
   const router = useRouter();
@@ -10,6 +12,15 @@ export default function Home() {
 
   const getStencil = async () => {
     const sid = document.getElementById("pid").value;
+    
+    console.log(document.cookie);
+
+    const cookieHeader = document.cookie;
+    const parsedCookies = parse(cookieHeader); // Parse cookies using the 'parse' method
+
+    console.log(parsedCookies.name); // Access the 'name' cookie
+
+    // console.log(cookies().get('name'));
 
     let { data: stencils, error } = await supabase
       .from("stencils")
