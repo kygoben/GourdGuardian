@@ -2,11 +2,12 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useAuth } from "@/components/AuthContext";
 import styles from "@/styles/volunteerLogin.module.css";
+import { parse } from 'cookie';
+import React, { useEffect, useState } from "react"; // Import useEffect and useState
 
-export default function Login() {
+const SignInPrompt = ({ children }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [nameError, setNameError] = useState(""); // Add state for error messages
@@ -15,6 +16,20 @@ export default function Login() {
   const supabase = createClientComponentClient();
   const { authToken, setAuthToken } = useAuth();
   const email = "volunteer@gmail.com";
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isName, setIsName] = useState(false);
+  
+
+  useEffect(() => {
+    const { data, error } = supabase.auth.getSession();
+    console.log(data);
+    setIsSignedIn(data !== undefined);
+  }, []);
+
+  useEffect(() => {
+    const parsedCookies = parse(document.cookie); // Parse cookies using the 'parse' method
+    setIsName(parsedCookies.name !== undefined);
+  }, []);
 
   const handleSignIn = async () => {
     setNameError(""); // Reset error messages
@@ -40,16 +55,16 @@ export default function Login() {
       setPasswordError("Incorrect Password");
       return;
     }
+    router.refresh();
+    // console.log(error);
 
-    console.log(error);
+    // if (data.session) {
+    //   setAuthToken(data.session.access_token);
 
-    if (data.session) {
-      setAuthToken(data.session.access_token);
-
-      console.log(authToken);
-    }
+    //   console.log(authToken);
+    // }
   };
-
+if(!isSignedIn && !isName){
   return (
     <>
         <div className={styles.container}>
@@ -84,3 +99,6 @@ export default function Login() {
     </>
   );
 }
+return children;
+}
+export default SignInPrompt;

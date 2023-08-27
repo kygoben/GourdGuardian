@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
 import { supabase } from "../../../supabaseConnection.js";
-import { cookies } from 'next/headers'
 import { parse } from 'cookie';
 
 export default function Home() {
