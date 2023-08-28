@@ -5,10 +5,9 @@ import PumpkinData from "@/components/Pumpkin";
 import { supabase } from "supabaseConnection";
 import Link from "next/link";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
-import { parse } from "cookie";
+import { NextPageContext } from "next";
 
-
-const pumpkinData = ({ cookies }) => {
+const pumpkinData = (props) => {
   const router = useRouter();
   const [sstatus, setSStatus] = useState("Error"); //db values
   const [sstage, setSStage] = useState("Error"); //db values
@@ -16,25 +15,24 @@ const pumpkinData = ({ cookies }) => {
   const [status, setStatus] = useState("Error"); //string of status
   const [nextStage, setNextStage] = useState("Error"); //button to show
   const [name, setName] = useState(null);
-  console.log(name);
+  console.log(props);
 
   useEffect(() => {
     // Fetch data from cookie when the component mounts
-    const cookieValue = getCookieValue('name');
+    const cookieValue = getCookieValue("name");
     setName(cookieValue);
   }, []);
 
   const getCookieValue = (name) => {
-    const cookies = document.cookie.split(';');
+    const cookies = document.cookie.split(";");
     for (let cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.trim().split('=');
+      const [cookieName, cookieValue] = cookie.trim().split("=");
       if (cookieName === name) {
         return decodeURIComponent(cookieValue);
       }
     }
     return null;
   };
-
 
   const endScreen = async () => {
     router.push({
@@ -245,5 +243,10 @@ const pumpkinData = ({ cookies }) => {
     </SignInPrompt>
   );
 };
+
+export const getServerSideProps = async (context) => {
+  const { query } = context;
+  return { props: { query } };
+}
 
 export default pumpkinData;
