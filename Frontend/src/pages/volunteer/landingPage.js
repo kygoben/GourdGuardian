@@ -17,15 +17,16 @@ export default function landingPage() {
 
   return (
     <SignInPrompt>
-      <div className={styles.container}>
-        <h1 className={styles.title}>
-          Thank you for volunteering at Reiman Gardens!
-        </h1>
-
-        <button onClick={handleEnterID} className={styles.button}>
-          Log a pumpkin!
-        </button>
-      </div>
+      {name => (
+        <div className={styles.container}>
+          <h1 className={styles.title}>
+            {name ? `Welcome, ${name}! Thank you for volunteering at Reiman Gardens!` : "Thank you for volunteering at Reiman Gardens!"}
+          </h1>
+          <button onClick={handleEnterID} className={styles.button}>
+            Log a pumpkin!
+          </button>
+        </div>
+      )}
     </SignInPrompt>
   );
 }

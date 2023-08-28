@@ -4,14 +4,37 @@ import styles from "@/styles/data.module.css";
 import PumpkinData from "@/components/Pumpkin";
 import { supabase } from "supabaseConnection";
 import Link from "next/link";
+import SignInPrompt from "@/components/VolunteerSignInPrompt";
+import { parse } from "cookie";
 
-const pumpkinData = () => {
+
+const pumpkinData = ({ cookies }) => {
   const router = useRouter();
   const [sstatus, setSStatus] = useState("Error"); //db values
   const [sstage, setSStage] = useState("Error"); //db values
   const [stage, setStage] = useState("Error"); //string of stage
   const [status, setStatus] = useState("Error"); //string of status
   const [nextStage, setNextStage] = useState("Error"); //button to show
+  const [name, setName] = useState(null);
+  console.log(name);
+
+  useEffect(() => {
+    // Fetch data from cookie when the component mounts
+    const cookieValue = getCookieValue('name');
+    setName(cookieValue);
+  }, []);
+
+  const getCookieValue = (name) => {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.trim().split('=');
+      if (cookieName === name) {
+        return decodeURIComponent(cookieValue);
+      }
+    }
+    return null;
+  };
+
 
   const endScreen = async () => {
     router.push({
@@ -43,7 +66,7 @@ const pumpkinData = () => {
           //start time
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_start: time })
+            .update({ tracing_start: time, tracer: name })
             .eq("sid", sstatus.sid)
             .select();
 
@@ -51,7 +74,7 @@ const pumpkinData = () => {
         } else if (!sstatus.tracing_end) {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_end: time })
+            .update({ tracing_end: time, tracer: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
@@ -60,14 +83,14 @@ const pumpkinData = () => {
         if (status == "Not Started") {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ carving_start: time })
+            .update({ carving_start: time, carver: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
         } else if (!sstatus.carving_end) {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ carving_end: time })
+            .update({ carving_end: time, carver: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
@@ -86,7 +109,7 @@ const pumpkinData = () => {
       .select("*")
       .eq("sid", router.query.sid);
 
-    console.log(sstatus[0]);
+    // console.log(sstatus[0]);
     setSStatus(sstatus[0]);
 
     let { data: users, stageError } = await supabase
@@ -106,8 +129,6 @@ const pumpkinData = () => {
 
   useEffect(() => {
     // This effect will run whenever sstatus gets updated
-    console.log(sstatus);
-    console.log(sstage);
 
     if (sstatus !== null) {
       if (sstage == 1) {
@@ -206,7 +227,7 @@ const pumpkinData = () => {
   // console.log(router.query);
 
   return (
-    <div>
+    <SignInPrompt>
       <div className={styles.section}>
         <PumpkinData
           className={styles.section}
@@ -221,7 +242,8 @@ const pumpkinData = () => {
         <text className="font-grey">{status}</text>
       </div>
       {buttons}
-    </div>
+    </SignInPrompt>
   );
 };
+
 export default pumpkinData;
