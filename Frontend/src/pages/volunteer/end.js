@@ -3,6 +3,7 @@ import Image from "next/image";
 import PumpkinData from "@/components/Pumpkin";
 import styles from "@/styles/end.module.css";
 import { useRouter } from "next/router";
+import SignInPrompt from "@/components/VolunteerSignInPrompt";
 
 function end() {
   const router = useRouter();
@@ -12,6 +13,7 @@ function end() {
   };
 
   return (
+    <SignInPrompt>
     <div className="flex flex-col justify-center">
       <h1 className="text-center text-3xl">
         Please make sure the stencil code is written on the back
@@ -33,6 +35,7 @@ function end() {
         Go back to home screen
       </button>
     </div>
+    </SignInPrompt>
   );
 }
 

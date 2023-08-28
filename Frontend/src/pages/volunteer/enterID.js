@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
 import { supabase } from "../../../supabaseConnection.js";
+import { parse } from 'cookie';
+import SignInPrompt from "@/components/VolunteerSignInPrompt.js";
 
 export default function Home() {
   const router = useRouter();
@@ -10,6 +12,15 @@ export default function Home() {
 
   const getStencil = async () => {
     const sid = document.getElementById("pid").value;
+    
+    console.log(document.cookie);
+
+    const cookieHeader = document.cookie;
+    const parsedCookies = parse(cookieHeader); // Parse cookies using the 'parse' method
+
+    console.log(parsedCookies.name); // Access the 'name' cookie
+
+    // console.log(cookies().get('name'));
 
     let { data: stencils, error } = await supabase
       .from("stencils")
@@ -43,6 +54,7 @@ export default function Home() {
   };
 
   return (
+    <SignInPrompt>
     <div className={styles.container}>
       <h1 className={styles.title}>Enter Stencil ID</h1>
       <input
@@ -60,5 +72,6 @@ export default function Home() {
         Go Back
       </Link>
     </div>
+    </SignInPrompt>
   );
 }
