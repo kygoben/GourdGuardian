@@ -112,10 +112,10 @@ const pumpkinData = ({ cookies }) => {
     // console.log(sstatus[0]);
     setSStatus(sstatus[0]);
 
-    let { data: users, stageError } = await supabase
-      .from("users")
+    let { data: admin_data, stageError } = await supabase
+      .from("admin_data")
       .select("stage");
-    setSStage(users[0].stage);
+    setSStage(admin_data[0].stage);
 
     if (stageError || statusError) {
       console.error(error);
