@@ -43,17 +43,18 @@ const pumpkinData = () => {
           //start time
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_start: time})
+            .update({ tracing_start: time })
             .eq("sid", sstatus.sid)
             .select();
 
-          console.log(data);
+          console.log(data, error);
         } else if (!sstatus.tracing_end) {
           const { data, error } = await supabase
             .from("sstatus")
             .update({ tracing_end: time })
             .eq("sid", sstatus.sid)
             .select();
+          console.log(data, error);
         }
       } else if (sstage == 4) {
         if (status == "Not Started") {
@@ -62,12 +63,14 @@ const pumpkinData = () => {
             .update({ carving_start: time })
             .eq("sid", sstatus.sid)
             .select();
+          console.log(data, error);
         } else if (!sstatus.carving_end) {
           const { data, error } = await supabase
             .from("sstatus")
             .update({ carving_end: time })
             .eq("sid", sstatus.sid)
             .select();
+          console.log(data, error);
         }
       }
       router.push({
@@ -89,8 +92,6 @@ const pumpkinData = () => {
     let { data: users, stageError } = await supabase
       .from("users")
       .select("stage");
-
-    console.log(users[0].stage);
     setSStage(users[0].stage);
 
     if (stageError || statusError) {
@@ -202,7 +203,7 @@ const pumpkinData = () => {
     );
   }
 
-  console.log(router.query);
+  // console.log(router.query);
 
   return (
     <div>

@@ -28,12 +28,6 @@ export default function Login() {
     });
 
     console.log(data);
-    
-    if (data.session) {
-      setAuthToken(data.session.access_token);
-      
-      console.log(authToken);
-    }
   };
 
   const handleSignOut = async () => {

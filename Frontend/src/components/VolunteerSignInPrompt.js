@@ -17,8 +17,11 @@ const SignInPrompt = ({ children }) => {
   const [isName, setIsName] = useState(false);
 
   useEffect(() => {
-    const { data, error } = supabase.auth.getSession();
-    setIsSignedIn(data !== undefined);
+    supabase.auth.getSession().then((data) => {
+      // handleSignOut();
+      setIsSignedIn(data.data.session !== null);
+      // console.log(data.data.session);
+    });
   }, []);
 
   useEffect(() => {
@@ -46,16 +49,34 @@ const SignInPrompt = ({ children }) => {
       email,
       password,
     });
+    console.log(data, error);
 
     if (error) {
       setPasswordError("Incorrect Password");
       return;
     }
+    setPassword(password);
+    supabase.auth.getSession().then((data) => {
+      console.log(data);
+    });
     router.refresh();
   };
-  if (!isSignedIn || !isName) {
-    return (
-      <>
+  const handleSignOut = async () => {
+    const { data, error } = await supabase.auth.signOut();
+    console.log(data);
+    router.refresh();
+  };
+  return (
+    <>
+      <div>
+        {isSignedIn && (
+          <button className={styles.signOutButton} onClick={handleSignOut}>
+            Sign Out
+          </button>
+        )}
+      </div>
+      {!isSignedIn || !isName ? (
+        <div>
         <div className={styles.container}>
           <h1 className={styles.title}>
             Thank you for volunteering at Reiman Gardens!
@@ -87,9 +108,11 @@ const SignInPrompt = ({ children }) => {
             Submit
           </button>
         </div>
-      </>
-    );
-  }
-  return children;
+        </div>
+      ) : (
+        children
+      )}
+    </>
+  );
 };
 export default SignInPrompt;
