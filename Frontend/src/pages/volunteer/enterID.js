@@ -4,6 +4,7 @@ import styles from "@/styles/enterID.module.css";
 import Link from "next/link";
 import { supabase } from "../../../supabaseConnection.js";
 import { parse } from 'cookie';
+import SignInPrompt from "@/components/VolunteerSignInPrompt.js";
 
 export default function Home() {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function Home() {
   };
 
   return (
+    <SignInPrompt>
     <div className={styles.container}>
       <h1 className={styles.title}>Enter Stencil ID</h1>
       <input
@@ -70,5 +72,6 @@ export default function Home() {
         Go Back
       </Link>
     </div>
+    </SignInPrompt>
   );
 }
