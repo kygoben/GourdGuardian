@@ -4,7 +4,7 @@ import styles from "@/styles/landingPage.module.css";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/AdminNav";
-import Filters from "@/components/Filters";
+import LeftPane from "@/components/LeftPane";
 import StatusData from "@/components/StatusData";
 import SearchBar from "@/components/SearchBar";
 
@@ -15,7 +15,7 @@ export default function landingPage() {
     <>
       <Navbar />
       <div className="display: flex">
-        <Filters />
+        <LeftPane />
         <div className="display: flex, flex-direction: column">
           <SearchBar />
           <StatusData />

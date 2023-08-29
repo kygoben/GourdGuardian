@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Filters = () => {
+const LeftPane = () => {
   const navbarStyle = {
     background: '#111',
     color: '#fff',
@@ -25,9 +25,9 @@ const Filters = () => {
 
   return (
     <div style={navbarStyle}>
-      This is the filters
+      This is the LeftPane
     </div>
   );
 };
 
-export default Filters;
+export default LeftPane;
