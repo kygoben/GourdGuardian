@@ -90,13 +90,13 @@ const SignInPrompt = ({ children }) => {
             placeholder="Name"
           />
           {nameError && <p className="text-red-500">{nameError}</p>}{" "}
-          <div>Password:</div>
+          <div>Event Code:</div>
           <input
             className="border-2 border-black rounded-md w-72 p-2 mb-2"
             type="text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="Event Code"
           />
           {passwordError && <p className="text-red-500">{passwordError}</p>}{" "}
         </div>
