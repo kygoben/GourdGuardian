@@ -1,0 +1,13 @@
+.leftPane{
+    width: 15%;
+}
+
+.data{
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+
+.dataRow{
+    height: 60%;
+}
