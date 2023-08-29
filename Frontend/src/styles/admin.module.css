@@ -1,15 +1,95 @@
-.title{
-    text-align: center;
-    font-size: 35px;
-    height: 30%;
-}
-.layout{
-    border-bottom: grey;
-    border-radius: 10px;
-    align-items: center;
+.container {
+    display: flex;
     flex-direction: column;
-}
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: white;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    color: #000000;
+    font-size: 35px;
+    font-weight: bold;
+  }
 
-.button{
-    align-self: center;
-}
+  .table {
+    border-collapse: separate;
+    border-spacing: 40px; /* Adjust the spacing as needed */
+  }
+ 
+  .libraryButton {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10% 40%;
+    cursor: pointer;
+  }
+   
+  .libraryButtons button {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10% 40%;
+    cursor: pointer;
+  }
+  
+  .button {
+    display: inline-block;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10% 30px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .merged-row {
+    text-align: center;
+    background-color: #f2f2f2;
+  }
+   
+  .eventDashboardButton {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    height: 100%; 
+    border-radius: 10px;
+    padding: 95% 30%;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .quickActionsContainer {
+    display: flex;
+  }  
+  
+  .quickActionButton {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+ 
+  .quickActionsText {
+    padding: 0 20px;
+    color: #000000;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+  
