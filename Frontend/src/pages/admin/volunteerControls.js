@@ -46,6 +46,7 @@ export default function Status() {
       <div>
         This is the screen for the admin to change the year, week, stage for volunteer interface.
       </div>
+      <div>Year</div>
       <input
             className="border-2 border-black rounded-md w-72 p-2 mb-2"
             type="number"
@@ -53,6 +54,7 @@ export default function Status() {
             onChange={(e) => setYear(e.target.value)}
             placeholder="year"
           />
+          <div>Week</div>
       <input
             className="border-2 border-black rounded-md w-72 p-2 mb-2"
             type="number"
@@ -60,6 +62,7 @@ export default function Status() {
             onChange={(e) => setWeek(e.target.value)}
             placeholder="week"
           />
+      <div>Stage</div>
       <input
             className="border-2 border-black rounded-md w-72 p-2 mb-2"
             type="number"
@@ -67,6 +70,7 @@ export default function Status() {
             onChange={(e) => setStage(e.target.value)}
             placeholder="stage"
           />
+      <div></div>
       <button
             className="border-2 border-black rounded-md w-32 p-2 m-2"
             onClick={handleSubmit}
