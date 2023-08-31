@@ -31,7 +31,7 @@ const StatusData = ({year, week, stage}) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [year, week, stage]);
 
   const getData = async () => {
     let { data, statusError } = await supabase.from("sstatus").select("*").eq("year", year).eq("week", week);
