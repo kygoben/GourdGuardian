@@ -4,7 +4,7 @@ import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
 
 
-const StatusData = () => {
+const StatusData = ({year, week, stage}) => {
   const [data, setData] = useState([]); //db values
 
   const navbarStyle = {
@@ -34,8 +34,8 @@ const StatusData = () => {
   }, []);
 
   const getData = async () => {
-    let { data, statusError } = await supabase.from("sstatus").select("*");
-
+    let { data, statusError } = await supabase.from("sstatus").select("*").eq("year", year).eq("week", week);
+    console.log(data, statusError);
     setData(data);
   };
 
