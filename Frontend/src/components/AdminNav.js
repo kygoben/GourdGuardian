@@ -27,10 +27,9 @@ const Navbar = () => {
     <div style={navbarStyle}>
       <div style={logoStyle}>MyLogo</div>
       <div>
-        <a style={linkStyle} href="#">Home</a>
-        <a style={linkStyle} href="#">About</a>
-        <a style={linkStyle} href="#">Services</a>
-        <a style={linkStyle} href="#">Contact</a>
+        <a style={linkStyle} href="/admin/home">Home</a>
+        <a style={linkStyle} href="/admin/volunteerControls">VolunteerLocks</a>
+        <a style={linkStyle} href="/admin/status">Status</a>
       </div>
     </div>
   );
