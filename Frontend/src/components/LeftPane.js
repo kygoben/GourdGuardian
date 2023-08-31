@@ -1,6 +1,13 @@
-import React from 'react';
+import React from "react";
 
-const LeftPane = ({year, week, stage, updateYear, updateWeek, updateStage}) => {
+const LeftPane = ({
+  year,
+  week,
+  stage,
+  updateYear,
+  updateWeek,
+  updateStage,
+}) => {
   const weeks = [1, 2]; // Update with your desired weeks
   const stages = [1, 2, 3, 4]; // Update with your desired stages
 
@@ -14,7 +21,10 @@ const LeftPane = ({year, week, stage, updateYear, updateWeek, updateStage}) => {
   return (
     <div style={{ padding: "20px", backgroundColor: "#f0f0f0" }}>
       <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="year" style={{ marginRight: "10px", fontWeight: "bold" }}>
+        <label
+          htmlFor="year"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
           Year:
         </label>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -29,7 +39,12 @@ const LeftPane = ({year, week, stage, updateYear, updateWeek, updateStage}) => {
             id="year"
             value={year}
             onChange={(e) => handleYearChange(e.target.value)}
-            style={{ width: "60px", padding: "5px", borderRadius: "5px", textAlign: "center" }}
+            style={{
+              width: "60px",
+              padding: "5px",
+              borderRadius: "5px",
+              textAlign: "center",
+            }}
           />
           <button
             style={{ padding: "5px", borderRadius: "50%", marginLeft: "10px" }}
@@ -40,7 +55,10 @@ const LeftPane = ({year, week, stage, updateYear, updateWeek, updateStage}) => {
         </div>
       </div>
       <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="week" style={{ marginRight: "10px", fontWeight: "bold" }}>
+        <label
+          htmlFor="week"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
           Week:
         </label>
         <div style={{ display: "flex", gap: "10px" }}>
@@ -64,7 +82,10 @@ const LeftPane = ({year, week, stage, updateYear, updateWeek, updateStage}) => {
         </div>
       </div>
       <div>
-        <label htmlFor="stage" style={{ marginRight: "10px", fontWeight: "bold" }}>
+        <label
+          htmlFor="stage"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
           Stage:
         </label>
         <div style={{ display: "flex", gap: "10px" }}>

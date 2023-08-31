@@ -1,8 +1,8 @@
 import React from "react";
 
-const Navbar = () => {
+const ProgressBar = () => {
   const navbarStyle = {
-    background: "#333",
+    background: "#111",
     color: "#fff",
     padding: "10px",
     display: "flex",
@@ -25,20 +25,12 @@ const Navbar = () => {
 
   return (
     <div style={navbarStyle}>
-      <div style={logoStyle}>MyLogo</div>
-      <div>
-        <a style={linkStyle} href="/admin/home">
-          Home
-        </a>
-        <a style={linkStyle} href="/admin/volunteerControls">
-          VolunteerLocks
-        </a>
-        <a style={linkStyle} href="/admin/status">
-          Status
-        </a>
-      </div>
+      <div> ProgressBar</div>
+      <progress id="file" value="32" max="100">
+        39%
+      </progress>
     </div>
   );
 };
 
-export default Navbar;
+export default ProgressBar;

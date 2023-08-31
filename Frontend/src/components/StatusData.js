@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
 
-
-const StatusData = ({year, week, stage}) => {
+const StatusData = ({ year, week, stage }) => {
   const [data, setData] = useState([]); //db values
 
   const navbarStyle = {
@@ -34,15 +33,23 @@ const StatusData = ({year, week, stage}) => {
   }, [year, week, stage]);
 
   const getData = async () => {
-    let { data, statusError } = await supabase.from("sstatus").select("*").eq("year", year).eq("week", week);
+    let { data, statusError } = await supabase
+      .from("sstatus")
+      .select("*")
+      .eq("year", year)
+      .eq("week", week)
+      .order("sid", { ascending: true });
     console.log(data, statusError);
     setData(data);
   };
 
+  if (data.length === 0) {
+    return <div>No data available</div>;
+  }
+
   return (
     <div>
-      <div style={navbarStyle}>
-      </div>
+      <div style={navbarStyle}></div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>

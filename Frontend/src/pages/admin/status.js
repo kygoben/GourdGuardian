@@ -6,6 +6,7 @@ import StatusData from "@/components/StatusData";
 import SearchBar from "@/components/SearchBar";
 import styles from "@/styles/status.module.css";
 import { useState } from "react";
+import ProgressBar from "@/components/ProgressBar";
 
 export default function Status() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function Status() {
         />
         <div className={styles.data}>
           <SearchBar />
+          <ProgressBar />
           <StatusData
             className={styles.dataRow}
             year={year}
