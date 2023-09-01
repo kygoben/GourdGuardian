@@ -56,6 +56,24 @@ const StatusData = ({ year, week, stage }) => {
     setData(data);
   };
 
+  const handleEdit = async (index, field, value) => {
+    //query
+    const status = data[index];
+    const sid = status.sid;
+
+    const updateObject = { [field]: value };
+
+            await supabase
+            .from("sstatus")
+            .update(updateObject)
+            .eq("sid", sid)
+            .select();
+
+            
+    
+    getData();
+  };
+
   if (data.length === 0) {
     return <div>No data available</div>;
   }
@@ -79,12 +97,24 @@ const StatusData = ({ year, week, stage }) => {
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
-              <td style={tableCellStyle}>{item.sid}</td>
+              <td style={tableCellStyle}>
+                <input
+                  type="text"
+                  value={item.sid}
+                  onChange={(e) => handleEdit(index, "sid", e.target.value)}
+                />
+              </td>
               <td style={tableCellStyle}>{item.title}</td>
               <td style={tableCellStyle}>{item.tracing_start}</td>
               <td style={tableCellStyle}>{item.tracing_end}</td>
               <td style={tableCellStyle}>{item.tracing_confirmed}</td>
-              <td style={tableCellStyle}>{item.tracer}</td>
+              <td style={tableCellStyle}>
+                <input
+                  type="text"
+                  value={item.tracer}
+                  onChange={(e) => handleEdit(index, "tracer", e.target.value)}
+                />
+              </td>
               <td style={tableCellStyle}><button>confirm</button></td>
             </tr>
           ))}
