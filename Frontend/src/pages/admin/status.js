@@ -13,6 +13,7 @@ export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
   const [stage, setStage] = useState(3);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
   const updateYear = (newValue) => {
     setYear(newValue);
@@ -26,6 +27,10 @@ export default function Status() {
     setStage(newValue);
   };
 
+  const updateIsConfirmed = (newValue) => {
+    setIsConfirmed(newValue);
+  };
+
   return (
     <>
       <Navbar />
@@ -35,13 +40,14 @@ export default function Status() {
           year={year}
           week={week}
           stage={stage}
+          isConfirmed={isConfirmed}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
+          updateIsConfirmed={updateIsConfirmed}
         />
         <div className={styles.data}>
           <SearchBar />
-          <ProgressBar />
           <StatusData
             className={styles.dataRow}
             year={year}

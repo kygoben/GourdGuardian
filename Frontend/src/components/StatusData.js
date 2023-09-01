@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
+import compareAsc from "date-fns/compareAsc";
 
 const StatusData = ({ year, week, stage }) => {
   const [data, setData] = useState([]); //db values
@@ -38,7 +39,19 @@ const StatusData = ({ year, week, stage }) => {
       .select("*")
       .eq("year", year)
       .eq("week", week)
-      .order("sid", { ascending: true });
+      .is("tracing_confirmed", null);
+
+      console.log(data, statusError);
+      
+      if(!data){
+        return;
+      }
+      
+      data.sort((a, b) => {
+        const [aSid] = a.sid.split("-").map(Number);
+        const [bSid] = b.sid.split("-").map(Number);
+        return compareAsc(aSid, bSid);
+      });
     console.log(data, statusError);
     setData(data);
   };
@@ -54,32 +67,25 @@ const StatusData = ({ year, week, stage }) => {
         <thead>
           <tr>
             <th style={tableHeaderStyle}>sid</th>
-            <th style={tableHeaderStyle}>week</th>
-            <th style={tableHeaderStyle}>year</th>
+            <th style={tableHeaderStyle}>title</th>
             <th style={tableHeaderStyle}>tracing_start</th>
             <th style={tableHeaderStyle}>tracing_end</th>
             <th style={tableHeaderStyle}>tracing_confirmed</th>
             <th style={tableHeaderStyle}>tracer</th>
-            <th style={tableHeaderStyle}>carving_start</th>
-            <th style={tableHeaderStyle}>carving_end</th>
-            <th style={tableHeaderStyle}>carving_confirmed</th>
-            <th style={tableHeaderStyle}>carver</th>
+            <th style={tableHeaderStyle}>confirm?</th>
+
           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
               <td style={tableCellStyle}>{item.sid}</td>
-              <td style={tableCellStyle}>{item.week}</td>
-              <td style={tableCellStyle}>{item.year}</td>
+              <td style={tableCellStyle}>{item.title}</td>
               <td style={tableCellStyle}>{item.tracing_start}</td>
               <td style={tableCellStyle}>{item.tracing_end}</td>
               <td style={tableCellStyle}>{item.tracing_confirmed}</td>
               <td style={tableCellStyle}>{item.tracer}</td>
-              <td style={tableCellStyle}>{item.carving_start}</td>
-              <td style={tableCellStyle}>{item.carving_end}</td>
-              <td style={tableCellStyle}>{item.carving_confirmed}</td>
-              <td style={tableCellStyle}>{item.carver}</td>
+              <td style={tableCellStyle}><button>confirm</button></td>
             </tr>
           ))}
         </tbody>

@@ -1,4 +1,5 @@
 import React from "react";
+import ProgressBar from "./ProgressBar";
 
 const Navbar = () => {
   const navbarStyle = {
@@ -26,6 +27,7 @@ const Navbar = () => {
   return (
     <div style={navbarStyle}>
       <div style={logoStyle}>MyLogo</div>
+      <ProgressBar />
       <div>
         <a style={linkStyle} href="/admin/home">
           Home

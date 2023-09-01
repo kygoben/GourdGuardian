@@ -4,9 +4,11 @@ const LeftPane = ({
   year,
   week,
   stage,
+  isConfirmed,
   updateYear,
   updateWeek,
   updateStage,
+  updateIsConfirmed,
 }) => {
   const weeks = [1, 2]; // Update with your desired weeks
   const stages = [1, 2, 3, 4]; // Update with your desired stages
@@ -16,6 +18,10 @@ const LeftPane = ({
     if (!isNaN(parsedYear)) {
       updateYear(parsedYear);
     }
+  };
+
+  const handleIsConfirmedToggle = () => {
+    updateIsConfirmed(!isConfirmed);
   };
 
   return (
@@ -107,6 +113,28 @@ const LeftPane = ({
             </button>
           ))}
         </div>
+      </div>
+      <div style={{ marginBottom: "20px" }}>
+        <label
+          htmlFor="isConfirmed"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
+          Confirmed:
+        </label>
+        <button
+          className={isConfirmed ? "selected" : ""}
+          onClick={handleIsConfirmedToggle}
+          style={{
+            padding: "5px 10px",
+            borderRadius: "20px",
+            backgroundColor: isConfirmed ? "#007bff" : "transparent",
+            color: isConfirmed ? "#fff" : "#000",
+            border: "1px solid #ccc",
+            cursor: "pointer",
+          }}
+        >
+          {isConfirmed ? "Confirmed" : "Not Confirmed"}
+        </button>
       </div>
     </div>
   );
