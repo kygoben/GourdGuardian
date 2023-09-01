@@ -41,36 +41,34 @@ const StatusData = ({ year, week, stage }) => {
       .eq("week", week)
       .is("tracing_confirmed", null);
 
-      console.log(data, statusError);
-      
-      if(!data){
-        return;
-      }
-      
-      data.sort((a, b) => {
-        const [aSid] = a.sid.split("-").map(Number);
-        const [bSid] = b.sid.split("-").map(Number);
-        return compareAsc(aSid, bSid);
-      });
+    console.log(data, statusError);
+
+    if (!data) {
+      return;
+    }
+
+    data.sort((a, b) => {
+      const [aSid] = a.sid.split("-").map(Number);
+      const [bSid] = b.sid.split("-").map(Number);
+      return compareAsc(aSid, bSid);
+    });
     console.log(data, statusError);
     setData(data);
   };
 
-  const handleEdit = async (index, field, value) => {
+  const handleEdit = async (item, field, value) => {
     //query
-    const status = data[index];
-    const sid = status.sid;
+    console.log(item, field, value);
+
 
     const updateObject = { [field]: value };
 
-            await supabase
-            .from("sstatus")
-            .update(updateObject)
-            .eq("sid", sid)
-            .select();
+    await supabase
+    .from("sstatus")
+    .update(updateObject)
+    .eq("sid", item.sid)
+    .select();
 
-            
-    
     getData();
   };
 
@@ -91,7 +89,6 @@ const StatusData = ({ year, week, stage }) => {
             <th style={tableHeaderStyle}>tracing_confirmed</th>
             <th style={tableHeaderStyle}>tracer</th>
             <th style={tableHeaderStyle}>confirm?</th>
-
           </tr>
         </thead>
         <tbody>
@@ -101,21 +98,31 @@ const StatusData = ({ year, week, stage }) => {
                 <input
                   type="text"
                   value={item.sid}
-                  onChange={(e) => handleEdit(index, "sid", e.target.value)}
+                  onChange={(e) => handleEdit(item, "sid", e.target.value)}
                 />
               </td>
               <td style={tableCellStyle}>{item.title}</td>
               <td style={tableCellStyle}>{item.tracing_start}</td>
               <td style={tableCellStyle}>{item.tracing_end}</td>
-              <td style={tableCellStyle}>{item.tracing_confirmed}</td>
+              <td style={tableCellStyle}>
+                <input
+                  type="datetime-local" // Use datetime-local input type for date and time
+                  value={item.tracing_confirmed}
+                  onChange={(e) =>
+                    handleEdit(item, "tracing_confirmed", e.target.value)
+                  }
+                />
+              </td>
               <td style={tableCellStyle}>
                 <input
                   type="text"
                   value={item.tracer}
-                  onChange={(e) => handleEdit(index, "tracer", e.target.value)}
+                  onChange={(e) => handleEdit(item, "tracer", e.target.value)}
                 />
               </td>
-              <td style={tableCellStyle}><button>confirm</button></td>
+              <td style={tableCellStyle}>
+                <button>confirm</button>
+              </td>
             </tr>
           ))}
         </tbody>
