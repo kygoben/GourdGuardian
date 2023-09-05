@@ -41,7 +41,6 @@ const ProgressBar = () => {
 
   return (
     <div style={navbarStyle}>
-      {/* <div style={logoStyle}>Your App Name</div> */}
       <div style={progressBarContainer}>
         <div>Progress: </div>
         <div style={progressBarStyle}>

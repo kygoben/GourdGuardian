@@ -5,10 +5,17 @@ const LeftPane = ({
   week,
   stage,
   isConfirmed,
+  notStarted,
+  inProgress,
+  completed,
   updateYear,
   updateWeek,
   updateStage,
   updateIsConfirmed,
+  updateFilterStatus,
+  updateNotStarted,
+  updateInProgress,
+  updateCompleted,
 }) => {
   const weeks = [1, 2]; // Update with your desired weeks
   const stages = [1, 2, 3, 4]; // Update with your desired stages
@@ -19,6 +26,17 @@ const LeftPane = ({
       updateYear(parsedYear);
     }
   };
+
+  const filterButtonStyle = {
+    padding: "5px 10px",
+    borderRadius: "20px",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "1px solid #ccc",
+    cursor: "pointer",
+  };
+  
+  
 
   const handleIsConfirmedToggle = () => {
     updateIsConfirmed(!isConfirmed);
@@ -135,6 +153,36 @@ const LeftPane = ({
         >
           {isConfirmed ? "Confirmed" : "Not Confirmed"}
         </button>
+      </div><div style={{ marginBottom: "20px" }}>
+        <label
+          htmlFor="status"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
+          Status:
+        </label>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            className={notStarted === "Not Started" ? "selected" : ""}
+            onClick={() => updateNotStarted("Not Started")}
+            style={filterButtonStyle}
+          >
+            Not Started
+          </button>
+          <button
+            className={inProgress === "In Progress" ? "selected" : ""}
+            onClick={() => updateInProgress("In Progress")}
+            style={filterButtonStyle}
+          >
+            In Progress
+          </button>
+          <button
+            className={completed === "Complete" ? "selected" : ""}
+            onClick={() => updateCompleted("Complete")}
+            style={filterButtonStyle}
+          >
+            Complete
+          </button>
+        </div>
       </div>
     </div>
   );

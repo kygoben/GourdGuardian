@@ -14,9 +14,29 @@ export default function Status() {
   const [week, setWeek] = useState(1);
   const [stage, setStage] = useState(3);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [notStarted, setNotStarted] = useState(true);
+  const [inProgress, setInProgress] = useState(false);
+  const [completed, setCompleted] = useState(false);
+
 
   const updateYear = (newValue) => {
     setYear(newValue);
+  };
+
+  const updateFilterStatus = (newValue) => {
+    setFilterStatus(newValue);
+  };
+
+  const updateNotStarted = (newValue) => {
+    setNotStarted(newValue);
+  };
+
+  const updateInProgress = (newValue) => {
+    setInProgress(newValue);
+  };
+
+  const updateCompleted = (newValue) => {
+    setCompleted(newValue);
   };
 
   const updateWeek = (newValue) => {
@@ -41,10 +61,17 @@ export default function Status() {
           week={week}
           stage={stage}
           isConfirmed={isConfirmed}
+          notStarted={notStarted}
+          inProgress={inProgress}
+          completed={completed}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
           updateIsConfirmed={updateIsConfirmed}
+          updateFilterStatus={updateFilterStatus}
+          updateNotStarted={updateNotStarted}
+          updateInProgress={updateInProgress}
+          updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
           <SearchBar />

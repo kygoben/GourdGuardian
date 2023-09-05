@@ -83,10 +83,9 @@ const StatusData = ({ year, week, stage, isConfirmed }) => {
         if (
           relatedSStatus &&
           relatedSStatus.year === year &&
-          relatedSStatus.week === week &&(
-            (isConfirmed && relatedSStatus.tracing_confirmed) || // Check if isConfirmed is true and tracing_confirmed is not null
-            (!isConfirmed && !relatedSStatus.tracing_confirmed) // Check if isConfirmed is false and tracing_confirmed is null
-          )
+          relatedSStatus.week === week &&
+          ((isConfirmed && relatedSStatus.tracing_confirmed) || // Check if isConfirmed is true and tracing_confirmed is not null
+            (!isConfirmed && !relatedSStatus.tracing_confirmed)) // Check if isConfirmed is false and tracing_confirmed is null
         ) {
           return {
             ...stencil,
@@ -193,15 +192,6 @@ const StatusData = ({ year, week, stage, isConfirmed }) => {
                   }
                 ></input>
               </td>
-              {/* <td style={tableCellStyle}>
-                <input
-                  type="datetime-local" // Use datetime-local input type for date and time
-                  value={item.sstatus.tracing_confirmed || ""}
-                  onChange={(e) =>
-                    handleEdit(item, "tracing_confirmed", e.target.value)
-                  }
-                />
-              </td> */}
               <td style={tableCellStyle}>
                 <input
                   type="text"
