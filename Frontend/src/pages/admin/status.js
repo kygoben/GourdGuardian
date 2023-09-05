@@ -53,6 +53,7 @@ export default function Status() {
             year={year}
             week={week}
             stage={stage}
+            isConfirmed={isConfirmed}
           />
         </div>
       </div>

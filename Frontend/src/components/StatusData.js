@@ -5,10 +5,9 @@ import { useState } from "react"; // Import useEffect and useState
 import compareAsc from "date-fns/compareAsc";
 import index from "@/pages/index.js";
 
-const StatusData = ({ year, week, stage }) => {
+const StatusData = ({ year, week, stage, isConfirmed }) => {
   const [data, setData] = useState([]); //db values
   const [successMessage, setSuccessMessage] = useState(null);
-  
 
   /* CSS in a separate .css file or within your component */
   const successStyle = {
@@ -24,17 +23,17 @@ const StatusData = ({ year, week, stage }) => {
   };
 
   const buttonStyle = {
-    backgroundColor: 'green',
-    width: '24px',
-    height: '24px',
-    border: 'none',
-    borderRadius: '4px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    color: 'white',
-    fontSize: '16px',
+    backgroundColor: "green",
+    width: "24px",
+    height: "24px",
+    border: "none",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
   };
 
   const navbarStyle = {
@@ -61,7 +60,7 @@ const StatusData = ({ year, week, stage }) => {
 
   useEffect(() => {
     getData();
-  }, [year, week, stage]);
+  }, [year, week, stage, isConfirmed]);
 
   const getData = async () => {
     let { data: stencilsData, error: stencilsError } = await supabase
@@ -84,8 +83,10 @@ const StatusData = ({ year, week, stage }) => {
         if (
           relatedSStatus &&
           relatedSStatus.year === year &&
-          relatedSStatus.week === week &&
-          !relatedSStatus.tracing_confirmed
+          relatedSStatus.week === week &&(
+            (isConfirmed && relatedSStatus.tracing_confirmed) || // Check if isConfirmed is true and tracing_confirmed is not null
+            (!isConfirmed && !relatedSStatus.tracing_confirmed) // Check if isConfirmed is false and tracing_confirmed is null
+          )
         ) {
           return {
             ...stencil,
@@ -160,13 +161,13 @@ const StatusData = ({ year, week, stage }) => {
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
-            <th style={tableHeaderStyle}>sid</th>
-            <th style={tableHeaderStyle}>title</th>
-            <th style={tableHeaderStyle}>tracing_start</th>
-            <th style={tableHeaderStyle}>tracing_end</th>
+            <th style={tableHeaderStyle}>SID</th>
+            <th style={tableHeaderStyle}>Title</th>
+            <th style={tableHeaderStyle}>Start</th>
+            <th style={tableHeaderStyle}>End</th>
             {/* <th style={tableHeaderStyle}>tracing_confirmed</th> */}
-            <th style={tableHeaderStyle}>tracer</th>
-            <th style={tableHeaderStyle}>confirm?</th>
+            <th style={tableHeaderStyle}>Author</th>
+            <th style={tableHeaderStyle}>Confirm?</th>
           </tr>
         </thead>
         <tbody>
@@ -209,9 +210,18 @@ const StatusData = ({ year, week, stage }) => {
                 />
               </td>
               <td style={tableCellStyle}>
-              <button style={buttonStyle} onClick={() => handleEdit(item, "tracing_confirmed", currentDate.toISOString())}>
-      ✓
-    </button>
+                <button
+                  style={buttonStyle}
+                  onClick={() =>
+                    handleEdit(
+                      item,
+                      "tracing_confirmed",
+                      currentDate.toISOString()
+                    )
+                  }
+                >
+                  ✓
+                </button>
               </td>
             </tr>
           ))}
