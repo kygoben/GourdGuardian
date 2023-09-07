@@ -190,11 +190,11 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (!item.sstatus.carving_start && notStarted) ||
-        (!item.sstatus.carving_end && inProgress) ||
-        (item.sstatus.carving_end && completed) ||
-        (item.sstatus.carving_confirmed && isConfirmed) ||
-        (!item.sstatus.carving_confirmed && notConfirmed) ? (
+        ((!item.sstatus.carving_start && notStarted) ||
+          (!item.sstatus.carving_end && inProgress) ||
+          (item.sstatus.carving_end && completed)) &&
+        ((item.sstatus.carving_confirmed && isConfirmed) ||
+          (!item.sstatus.carving_confirmed && notConfirmed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
             <td style={tableCellStyle}>{item.title}</td>
