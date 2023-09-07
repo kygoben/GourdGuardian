@@ -80,6 +80,19 @@ const StatusData = ({
         .select(
           "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracing_by, carving_start, carving_end, carving_confirmed, carving_by"
         );
+        sstatusData.sort((a, b) => {
+          const sidA = a.sid.split("-").map(Number);
+          const sidB = b.sid.split("-").map(Number);
+  
+          for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+            const diff = (sidA[i] || 0) - (sidB[i] || 0);
+            if (diff !== 0) {
+              return diff;
+            }
+          }
+  
+          return 0;
+        });
       console.log(sstatusData);
 
       const combinedData = stencilsData
@@ -127,7 +140,10 @@ const StatusData = ({
         .from("sstatus")
         .update(updateObject)
         .eq("sid", item.sid)
+        .eq("year", item.sstatus.year)
+        .eq("week", item.sstatus.week)
         .select();
+        console.log(error);
 
         console.log(updatedData);
       if (!error) {
@@ -293,14 +309,14 @@ const StatusData = ({
                   e.preventDefault(); // Prevent the default form submission behavior
                   handleEdit(
                     item,
-                    "tracer",
-                    document.getElementById(`tracer_${item.sid}_${item.index}`)
+                    "tracing_by",
+                    document.getElementById(`tracing_by_${item.sid}_${item.index}`)
                       .value
                   ); // Call your edit handler when the form is submitted
                 }}
               >
                 <input
-                  id={`tracer_${item.sid}_${item.index}`}
+                  id={`tracing_by_${item.sid}_${item.index}`}
                   type="text"
                   placeholder={"No Tracer Assigned"}
                   defaultValue={item.sstatus.tracer}
@@ -314,9 +330,9 @@ const StatusData = ({
                 <button
                   style={buttonStyle2}
                   onClick={() => {
-                    handleEdit(item, "tracer", null);
+                    handleEdit(item, "tracing_by", null);
                     document.getElementById(
-                      `tracer_${item.sid}_${item.index}`
+                      `tracing_by_${item.sid}_${item.index}`
                     ).value = null;
                   }}
                 >
