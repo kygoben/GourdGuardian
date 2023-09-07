@@ -209,7 +209,7 @@ const StatusData = ({
       render: (item) =>
         item.sstatus.week === week &&
         ((!item.sstatus.tracing_start && notStarted) ||
-          (!item.sstatus.tracing_end && inProgress) ||
+          (!item.sstatus.tracing_end && inProgress && item.sstatus.tracing_start) ||
           (item.sstatus.tracing_end && completed)) &&
         ((item.sstatus.tracing_confirmed && isConfirmed) ||
           (!item.sstatus.tracing_confirmed && notConfirmed)) ? (
