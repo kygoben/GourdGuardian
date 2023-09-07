@@ -152,7 +152,7 @@ const StatusData = ({
     1: {
       header: ["SID", "Title", "Printing"],
       render: (item) =>
-        item.sstatus.week === week &&
+        (item.sstatus.week === week || week === 'Both') &&
         ((!item.sstatus.printing && notStarted) ||
           (item.sstatus.printing && completed)) ? (
           <>
@@ -181,7 +181,7 @@ const StatusData = ({
     2: {
       header: ["SID", "Title", "Cutting"],
       render: (item) =>
-        item.sstatus.week === week &&
+        (item.sstatus.week === week  || week === 'Both')&&
         ((!item.sstatus.cutting && notStarted) ||
           (item.sstatus.cutting && completed)) ? (
           <>
@@ -217,7 +217,7 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        item.sstatus.week === week &&
+        (item.sstatus.week === week  || week === 'Both')&&
         ((!item.sstatus.tracing_start && notStarted) ||
           (!item.sstatus.tracing_end &&
             inProgress &&
@@ -347,7 +347,7 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        item.sstatus.week === week &&
+        (item.sstatus.week === week  || week === 'Both')&&
         ((!item.sstatus.carving_start && notStarted) ||
           (!item.sstatus.carving_end &&
             inProgress &&

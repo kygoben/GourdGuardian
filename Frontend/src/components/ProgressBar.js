@@ -84,7 +84,7 @@ const ProgressBar = () => {
       <div style={progressBarContainer}>
         <div>Progress: </div>
         <div style={progressBarStyle}>
-          <div style={progressBarFillStyle}>{percentage}</div>
+          <div style={progressBarFillStyle}>{percentage}%</div>
         </div>
       </div>
     </div>

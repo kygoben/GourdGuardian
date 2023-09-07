@@ -18,7 +18,7 @@ const LeftPane = ({
   updateInProgress,
   updateCompleted,
 }) => {
-  const weeks = [1, 2]; // Update with your desired weeks
+  const weeks = [1, 2, 'Both']; // Update with your desired weeks
   const stages = [1, 2, 3, 4]; // Update with your desired stages
 
   const handleYearChange = (newYear) => {
