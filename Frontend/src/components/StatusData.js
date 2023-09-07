@@ -40,6 +40,19 @@ const StatusData = ({
     color: "white",
     fontSize: "16px",
   };
+  const buttonStyle2 = {
+    backgroundColor: "red",
+    width: "24px",
+    height: "24px",
+    border: "none",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
+  };
 
   useEffect(() => {
     getData();
@@ -102,6 +115,30 @@ const StatusData = ({
           <td style={tableCellStyle}>{item.title}</td>
           <td style={tableCellStyle}>
             {item.sstatus.printing ? "Complete" : "Incomplete"}
+            <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "printing",
+                    1
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "printing",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
           </td>
         </>
       ),
@@ -114,6 +151,30 @@ const StatusData = ({
           <td style={tableCellStyle}>{item.title}</td>
           <td style={tableCellStyle}>
             {item.sstatus.cutting ? "Complete" : "Incomplete"}
+            <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "cutting",
+                    1
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "cutting",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
           </td>
         </>
       ),
@@ -144,6 +205,30 @@ const StatusData = ({
                   handleEdit(item, "tracing_start", e.target.value)
                 }
               ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_start",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_start",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
             </td>
             <td style={tableCellStyle}>
               <input
@@ -153,6 +238,30 @@ const StatusData = ({
                   handleEdit(item, "tracing_end", e.target.value)
                 }
               ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_end",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_end",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
             </td>
             <td style={tableCellStyle}>
               <input
@@ -162,7 +271,8 @@ const StatusData = ({
               />
             </td>
             <td style={tableCellStyle}>
-              <button
+              {item.sstatus.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+            <button
                 style={buttonStyle}
                 onClick={() =>
                   handleEdit(
@@ -173,6 +283,18 @@ const StatusData = ({
                 }
               >
                 ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_confirmed",
+                    null
+                  )
+                }
+              >
+                X
               </button>
             </td>
           </>
@@ -206,6 +328,30 @@ const StatusData = ({
                   handleEdit(item, "carving_start", e.target.value)
                 }
               ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_start",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_start",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
             </td>
             <td style={tableCellStyle}>
               <input
@@ -215,6 +361,30 @@ const StatusData = ({
                   handleEdit(item, "carving_end", e.target.value)
                 }
               ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_end",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_end",
+                    null
+                  )
+                }
+              >
+                X
+              </button>
             </td>
             <td style={tableCellStyle}>
               <input
@@ -222,9 +392,11 @@ const StatusData = ({
                 value={item.sstatus.carver || ""}
                 onChange={(e) => handleEdit(item, "carver", e.target.value)}
               />
+              
             </td>
             <td style={tableCellStyle}>
-              <button
+            {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+            <button
                 style={buttonStyle}
                 onClick={() =>
                   handleEdit(
@@ -235,6 +407,18 @@ const StatusData = ({
                 }
               >
                 ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_confirmed",
+                    null
+                  )
+                }
+              >
+                X
               </button>
             </td>
           </>
