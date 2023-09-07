@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
+import { set } from "date-fns";
 
 const StatusData = ({
   year,
@@ -14,6 +15,8 @@ const StatusData = ({
 }) => {
   const [data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
+  //loading state
+  const [loading, setLoading] = useState(true);
 
   const successStyle = {
     position: "fixed",
@@ -63,6 +66,7 @@ const StatusData = ({
   }, [data]);
 
   const getData = async () => {
+    setLoading(true);
     try {
       const { data: stencilsData } = await supabase
         .from("stencils")
@@ -72,7 +76,7 @@ const StatusData = ({
         .select(
           "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracer, carving_start, carving_end, carving_confirmed, carver"
         );
-        // console.log(sstatusData);
+      // console.log(sstatusData);
 
       const combinedData = stencilsData
         .map((stencil) => {
@@ -106,16 +110,22 @@ const StatusData = ({
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error as needed
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleEdit = async (item, field, value) => {
     try {
       const updateObject = { [field]: value };
-      const { data: updatedData, error } = await supabase.from("sstatus").update(updateObject).eq("sid", item.sid).select();
+      const { data: updatedData, error } = await supabase
+        .from("sstatus")
+        .update(updateObject)
+        .eq("sid", item.sid)
+        .select();
       if (!error) {
         setSuccessMessage("Entry updated successfully");
-  
+
         // Create a new copy of the data array and update the relevant item
         setData((prevData) => {
           const newData = [...prevData];
@@ -132,7 +142,7 @@ const StatusData = ({
       console.error("Error updating data:", error);
       // Handle error as needed
     }
-  
+
     setTimeout(() => {
       setSuccessMessage(null);
     }, 2000);
@@ -209,7 +219,9 @@ const StatusData = ({
       render: (item) =>
         item.sstatus.week === week &&
         ((!item.sstatus.tracing_start && notStarted) ||
-          (!item.sstatus.tracing_end && inProgress && item.sstatus.tracing_start) ||
+          (!item.sstatus.tracing_end &&
+            inProgress &&
+            item.sstatus.tracing_start) ||
           (item.sstatus.tracing_end && completed)) &&
         ((item.sstatus.tracing_confirmed && isConfirmed) ||
           (!item.sstatus.tracing_confirmed && notConfirmed)) ? (
@@ -337,7 +349,9 @@ const StatusData = ({
       render: (item) =>
         item.sstatus.week === week &&
         ((!item.sstatus.carving_start && notStarted) ||
-          (!item.sstatus.carving_end && inProgress) ||
+          (!item.sstatus.carving_end &&
+            inProgress &&
+            item.sstatus.carving_start) ||
           (item.sstatus.carving_end && completed)) &&
         ((item.sstatus.carving_confirmed && isConfirmed) ||
           (!item.sstatus.carving_confirmed && notConfirmed)) ? (
@@ -462,26 +476,32 @@ const StatusData = ({
     <div>
       {successMessage && <div style={successStyle}>{successMessage}</div>}
 
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        {stageMapping && (
-          <>
-            <thead>
-              <tr>
-                {stageMapping.header.map((headerText, index) => (
-                  <th key={index} style={tableHeaderStyle}>
-                    {headerText}
-                  </th>
+      {loading ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 bg-gray-900 text-white">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
+    </div>
+      ) : (
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          {stageMapping && (
+            <>
+              <thead>
+                <tr>
+                  {stageMapping.header.map((headerText, index) => (
+                    <th key={index} style={tableHeaderStyle}>
+                      {headerText}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item, rowIndex) => (
+                  <tr key={item.sid}>{stageMapping.render(item)}</tr>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((item, rowIndex) => (
-                <tr key={item.sid}>{stageMapping.render(item)}</tr>
-              ))}
-            </tbody>
-          </>
-        )}
-      </table>
+              </tbody>
+            </>
+          )}
+        </table>
+      )}
     </div>
   );
 };
