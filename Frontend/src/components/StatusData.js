@@ -107,8 +107,7 @@ const StatusData = ({
 
     setTimeout(() => {
       setSuccessMessage(null);
-    }
-    , 2000);
+    }, 2000);
   };
 
   const stageMappings = {
@@ -233,11 +232,42 @@ const StatusData = ({
               </button>
             </td>
             <td style={tableCellStyle}>
-              <input
-                type="text"
-                value={item.sstatus.tracer || ""}
-                onChange={(e) => handleEdit(item, "tracer", e.target.value)}
-              />
+              
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Prevent the default form submission behavior
+                  handleEdit(
+                    item,
+                    "tracer",
+                    document.getElementById(`tracer_${item.sid}_${item.index}`)
+                      .value
+                  ); // Call your edit handler when the form is submitted
+                }}
+              >
+                <input
+                  id={`tracer_${item.sid}_${item.index}`}
+                  type="text"
+                  placeholder={"Enter Carver Name"}
+                  defaultValue={item.sstatus.tracer}
+                />
+                <button
+                  type="submit" // Specify the button type as "submit"
+                  style={buttonStyle}
+                >
+                  ✓
+                </button>
+                <button
+                  style={buttonStyle2}
+                  onClick={() => {
+                    handleEdit(item, "tracer", null);
+                    document.getElementById(
+                      `tracer_${item.sid}_${item.index}`
+                    ).value = null;
+                  }}
+                >
+                  X
+                </button>
+              </form>
             </td>
             <td style={tableCellStyle}>
               {item.sstatus.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
@@ -330,11 +360,41 @@ const StatusData = ({
               </button>
             </td>
             <td style={tableCellStyle}>
-              <input
-                type="text"
-                value={item.sstatus.carver || ""}
-                onChange={(e) => handleEdit(item, "carver", e.target.value)}
-              />
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Prevent the default form submission behavior
+                  handleEdit(
+                    item,
+                    "carver",
+                    document.getElementById(`carver_${item.sid}_${item.index}`)
+                      .value
+                  ); // Call your edit handler when the form is submitted
+                }}
+              >
+                <input
+                  id={`carver_${item.sid}_${item.index}`}
+                  type="text"
+                  placeholder={"Enter Carver Name"}
+                  defaultValue={item.sstatus.carver}
+                />
+                <button
+                  type="submit" // Specify the button type as "submit"
+                  style={buttonStyle}
+                >
+                  ✓
+                </button>
+                <button
+                  style={buttonStyle2}
+                  onClick={() => {
+                    handleEdit(item, "carver", null);
+                    document.getElementById(
+                      `carver_${item.sid}_${item.index}`
+                    ).value = null;
+                  }}
+                >
+                  X
+                </button>
+              </form>
             </td>
             <td style={tableCellStyle}>
               {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
