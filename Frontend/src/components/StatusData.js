@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
-import { set } from "date-fns";
+
+
+
 
 const StatusData = ({
   year,
@@ -106,7 +108,7 @@ const StatusData = ({
 
         return 0;
       });
-
+      console.log(combinedData);
       setData(combinedData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -153,7 +155,7 @@ const StatusData = ({
     1: {
       header: ["SID", "Title", "Printing"],
       render: (item) =>
-        (item.sid === searchTerm || searchTerm === "") &&
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() || searchTerm === "") &&
         (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.printing && notStarted) ||
           (item.sstatus.printing && completed)) ? (
@@ -183,7 +185,7 @@ const StatusData = ({
     2: {
       header: ["SID", "Title", "Cutting"],
       render: (item) =>
-        (item.sid === searchTerm || searchTerm === "") &&
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() || searchTerm === "") &&
         (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.cutting && notStarted) ||
           (item.sstatus.cutting && completed)) ? (
@@ -220,9 +222,9 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (item.sid === searchTerm ||
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.sstatus.tracer === searchTerm ||
+          item.sstatus.tracer?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
         (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.tracing_start && notStarted) ||
@@ -354,9 +356,9 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (item.sid === searchTerm ||
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.sstatus.carver === searchTerm ||
+          item.sstatus.carver?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
         (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.carving_start && notStarted) ||
