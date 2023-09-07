@@ -120,6 +120,7 @@ const StatusData = ({
   };
 
   const handleEdit = async (item, field, value) => {
+    console.log(item, field, value);
     try {
       const updateObject = { [field]: value };
       const { data: updatedData, error } = await supabase
@@ -127,6 +128,8 @@ const StatusData = ({
         .update(updateObject)
         .eq("sid", item.sid)
         .select();
+
+        console.log(updatedData);
       if (!error) {
         setSuccessMessage("Entry updated successfully");
 
@@ -173,7 +176,7 @@ const StatusData = ({
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() => handleEdit(item, "printing", null)}
+                onClick={() => handleEdit(item, "printing", 0)}
               >
                 X
               </button>
@@ -203,7 +206,7 @@ const StatusData = ({
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() => handleEdit(item, "cutting", null)}
+                onClick={() => handleEdit(item, "cutting", 0)}
               >
                 X
               </button>
