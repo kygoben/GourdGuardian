@@ -433,7 +433,7 @@ const StatusData = ({
                 <input
                   id={`carving_by_${item.sid}_${item.index}`}
                   type="text"
-                  placeholder={"No carving_by Assigned"}
+                  placeholder={"No Carver Assigned"}
                   defaultValue={item.sstatus.carving_by}
                 />
                 <button
