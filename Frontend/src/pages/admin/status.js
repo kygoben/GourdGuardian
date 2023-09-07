@@ -99,6 +99,7 @@ export default function Status() {
             notStarted={notStarted}
             inProgress={inProgress}
             completed={completed}
+            searchTerm={searchTerm}
           />
         </div>
       </div>

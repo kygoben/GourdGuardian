@@ -12,6 +12,7 @@ const StatusData = ({
   notStarted,
   inProgress,
   completed,
+  searchTerm,
 }) => {
   const [data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -152,7 +153,8 @@ const StatusData = ({
     1: {
       header: ["SID", "Title", "Printing"],
       render: (item) =>
-        (item.sstatus.week === week || week === 'Both') &&
+        (item.sid === searchTerm || searchTerm === "") &&
+        (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.printing && notStarted) ||
           (item.sstatus.printing && completed)) ? (
           <>
@@ -181,7 +183,8 @@ const StatusData = ({
     2: {
       header: ["SID", "Title", "Cutting"],
       render: (item) =>
-        (item.sstatus.week === week  || week === 'Both')&&
+        (item.sid === searchTerm || searchTerm === "") &&
+        (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.cutting && notStarted) ||
           (item.sstatus.cutting && completed)) ? (
           <>
@@ -217,7 +220,11 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (item.sstatus.week === week  || week === 'Both')&&
+        (item.sid === searchTerm ||
+          searchTerm === "" ||
+          item.sstatus.tracer === searchTerm ||
+          searchTerm === "") &&
+        (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.tracing_start && notStarted) ||
           (!item.sstatus.tracing_end &&
             inProgress &&
@@ -347,7 +354,11 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (item.sstatus.week === week  || week === 'Both')&&
+        (item.sid === searchTerm ||
+          searchTerm === "" ||
+          item.sstatus.carver === searchTerm ||
+          searchTerm === "") &&
+        (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.carving_start && notStarted) ||
           (!item.sstatus.carving_end &&
             inProgress &&
@@ -478,8 +489,8 @@ const StatusData = ({
 
       {loading ? (
         <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 bg-gray-900 text-white">
-      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
-    </div>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
+        </div>
       ) : (
         <table style={{ borderCollapse: "collapse", width: "100%" }}>
           {stageMapping && (
