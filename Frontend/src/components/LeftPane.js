@@ -12,7 +12,6 @@ const LeftPane = ({
   updateWeek,
   updateStage,
   updateIsConfirmed,
-  updateFilterStatus,
   updateNotStarted,
   updateInProgress,
   updateCompleted,
@@ -27,19 +26,20 @@ const LeftPane = ({
     }
   };
 
-  const filterButtonStyle = {
-    padding: "5px 10px",
-    borderRadius: "20px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "1px solid #ccc",
-    cursor: "pointer",
-  };
-  
-  
-
   const handleIsConfirmedToggle = () => {
     updateIsConfirmed(!isConfirmed);
+  };
+
+  const handleNotStartedToggle = () => {
+    updateNotStarted(!notStarted);
+  };
+
+  const handleInProgressToggle = () => {
+    updateInProgress(!inProgress);
+  };
+
+  const handleCompletedToggle = () => {
+    updateCompleted(!completed);
   };
 
   return (
@@ -153,7 +153,8 @@ const LeftPane = ({
         >
           {isConfirmed ? "Confirmed" : "Not Confirmed"}
         </button>
-      </div><div style={{ marginBottom: "20px" }}>
+      </div>
+      <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="status"
           style={{ marginRight: "10px", fontWeight: "bold" }}
@@ -162,25 +163,46 @@ const LeftPane = ({
         </label>
         <div style={{ display: "flex", gap: "10px" }}>
           <button
-            className={notStarted === "Not Started" ? "selected" : ""}
-            onClick={() => updateNotStarted("Not Started")}
-            style={filterButtonStyle}
+            // className={notStarted ? "selected" : ""}
+            onClick={handleNotStartedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: notStarted ? "#007bff" : "transparent",
+              color: notStarted ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
           >
             Not Started
           </button>
+
           <button
-            className={inProgress === "In Progress" ? "selected" : ""}
-            onClick={() => updateInProgress("In Progress")}
-            style={filterButtonStyle}
+            onClick={handleInProgressToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: inProgress ? "#007bff" : "transparent",
+              color: inProgress ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
           >
             In Progress
           </button>
           <button
-            className={completed === "Complete" ? "selected" : ""}
-            onClick={() => updateCompleted("Complete")}
-            style={filterButtonStyle}
+            // className={notStarted ? "selected" : ""}
+            onClick={handleCompletedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: completed ? "#007bff" : "transparent",
+              color: completed ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
           >
-            Complete
+            Completed
           </button>
         </div>
       </div>
