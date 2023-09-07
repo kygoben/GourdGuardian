@@ -49,8 +49,10 @@ create table sstatus(
 	tracing_start datetime, -- start time -> in progress
 	tracing_end datetime, -- end time -> finished
 	tracing_confirmed datetime, -- admin confirm
+	tracing_by varchar(50),
 	carving_start datetime,
 	carving_end datetime,
+	carving_by varchar(50),
 	carving_confirmed datetime,
     year integer NOT NULL,
 	week integer NOT NULL, -- week one or two (duplicate pumpkin)
