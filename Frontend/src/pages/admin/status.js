@@ -15,9 +15,15 @@ export default function Status() {
   const [notStarted, setNotStarted] = useState(true);
   const [inProgress, setInProgress] = useState(true);
   const [completed, setCompleted] = useState(true);
+  //state for search bar
+  const [searchTerm, setSearchTerm] = useState("");
 
   const updateYear = (newValue) => {
     setYear(newValue);
+  };
+
+  const updateSearchTerm = (newValue) => {
+    setSearchTerm(newValue);
   };
 
   const updateFilterStatus = (newValue) => {
@@ -79,7 +85,10 @@ export default function Status() {
           updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
-          <SearchBar />
+          <SearchBar 
+            searchTerm={searchTerm}
+            updateSearchTerm={updateSearchTerm}
+            />
           <StatusData
             className={styles.dataRow}
             year={year}

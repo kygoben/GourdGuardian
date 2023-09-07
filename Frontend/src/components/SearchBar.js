@@ -1,7 +1,7 @@
 import React from "react";
 
-const SearchBar = () => {
-  const navbarStyle = {
+const SearchBar = ({ searchTerm, updateSearchTerm }) => {
+  const searchBarStyle = {
     background: "#111",
     color: "#fff",
     padding: "10px",
@@ -10,20 +10,57 @@ const SearchBar = () => {
     alignItems: "center",
   };
 
-  const logoStyle = {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textDecoration: "none",
-    color: "#fff",
+  const inputStyle = {
+    flex: 1,
+    marginRight: "10px",
+    padding: "5px",
+    borderRadius: "4px",
+    border: "none",
+    fontSize: "16px",
+    color: "black",
   };
 
-  const linkStyle = {
-    textDecoration: "none",
+  const buttonStyle = {
+    backgroundColor: "#007bff",
     color: "#fff",
-    marginLeft: "10px",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "16px",
+    marginLeft: "5px",
+    padding: "5px 10px",
   };
 
-  return <div style={navbarStyle}>This is the searchBar</div>;
+  return (
+    <div style={searchBarStyle}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          updateSearchTerm(document.getElementById("search").value);
+        }}
+      >
+        <input
+          id="search"
+          type="text"
+          placeholder="Search Here"
+          defaultValue={searchTerm}
+          style={inputStyle}
+        />
+        <button type="submit" style={buttonStyle}>
+          Search ✓
+        </button>
+        <button
+          onClick={() => {
+            updateSearchTerm("");
+            document.getElementById("search").value = "";
+          }}
+          style={buttonStyle}
+        >
+          Clear X
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default SearchBar;
