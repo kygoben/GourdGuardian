@@ -104,80 +104,69 @@ const StatusData = ({
       console.error("Error updating data:", error);
       // Handle error as needed
     }
+
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }
+    , 2000);
   };
 
   const stageMappings = {
     1: {
       header: ["SID", "Title", "Printing"],
-      render: (item) => (
-        <>
-          <td style={tableCellStyle}>{item.sid}</td>
-          <td style={tableCellStyle}>{item.title}</td>
-          <td style={tableCellStyle}>
-            {item.sstatus.printing ? "Complete" : "Incomplete"}
-            <button
+      render: (item) =>
+        (!item.sstatus.printing && notStarted) ||
+        (item.sstatus.printing && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              {item.sstatus.printing ? "Complete" : "Incomplete"}
+              <button
                 style={buttonStyle}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "printing",
-                    1
-                  )
-                }
+                onClick={() => handleEdit(item, "printing", 1)}
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "printing",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "printing", null)}
               >
                 X
               </button>
-          </td>
-        </>
-      ),
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
     },
     2: {
       header: ["SID", "Title", "Cutting"],
-      render: (item) => (
-        <>
-          <td style={tableCellStyle}>{item.sid}</td>
-          <td style={tableCellStyle}>{item.title}</td>
-          <td style={tableCellStyle}>
-            {item.sstatus.cutting ? "Complete" : "Incomplete"}
-            <button
+      render: (item) =>
+        (!item.sstatus.cutting && notStarted) ||
+        (item.sstatus.cutting && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              {item.sstatus.cutting ? "Complete" : "Incomplete"}
+              <button
                 style={buttonStyle}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "cutting",
-                    1
-                  )
-                }
+                onClick={() => handleEdit(item, "cutting", 1)}
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "cutting",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "cutting", null)}
               >
                 X
               </button>
-          </td>
-        </>
-      ),
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
     },
     3: {
       header: [
@@ -208,24 +197,14 @@ const StatusData = ({
               <button
                 style={buttonStyle}
                 onClick={() =>
-                  handleEdit(
-                    item,
-                    "tracing_start",
-                    currentDate.toISOString()
-                  )
+                  handleEdit(item, "tracing_start", currentDate.toISOString())
                 }
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "tracing_start",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "tracing_start", null)}
               >
                 X
               </button>
@@ -241,24 +220,14 @@ const StatusData = ({
               <button
                 style={buttonStyle}
                 onClick={() =>
-                  handleEdit(
-                    item,
-                    "tracing_end",
-                    currentDate.toISOString()
-                  )
+                  handleEdit(item, "tracing_end", currentDate.toISOString())
                 }
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "tracing_end",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "tracing_end", null)}
               >
                 X
               </button>
@@ -272,7 +241,7 @@ const StatusData = ({
             </td>
             <td style={tableCellStyle}>
               {item.sstatus.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
-            <button
+              <button
                 style={buttonStyle}
                 onClick={() =>
                   handleEdit(
@@ -286,13 +255,7 @@ const StatusData = ({
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "tracing_confirmed",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "tracing_confirmed", null)}
               >
                 X
               </button>
@@ -331,24 +294,14 @@ const StatusData = ({
               <button
                 style={buttonStyle}
                 onClick={() =>
-                  handleEdit(
-                    item,
-                    "carving_start",
-                    currentDate.toISOString()
-                  )
+                  handleEdit(item, "carving_start", currentDate.toISOString())
                 }
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "carving_start",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "carving_start", null)}
               >
                 X
               </button>
@@ -364,24 +317,14 @@ const StatusData = ({
               <button
                 style={buttonStyle}
                 onClick={() =>
-                  handleEdit(
-                    item,
-                    "carving_end",
-                    currentDate.toISOString()
-                  )
+                  handleEdit(item, "carving_end", currentDate.toISOString())
                 }
               >
                 ✓
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "carving_end",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "carving_end", null)}
               >
                 X
               </button>
@@ -392,11 +335,10 @@ const StatusData = ({
                 value={item.sstatus.carver || ""}
                 onChange={(e) => handleEdit(item, "carver", e.target.value)}
               />
-              
             </td>
             <td style={tableCellStyle}>
-            {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
-            <button
+              {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+              <button
                 style={buttonStyle}
                 onClick={() =>
                   handleEdit(
@@ -410,13 +352,7 @@ const StatusData = ({
               </button>
               <button
                 style={buttonStyle2}
-                onClick={() =>
-                  handleEdit(
-                    item,
-                    "carving_confirmed",
-                    null
-                  )
-                }
+                onClick={() => handleEdit(item, "carving_confirmed", null)}
               >
                 X
               </button>
