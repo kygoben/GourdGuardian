@@ -81,6 +81,9 @@ export default function Status() {
             week={week}
             stage={stage}
             isConfirmed={isConfirmed}
+            notStarted={notStarted}
+            inProgress={inProgress}
+            completed={completed}
           />
         </div>
       </div>

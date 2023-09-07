@@ -1,15 +1,19 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
-import compareAsc from "date-fns/compareAsc";
-import index from "@/pages/index.js";
 
-const StatusData = ({ year, week, stage, isConfirmed }) => {
-  const [data, setData] = useState([]); //db values
+const StatusData = ({
+  year,
+  week,
+  stage,
+  isConfirmed,
+  notStarted,
+  inProgress,
+  completed,
+}) => {
+  const [data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  /* CSS in a separate .css file or within your component */
   const successStyle = {
     position: "fixed",
     top: "0",
@@ -63,159 +67,227 @@ const StatusData = ({ year, week, stage, isConfirmed }) => {
   }, [year, week, stage, isConfirmed]);
 
   const getData = async () => {
-    let { data: stencilsData, error: stencilsError } = await supabase
-      .from("stencils")
-      .select("sid, title");
+    try {
+      const { data: stencilsData } = await supabase
+        .from("stencils")
+        .select("sid, title");
+      const { data: sstatusData } = await supabase
+        .from("sstatus")
+        .select(
+          "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracer, carving_start, carving_end, carving_confirmed, carver"
+        );
 
-    console.log(stencilsData, stencilsError);
+      const combinedData = stencilsData
+        .map((stencil) => {
+          const relatedSStatus = sstatusData.find((s) => s.sid === stencil.sid);
+          if (
+            relatedSStatus &&
+            relatedSStatus.year === year &&
+            relatedSStatus.week === week &&
+            ((isConfirmed && relatedSStatus.tracing_confirmed) ||
+              (!isConfirmed && !relatedSStatus.tracing_confirmed))
+          ) {
+            return {
+              ...stencil,
+              sstatus: relatedSStatus,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
 
-    let { data: sstatusData, error: sstatusError } = await supabase
-      .from("sstatus")
-      .select(
-        "sid, year, week, tracing_start, tracing_end, tracing_confirmed, tracer"
-      );
-
-    console.log(sstatusData, sstatusError);
-
-    const combinedData = stencilsData
-      .map((stencil) => {
-        const relatedSStatus = sstatusData.find((s) => s.sid === stencil.sid);
-        if (
-          relatedSStatus &&
-          relatedSStatus.year === year &&
-          relatedSStatus.week === week &&
-          ((isConfirmed && relatedSStatus.tracing_confirmed) || // Check if isConfirmed is true and tracing_confirmed is not null
-            (!isConfirmed && !relatedSStatus.tracing_confirmed)) // Check if isConfirmed is false and tracing_confirmed is null
-        ) {
-          return {
-            ...stencil,
-            sstatus: relatedSStatus,
-          };
-        }
-        return null; // Exclude entries with no matching "sstatus" or "year" not equal to '2024'
-      })
-      .filter(Boolean);
-
-    console.log(combinedData);
-
-    if (!combinedData) {
-      console.log("no data");
-      return;
+      setData(combinedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error as needed
     }
-
-    combinedData.sort((a, b) => {
-      const [aSid, aSuffix] = a.sid.split("-").map(Number);
-      const [bSid, bSuffix] = b.sid.split("-").map(Number);
-
-      // Compare the main "sid" values numerically
-      if (aSid !== bSid) {
-        return aSid - bSid;
-      }
-
-      // If the main "sid" values are equal, compare the suffixes numerically
-      return aSuffix - bSuffix;
-    });
-    // console.log(data, statusError);
-    setData(combinedData);
   };
 
   const handleEdit = async (item, field, value) => {
-    console.log(item, field, value);
-    // Update the database
-    const updateObject = { [field]: value };
-    let { data, error } = await supabase
-      .from("sstatus")
-      .update(updateObject)
-      .eq("sid", item.sid)
-      .select();
-
-    console.log(data, error);
-
-    if (!error) {
-      setSuccessMessage("Entry updated successfully"); // Set success message
+    try {
+      const updateObject = { [field]: value };
+      await supabase.from("sstatus").update(updateObject).eq("sid", item.sid);
+      setSuccessMessage("Entry updated successfully");
       getData();
-    } else {
-      // Handle error if needed
+    } catch (error) {
+      console.error("Error updating data:", error);
+      // Handle error as needed
     }
-
-    // Optionally, you can clear the success message after a few seconds
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 3000); // Clear the message after 5 seconds
-
-    // getData();
   };
 
-  if (data.length === 0) {
-    return <div>No data available</div>;
-  }
+  const stageMappings = {
+    1: {
+      header: ["SID", "Title", "Printing"],
+      render: (item) => (
+        <>
+          <td style={tableCellStyle}>{item.sid}</td>
+          <td style={tableCellStyle}>{item.title}</td>
+          <td style={tableCellStyle}>
+            {item.sstatus.printing ? "Complete" : "Incomplete"}
+          </td>
+        </>
+      ),
+    },
+    2: {
+      header: ["SID", "Title", "Cutting"],
+      render: (item) => (
+        <>
+          <td style={tableCellStyle}>{item.sid}</td>
+          <td style={tableCellStyle}>{item.title}</td>
+          <td style={tableCellStyle}>
+            {item.sstatus.cutting ? "Complete" : "Incomplete"}
+          </td>
+        </>
+      ),
+    },
+    3: {
+      header: [
+        "SID",
+        "Title",
+        "Tracing Start",
+        "Tracing End",
+        "Tracer",
+        "Confirm?",
+      ],
+      render: (item) =>
+        (!item.sstatus.tracing_start && notStarted) ||
+        (!item.sstatus.tracing_end && inProgress) ||
+        (item.sstatus.tracing_end && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.tracing_start || ""}
+                onChange={(e) =>
+                  handleEdit(item, "tracing_start", e.target.value)
+                }
+              ></input>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.tracing_end || ""}
+                onChange={(e) =>
+                  handleEdit(item, "tracing_end", e.target.value)
+                }
+              ></input>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="text"
+                value={item.sstatus.tracer || ""}
+                onChange={(e) => handleEdit(item, "tracer", e.target.value)}
+              />
+            </td>
+            <td style={tableCellStyle}>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_confirmed",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+    4: {
+      header: [
+        "SID",
+        "Title",
+        "Carving Start",
+        "Carving End",
+        "Carver",
+        "Confirm?",
+      ],
+      render: (item) =>
+        (!item.sstatus.tracing_start && notStarted) ||
+        (!item.sstatus.tracing_end && inProgress) ||
+        (item.sstatus.tracing_end && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.carving_start || ""}
+                onChange={(e) =>
+                  handleEdit(item, "carving_start", e.target.value)
+                }
+              ></input>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.carving_end || ""}
+                onChange={(e) =>
+                  handleEdit(item, "carving_end", e.target.value)
+                }
+              ></input>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="text"
+                value={item.sstatus.carver || ""}
+                onChange={(e) => handleEdit(item, "carver", e.target.value)}
+              />
+            </td>
+            <td style={tableCellStyle}>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_confirmed",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+  };
 
   const currentDate = new Date();
+  const stageMapping = stageMappings[stage];
 
   return (
     <div>
       {successMessage && <div style={successStyle}>{successMessage}</div>}
 
-      <div style={navbarStyle}></div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead>
-          <tr>
-            <th style={tableHeaderStyle}>SID</th>
-            <th style={tableHeaderStyle}>Title</th>
-            <th style={tableHeaderStyle}>Start</th>
-            <th style={tableHeaderStyle}>End</th>
-            {/* <th style={tableHeaderStyle}>tracing_confirmed</th> */}
-            <th style={tableHeaderStyle}>Author</th>
-            <th style={tableHeaderStyle}>Confirm?</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, rowIndex) => (
-            <tr key={item.sid}>
-              <td style={tableCellStyle}>{item.sid}</td>
-              <td style={tableCellStyle}>{item.title}</td>
-              <td style={tableCellStyle}>
-                <input
-                  type="datetime-local" // Use datetime-local input type for date and time
-                  value={item.sstatus.tracing_start || ""}
-                  onChange={(e) =>
-                    handleEdit(item, "tracing_start", e.target.value)
-                  }
-                ></input>
-              </td>
-              <td style={tableCellStyle}>
-                <input
-                  type="datetime-local" // Use datetime-local input type for date and time
-                  value={item.sstatus.tracing_end || ""}
-                  onChange={(e) =>
-                    handleEdit(item, "tracing_end", e.target.value)
-                  }
-                ></input>
-              </td>
-              <td style={tableCellStyle}>
-                <input
-                  type="text"
-                  value={item.sstatus.tracer || ""}
-                  onChange={(e) => handleEdit(item, "tracer", e.target.value)}
-                />
-              </td>
-              <td style={tableCellStyle}>
-                <button
-                  style={buttonStyle}
-                  onClick={() =>
-                    handleEdit(
-                      item,
-                      "tracing_confirmed",
-                      currentDate.toISOString()
-                    )
-                  }
-                >
-                  ✓
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        {stageMapping && (
+          <>
+            <thead>
+              <tr>
+                {stageMapping.header.map((headerText, index) => (
+                  <th key={index} style={tableHeaderStyle}>
+                    {headerText}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, rowIndex) => (
+                <tr key={item.sid}>{stageMapping.render(item)}</tr>
+              ))}
+            </tbody>
+          </>
+        )}
       </table>
     </div>
   );
