@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
+import { set } from "date-fns";
 
 
 
@@ -65,8 +66,8 @@ const StatusData = ({
   }, [year]);
 
   useEffect(() => {
-    // getData();
-  }, [data]);
+    getData();
+  }, []);
 
   const getData = async () => {
     setLoading(true);
@@ -77,9 +78,9 @@ const StatusData = ({
       const { data: sstatusData } = await supabase
         .from("sstatus")
         .select(
-          "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracer, carving_start, carving_end, carving_confirmed, carver"
+          "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracing_by, carving_start, carving_end, carving_confirmed, carving_by"
         );
-      // console.log(sstatusData);
+      console.log(sstatusData);
 
       const combinedData = stencilsData
         .map((stencil) => {
@@ -218,7 +219,7 @@ const StatusData = ({
         "Title",
         "Tracing Start",
         "Tracing End",
-        "Tracer",
+        "tracing_by",
         "Confirm?",
       ],
       render: (item) =>
@@ -298,7 +299,7 @@ const StatusData = ({
                 <input
                   id={`tracer_${item.sid}_${item.index}`}
                   type="text"
-                  placeholder={"Enter Carver Name"}
+                  placeholder={"No Tracer Assigned"}
                   defaultValue={item.sstatus.tracer}
                 />
                 <button
@@ -352,13 +353,13 @@ const StatusData = ({
         "Title",
         "Carving Start",
         "Carving End",
-        "Carver",
+        "carving_by",
         "Confirm?",
       ],
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.sstatus.carver?.toLowerCase() === searchTerm.toLowerCase() ||
+          item.sstatus.carving_by?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
         (item.sstatus.week === week || week === "Both") &&
         ((!item.sstatus.carving_start && notStarted) ||
@@ -423,17 +424,17 @@ const StatusData = ({
                   e.preventDefault(); // Prevent the default form submission behavior
                   handleEdit(
                     item,
-                    "carver",
-                    document.getElementById(`carver_${item.sid}_${item.index}`)
+                    "carving_by",
+                    document.getElementById(`carving_by_${item.sid}_${item.index}`)
                       .value
                   ); // Call your edit handler when the form is submitted
                 }}
               >
                 <input
-                  id={`carver_${item.sid}_${item.index}`}
+                  id={`carving_by_${item.sid}_${item.index}`}
                   type="text"
-                  placeholder={"Enter Carver Name"}
-                  defaultValue={item.sstatus.carver}
+                  placeholder={"No carving_by Assigned"}
+                  defaultValue={item.sstatus.carving_by}
                 />
                 <button
                   type="submit" // Specify the button type as "submit"
@@ -444,9 +445,9 @@ const StatusData = ({
                 <button
                   style={buttonStyle2}
                   onClick={() => {
-                    handleEdit(item, "carver", null);
+                    handleEdit(item, "carving_by", null);
                     document.getElementById(
-                      `carver_${item.sid}_${item.index}`
+                      `carving_by_${item.sid}_${item.index}`
                     ).value = null;
                   }}
                 >
