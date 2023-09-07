@@ -5,6 +5,7 @@ const LeftPane = ({
   week,
   stage,
   isConfirmed,
+  notConfirmed,
   notStarted,
   inProgress,
   completed,
@@ -12,6 +13,7 @@ const LeftPane = ({
   updateWeek,
   updateStage,
   updateIsConfirmed,
+  updateNotConfirmed,
   updateNotStarted,
   updateInProgress,
   updateCompleted,
@@ -40,6 +42,10 @@ const LeftPane = ({
 
   const handleCompletedToggle = () => {
     updateCompleted(!completed);
+  };
+
+  const handleNotConfirmedToggle = () => {
+    updateNotConfirmed(!notConfirmed);
   };
 
   return (
@@ -141,6 +147,20 @@ const LeftPane = ({
         </label>
         <button
           className={isConfirmed ? "selected" : ""}
+          onClick={handleNotConfirmedToggle}
+          style={{
+            padding: "5px 10px",
+            borderRadius: "20px",
+            backgroundColor: notConfirmed ? "#007bff" : "transparent",
+            color: notConfirmed ? "#fff" : "#000",
+            border: "1px solid #ccc",
+            cursor: "pointer",
+          }}
+        >
+          Not Confirmed
+        </button>
+        <button
+          className={isConfirmed ? "selected" : ""}
           onClick={handleIsConfirmedToggle}
           style={{
             padding: "5px 10px",
@@ -151,7 +171,7 @@ const LeftPane = ({
             cursor: "pointer",
           }}
         >
-          {isConfirmed ? "Confirmed" : "Not Confirmed"}
+          Is Confirmed
         </button>
       </div>
       <div style={{ marginBottom: "20px" }}>

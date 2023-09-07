@@ -7,6 +7,7 @@ const StatusData = ({
   week,
   stage,
   isConfirmed,
+  notConfirmed,
   notStarted,
   inProgress,
   completed,
@@ -40,31 +41,9 @@ const StatusData = ({
     fontSize: "16px",
   };
 
-  const navbarStyle = {
-    background: "#111",
-    color: "#fff",
-    padding: "10px",
-    // display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  };
-
-  const logoStyle = {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textDecoration: "none",
-    color: "#fff",
-  };
-
-  const linkStyle = {
-    textDecoration: "none",
-    color: "#fff",
-    marginLeft: "10px",
-  };
-
   useEffect(() => {
     getData();
-  }, [year, week, stage, isConfirmed]);
+  }, [year, week, stage]);
 
   const getData = async () => {
     try {
@@ -83,9 +62,7 @@ const StatusData = ({
           if (
             relatedSStatus &&
             relatedSStatus.year === year &&
-            relatedSStatus.week === week &&
-            ((isConfirmed && relatedSStatus.tracing_confirmed) ||
-              (!isConfirmed && !relatedSStatus.tracing_confirmed))
+            relatedSStatus.week === week
           ) {
             return {
               ...stencil,
@@ -95,6 +72,7 @@ const StatusData = ({
           return null;
         })
         .filter(Boolean);
+      console.log(combinedData);
 
       setData(combinedData);
     } catch (error) {
@@ -150,9 +128,11 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (!item.sstatus.tracing_start && notStarted) ||
-        (!item.sstatus.tracing_end && inProgress) ||
-        (item.sstatus.tracing_end && completed) ? (
+        ((!item.sstatus.tracing_start && notStarted) ||
+          (!item.sstatus.tracing_end && inProgress) ||
+          (item.sstatus.tracing_end && completed)) &&
+        ((item.sstatus.tracing_confirmed && isConfirmed) ||
+          (!item.sstatus.tracing_confirmed && notConfirmed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
             <td style={tableCellStyle}>{item.title}</td>
@@ -210,9 +190,11 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
-        (!item.sstatus.tracing_start && notStarted) ||
-        (!item.sstatus.tracing_end && inProgress) ||
-        (item.sstatus.tracing_end && completed) ? (
+        (!item.sstatus.carving_start && notStarted) ||
+        (!item.sstatus.carving_end && inProgress) ||
+        (item.sstatus.carving_end && completed) ||
+        (item.sstatus.carving_confirmed && isConfirmed) ||
+        (!item.sstatus.carving_confirmed && notConfirmed) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
             <td style={tableCellStyle}>{item.title}</td>

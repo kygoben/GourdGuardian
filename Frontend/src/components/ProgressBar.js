@@ -1,6 +1,18 @@
-import React from "react";
+import { set } from "date-fns";
+import React, { use } from "react";
+import { supabase } from "./../../supabaseConnection.js";
+import { useState, useEffect } from "react"; // Import useEffect and useState
 
 const ProgressBar = () => {
+
+  //state var for percentage
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    //call the function to get the percentage
+    getPercentage();
+  }, []);
+
   const navbarStyle = {
     background: "#111",
     color: "#fff",
@@ -30,7 +42,7 @@ const ProgressBar = () => {
   };
 
   const progressBarFillStyle = {
-    width: "39%", // Set the initial progress value here
+    width: percentage*2, // Set the initial progress value here
     height: "100%",
     backgroundColor: "#007bff", // Change the color of the progress bar fill
     borderRadius: "10px",
@@ -39,12 +51,40 @@ const ProgressBar = () => {
     color: "#fff",
   };
 
+
+  const getPercentage = async () => {
+     const { data: totalData, totalError } = await supabase
+      .from('sstatus')
+      .select('sid');
+
+      const { data: completeData, completeError } = await supabase
+      .from('sstatus')
+      .select('sid')
+      .not('carving_confirmed', 'is', null);
+
+      console.log(totalData);
+      console.log(completeData);
+
+      if (totalError || completeError) {
+        // Handle the error
+      } else {
+        // Access the count result
+        const totalCount = totalData.length;
+        const completeCount = completeData.length;
+
+        console.log(completeCount/totalCount);
+        setPercentage((completeCount/totalCount*100));
+
+
+        // console.log(`Count: ${count}`);
+      }
+} 
   return (
     <div style={navbarStyle}>
       <div style={progressBarContainer}>
         <div>Progress: </div>
         <div style={progressBarStyle}>
-          <div style={progressBarFillStyle}>39%</div>
+          <div style={progressBarFillStyle}>{percentage}</div>
         </div>
       </div>
     </div>

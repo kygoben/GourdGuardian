@@ -1,23 +1,20 @@
 import React from "react";
-import { useRouter } from "next/router";
 import Navbar from "@/components/AdminNav";
 import LeftPane from "@/components/LeftPane";
 import StatusData from "@/components/StatusData";
 import SearchBar from "@/components/SearchBar";
 import styles from "@/styles/status.module.css";
 import { useState } from "react";
-import ProgressBar from "@/components/ProgressBar";
 
 export default function Status() {
-  const router = useRouter();
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
   const [stage, setStage] = useState(3);
-  const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(true);
+  const [notConfirmed, setNotConfirmed] = useState(true);
   const [notStarted, setNotStarted] = useState(true);
-  const [inProgress, setInProgress] = useState(false);
-  const [completed, setCompleted] = useState(false);
-
+  const [inProgress, setInProgress] = useState(true);
+  const [completed, setCompleted] = useState(true);
 
   const updateYear = (newValue) => {
     setYear(newValue);
@@ -49,6 +46,12 @@ export default function Status() {
 
   const updateIsConfirmed = (newValue) => {
     setIsConfirmed(newValue);
+    console.log(isConfirmed);
+  };
+
+  const updateNotConfirmed = (newValue) => {
+    setNotConfirmed(newValue);
+    console.log(notConfirmed);
   };
 
   return (
@@ -61,6 +64,7 @@ export default function Status() {
           week={week}
           stage={stage}
           isConfirmed={isConfirmed}
+          notConfirmed={notConfirmed}
           notStarted={notStarted}
           inProgress={inProgress}
           completed={completed}
@@ -68,6 +72,7 @@ export default function Status() {
           updateWeek={updateWeek}
           updateStage={updateStage}
           updateIsConfirmed={updateIsConfirmed}
+          updateNotConfirmed={updateNotConfirmed}
           updateFilterStatus={updateFilterStatus}
           updateNotStarted={updateNotStarted}
           updateInProgress={updateInProgress}
@@ -81,6 +86,7 @@ export default function Status() {
             week={week}
             stage={stage}
             isConfirmed={isConfirmed}
+            notConfirmed={notConfirmed}
             notStarted={notStarted}
             inProgress={inProgress}
             completed={completed}
