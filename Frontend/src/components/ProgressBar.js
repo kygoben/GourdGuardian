@@ -62,8 +62,8 @@ const ProgressBar = () => {
       .select('sid')
       .not('carving_confirmed', 'is', null);
 
-      console.log(totalData);
-      console.log(completeData);
+      // console.log(totalData);
+      // console.log(completeData);
 
       if (totalError || completeError) {
         // Handle the error
@@ -72,7 +72,7 @@ const ProgressBar = () => {
         const totalCount = totalData.length;
         const completeCount = completeData.length;
 
-        console.log(completeCount/totalCount);
+        // console.log(completeCount/totalCount);
         setPercentage((completeCount/totalCount*100));
 
 

@@ -56,7 +56,11 @@ const StatusData = ({
 
   useEffect(() => {
     getData();
-  }, [year, week, stage]);
+  }, [year]);
+
+  useEffect(() => {
+    // getData();
+  }, [data]);
 
   const getData = async () => {
     try {
@@ -68,15 +72,12 @@ const StatusData = ({
         .select(
           "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracer, carving_start, carving_end, carving_confirmed, carver"
         );
+        // console.log(sstatusData);
 
       const combinedData = stencilsData
         .map((stencil) => {
           const relatedSStatus = sstatusData.find((s) => s.sid === stencil.sid);
-          if (
-            relatedSStatus &&
-            relatedSStatus.year === year &&
-            relatedSStatus.week === week
-          ) {
+          if (relatedSStatus && relatedSStatus.year === year) {
             return {
               ...stencil,
               sstatus: relatedSStatus,
@@ -85,7 +86,21 @@ const StatusData = ({
           return null;
         })
         .filter(Boolean);
-      console.log(combinedData);
+      // console.log(combinedData);
+
+      combinedData.sort((a, b) => {
+        const sidA = a.sid.split("-").map(Number);
+        const sidB = b.sid.split("-").map(Number);
+
+        for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+          const diff = (sidA[i] || 0) - (sidB[i] || 0);
+          if (diff !== 0) {
+            return diff;
+          }
+        }
+
+        return 0;
+      });
 
       setData(combinedData);
     } catch (error) {
@@ -97,14 +112,27 @@ const StatusData = ({
   const handleEdit = async (item, field, value) => {
     try {
       const updateObject = { [field]: value };
-      await supabase.from("sstatus").update(updateObject).eq("sid", item.sid);
-      setSuccessMessage("Entry updated successfully");
-      getData();
+      const { data: updatedData, error } = await supabase.from("sstatus").update(updateObject).eq("sid", item.sid).select();
+      if (!error) {
+        setSuccessMessage("Entry updated successfully");
+  
+        // Create a new copy of the data array and update the relevant item
+        setData((prevData) => {
+          const newData = [...prevData];
+          const itemIndex = newData.findIndex((el) => el.sid === item.sid);
+          if (itemIndex !== -1) {
+            newData[itemIndex].sstatus = updatedData[0];
+          }
+          return newData;
+        });
+      } else {
+        // Handle error as needed
+      }
     } catch (error) {
       console.error("Error updating data:", error);
       // Handle error as needed
     }
-
+  
     setTimeout(() => {
       setSuccessMessage(null);
     }, 2000);
@@ -114,8 +142,9 @@ const StatusData = ({
     1: {
       header: ["SID", "Title", "Printing"],
       render: (item) =>
-        (!item.sstatus.printing && notStarted) ||
-        (item.sstatus.printing && completed) ? (
+        item.sstatus.week === week &&
+        ((!item.sstatus.printing && notStarted) ||
+          (item.sstatus.printing && completed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
             <td style={tableCellStyle}>{item.title}</td>
@@ -142,8 +171,9 @@ const StatusData = ({
     2: {
       header: ["SID", "Title", "Cutting"],
       render: (item) =>
-        (!item.sstatus.cutting && notStarted) ||
-        (item.sstatus.cutting && completed) ? (
+        item.sstatus.week === week &&
+        ((!item.sstatus.cutting && notStarted) ||
+          (item.sstatus.cutting && completed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
             <td style={tableCellStyle}>{item.title}</td>
@@ -177,6 +207,7 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
+        item.sstatus.week === week &&
         ((!item.sstatus.tracing_start && notStarted) ||
           (!item.sstatus.tracing_end && inProgress) ||
           (item.sstatus.tracing_end && completed)) &&
@@ -232,7 +263,6 @@ const StatusData = ({
               </button>
             </td>
             <td style={tableCellStyle}>
-              
               <form
                 onSubmit={(e) => {
                   e.preventDefault(); // Prevent the default form submission behavior
@@ -305,6 +335,7 @@ const StatusData = ({
         "Confirm?",
       ],
       render: (item) =>
+        item.sstatus.week === week &&
         ((!item.sstatus.carving_start && notStarted) ||
           (!item.sstatus.carving_end && inProgress) ||
           (item.sstatus.carving_end && completed)) &&
