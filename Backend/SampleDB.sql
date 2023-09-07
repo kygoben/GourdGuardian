@@ -52,8 +52,9 @@ create table sstatus(
 	carving_start datetime,
 	carving_end datetime,
 	carving_confirmed datetime,
+    year integer NOT NULL,
 	week integer NOT NULL, -- week one or two (duplicate pumpkin)
-    primary key (sid, week), -- any better pair of keys?
+    primary key (sid, year, week), -- any better pair of keys?
 	foreign key (sid) references stencils(sid)
 	);
 
