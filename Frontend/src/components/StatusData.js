@@ -1,32 +1,57 @@
 import React, { useEffect } from "react";
-import { useRouter } from "next/router";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react"; // Import useEffect and useState
-import compareAsc from "date-fns/compareAsc";
 
-const StatusData = ({ year, week, stage }) => {
-  const [data, setData] = useState([]); //db values
+const StatusData = ({
+  year,
+  week,
+  stage,
+  isConfirmed,
+  notConfirmed,
+  notStarted,
+  inProgress,
+  completed,
+}) => {
+  const [data, setData] = useState([]);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  const navbarStyle = {
-    background: "#111",
+  const successStyle = {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    background: "rgba(0, 128, 0, 0.7)" /* Use rgba to set transparency */,
     color: "#fff",
     padding: "10px",
-    // display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
+    z: 9999 /* Ensure it appears on top of everything */,
   };
 
-  const logoStyle = {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textDecoration: "none",
-    color: "#fff",
+  const buttonStyle = {
+    backgroundColor: "green",
+    width: "24px",
+    height: "24px",
+    border: "none",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
   };
-
-  const linkStyle = {
-    textDecoration: "none",
-    color: "#fff",
-    marginLeft: "10px",
+  const buttonStyle2 = {
+    backgroundColor: "red",
+    width: "24px",
+    height: "24px",
+    border: "none",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
   };
 
   useEffect(() => {
@@ -34,98 +59,397 @@ const StatusData = ({ year, week, stage }) => {
   }, [year, week, stage]);
 
   const getData = async () => {
-    let { data, statusError } = await supabase
-      .from("sstatus")
-      .select("*")
-      .eq("year", year)
-      .eq("week", week)
-      .is("tracing_confirmed", null);
+    try {
+      const { data: stencilsData } = await supabase
+        .from("stencils")
+        .select("sid, title");
+      const { data: sstatusData } = await supabase
+        .from("sstatus")
+        .select(
+          "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracer, carving_start, carving_end, carving_confirmed, carver"
+        );
 
-    console.log(data, statusError);
+      const combinedData = stencilsData
+        .map((stencil) => {
+          const relatedSStatus = sstatusData.find((s) => s.sid === stencil.sid);
+          if (
+            relatedSStatus &&
+            relatedSStatus.year === year &&
+            relatedSStatus.week === week
+          ) {
+            return {
+              ...stencil,
+              sstatus: relatedSStatus,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean);
+      console.log(combinedData);
 
-    if (!data) {
-      return;
+      setData(combinedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle error as needed
     }
-
-    data.sort((a, b) => {
-      const [aSid] = a.sid.split("-").map(Number);
-      const [bSid] = b.sid.split("-").map(Number);
-      return compareAsc(aSid, bSid);
-    });
-    console.log(data, statusError);
-    setData(data);
   };
 
   const handleEdit = async (item, field, value) => {
-    //query
-    console.log(item, field, value);
+    try {
+      const updateObject = { [field]: value };
+      await supabase.from("sstatus").update(updateObject).eq("sid", item.sid);
+      setSuccessMessage("Entry updated successfully");
+      getData();
+    } catch (error) {
+      console.error("Error updating data:", error);
+      // Handle error as needed
+    }
 
-
-    const updateObject = { [field]: value };
-
-    await supabase
-    .from("sstatus")
-    .update(updateObject)
-    .eq("sid", item.sid)
-    .select();
-
-    getData();
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 2000);
   };
 
-  if (data.length === 0) {
-    return <div>No data available</div>;
-  }
+  const stageMappings = {
+    1: {
+      header: ["SID", "Title", "Printing"],
+      render: (item) =>
+        (!item.sstatus.printing && notStarted) ||
+        (item.sstatus.printing && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              {item.sstatus.printing ? "Complete" : "Incomplete"}
+              <button
+                style={buttonStyle}
+                onClick={() => handleEdit(item, "printing", 1)}
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "printing", null)}
+              >
+                X
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+    2: {
+      header: ["SID", "Title", "Cutting"],
+      render: (item) =>
+        (!item.sstatus.cutting && notStarted) ||
+        (item.sstatus.cutting && completed) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              {item.sstatus.cutting ? "Complete" : "Incomplete"}
+              <button
+                style={buttonStyle}
+                onClick={() => handleEdit(item, "cutting", 1)}
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "cutting", null)}
+              >
+                X
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+    3: {
+      header: [
+        "SID",
+        "Title",
+        "Tracing Start",
+        "Tracing End",
+        "Tracer",
+        "Confirm?",
+      ],
+      render: (item) =>
+        ((!item.sstatus.tracing_start && notStarted) ||
+          (!item.sstatus.tracing_end && inProgress) ||
+          (item.sstatus.tracing_end && completed)) &&
+        ((item.sstatus.tracing_confirmed && isConfirmed) ||
+          (!item.sstatus.tracing_confirmed && notConfirmed)) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.tracing_start || ""}
+                onChange={(e) =>
+                  handleEdit(item, "tracing_start", e.target.value)
+                }
+              ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(item, "tracing_start", currentDate.toISOString())
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "tracing_start", null)}
+              >
+                X
+              </button>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.tracing_end || ""}
+                onChange={(e) =>
+                  handleEdit(item, "tracing_end", e.target.value)
+                }
+              ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(item, "tracing_end", currentDate.toISOString())
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "tracing_end", null)}
+              >
+                X
+              </button>
+            </td>
+            <td style={tableCellStyle}>
+              
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Prevent the default form submission behavior
+                  handleEdit(
+                    item,
+                    "tracer",
+                    document.getElementById(`tracer_${item.sid}_${item.index}`)
+                      .value
+                  ); // Call your edit handler when the form is submitted
+                }}
+              >
+                <input
+                  id={`tracer_${item.sid}_${item.index}`}
+                  type="text"
+                  placeholder={"Enter Carver Name"}
+                  defaultValue={item.sstatus.tracer}
+                />
+                <button
+                  type="submit" // Specify the button type as "submit"
+                  style={buttonStyle}
+                >
+                  ✓
+                </button>
+                <button
+                  style={buttonStyle2}
+                  onClick={() => {
+                    handleEdit(item, "tracer", null);
+                    document.getElementById(
+                      `tracer_${item.sid}_${item.index}`
+                    ).value = null;
+                  }}
+                >
+                  X
+                </button>
+              </form>
+            </td>
+            <td style={tableCellStyle}>
+              {item.sstatus.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "tracing_confirmed",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "tracing_confirmed", null)}
+              >
+                X
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+    4: {
+      header: [
+        "SID",
+        "Title",
+        "Carving Start",
+        "Carving End",
+        "Carver",
+        "Confirm?",
+      ],
+      render: (item) =>
+        ((!item.sstatus.carving_start && notStarted) ||
+          (!item.sstatus.carving_end && inProgress) ||
+          (item.sstatus.carving_end && completed)) &&
+        ((item.sstatus.carving_confirmed && isConfirmed) ||
+          (!item.sstatus.carving_confirmed && notConfirmed)) ? (
+          <>
+            <td style={tableCellStyle}>{item.sid}</td>
+            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.carving_start || ""}
+                onChange={(e) =>
+                  handleEdit(item, "carving_start", e.target.value)
+                }
+              ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(item, "carving_start", currentDate.toISOString())
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "carving_start", null)}
+              >
+                X
+              </button>
+            </td>
+            <td style={tableCellStyle}>
+              <input
+                type="datetime-local"
+                value={item.sstatus.carving_end || ""}
+                onChange={(e) =>
+                  handleEdit(item, "carving_end", e.target.value)
+                }
+              ></input>
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(item, "carving_end", currentDate.toISOString())
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "carving_end", null)}
+              >
+                X
+              </button>
+            </td>
+            <td style={tableCellStyle}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault(); // Prevent the default form submission behavior
+                  handleEdit(
+                    item,
+                    "carver",
+                    document.getElementById(`carver_${item.sid}_${item.index}`)
+                      .value
+                  ); // Call your edit handler when the form is submitted
+                }}
+              >
+                <input
+                  id={`carver_${item.sid}_${item.index}`}
+                  type="text"
+                  placeholder={"Enter Carver Name"}
+                  defaultValue={item.sstatus.carver}
+                />
+                <button
+                  type="submit" // Specify the button type as "submit"
+                  style={buttonStyle}
+                >
+                  ✓
+                </button>
+                <button
+                  style={buttonStyle2}
+                  onClick={() => {
+                    handleEdit(item, "carver", null);
+                    document.getElementById(
+                      `carver_${item.sid}_${item.index}`
+                    ).value = null;
+                  }}
+                >
+                  X
+                </button>
+              </form>
+            </td>
+            <td style={tableCellStyle}>
+              {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+              <button
+                style={buttonStyle}
+                onClick={() =>
+                  handleEdit(
+                    item,
+                    "carving_confirmed",
+                    currentDate.toISOString()
+                  )
+                }
+              >
+                ✓
+              </button>
+              <button
+                style={buttonStyle2}
+                onClick={() => handleEdit(item, "carving_confirmed", null)}
+              >
+                X
+              </button>
+            </td>
+          </>
+        ) : (
+          <></>
+        ),
+    },
+  };
+
+  const currentDate = new Date();
+  const stageMapping = stageMappings[stage];
 
   return (
     <div>
-      <div style={navbarStyle}></div>
+      {successMessage && <div style={successStyle}>{successMessage}</div>}
+
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <thead>
-          <tr>
-            <th style={tableHeaderStyle}>sid</th>
-            <th style={tableHeaderStyle}>title</th>
-            <th style={tableHeaderStyle}>tracing_start</th>
-            <th style={tableHeaderStyle}>tracing_end</th>
-            <th style={tableHeaderStyle}>tracing_confirmed</th>
-            <th style={tableHeaderStyle}>tracer</th>
-            <th style={tableHeaderStyle}>confirm?</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td style={tableCellStyle}>
-                <input
-                  type="text"
-                  value={item.sid}
-                  onChange={(e) => handleEdit(item, "sid", e.target.value)}
-                />
-              </td>
-              <td style={tableCellStyle}>{item.title}</td>
-              <td style={tableCellStyle}>{item.tracing_start}</td>
-              <td style={tableCellStyle}>{item.tracing_end}</td>
-              <td style={tableCellStyle}>
-                <input
-                  type="datetime-local" // Use datetime-local input type for date and time
-                  value={item.tracing_confirmed}
-                  onChange={(e) =>
-                    handleEdit(item, "tracing_confirmed", e.target.value)
-                  }
-                />
-              </td>
-              <td style={tableCellStyle}>
-                <input
-                  type="text"
-                  value={item.tracer}
-                  onChange={(e) => handleEdit(item, "tracer", e.target.value)}
-                />
-              </td>
-              <td style={tableCellStyle}>
-                <button>confirm</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        {stageMapping && (
+          <>
+            <thead>
+              <tr>
+                {stageMapping.header.map((headerText, index) => (
+                  <th key={index} style={tableHeaderStyle}>
+                    {headerText}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, rowIndex) => (
+                <tr key={item.sid}>{stageMapping.render(item)}</tr>
+              ))}
+            </tbody>
+          </>
+        )}
       </table>
     </div>
   );

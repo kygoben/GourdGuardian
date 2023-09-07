@@ -5,10 +5,18 @@ const LeftPane = ({
   week,
   stage,
   isConfirmed,
+  notConfirmed,
+  notStarted,
+  inProgress,
+  completed,
   updateYear,
   updateWeek,
   updateStage,
   updateIsConfirmed,
+  updateNotConfirmed,
+  updateNotStarted,
+  updateInProgress,
+  updateCompleted,
 }) => {
   const weeks = [1, 2]; // Update with your desired weeks
   const stages = [1, 2, 3, 4]; // Update with your desired stages
@@ -22,6 +30,22 @@ const LeftPane = ({
 
   const handleIsConfirmedToggle = () => {
     updateIsConfirmed(!isConfirmed);
+  };
+
+  const handleNotStartedToggle = () => {
+    updateNotStarted(!notStarted);
+  };
+
+  const handleInProgressToggle = () => {
+    updateInProgress(!inProgress);
+  };
+
+  const handleCompletedToggle = () => {
+    updateCompleted(!completed);
+  };
+
+  const handleNotConfirmedToggle = () => {
+    updateNotConfirmed(!notConfirmed);
   };
 
   return (
@@ -123,6 +147,20 @@ const LeftPane = ({
         </label>
         <button
           className={isConfirmed ? "selected" : ""}
+          onClick={handleNotConfirmedToggle}
+          style={{
+            padding: "5px 10px",
+            borderRadius: "20px",
+            backgroundColor: notConfirmed ? "#007bff" : "transparent",
+            color: notConfirmed ? "#fff" : "#000",
+            border: "1px solid #ccc",
+            cursor: "pointer",
+          }}
+        >
+          Not Confirmed
+        </button>
+        <button
+          className={isConfirmed ? "selected" : ""}
           onClick={handleIsConfirmedToggle}
           style={{
             padding: "5px 10px",
@@ -133,8 +171,60 @@ const LeftPane = ({
             cursor: "pointer",
           }}
         >
-          {isConfirmed ? "Confirmed" : "Not Confirmed"}
+          Is Confirmed
         </button>
+      </div>
+      <div style={{ marginBottom: "20px" }}>
+        <label
+          htmlFor="status"
+          style={{ marginRight: "10px", fontWeight: "bold" }}
+        >
+          Status:
+        </label>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            // className={notStarted ? "selected" : ""}
+            onClick={handleNotStartedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: notStarted ? "#007bff" : "transparent",
+              color: notStarted ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
+          >
+            Not Started
+          </button>
+
+          <button
+            onClick={handleInProgressToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: inProgress ? "#007bff" : "transparent",
+              color: inProgress ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
+          >
+            In Progress
+          </button>
+          <button
+            // className={notStarted ? "selected" : ""}
+            onClick={handleCompletedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: completed ? "#007bff" : "transparent",
+              color: completed ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+            }}
+          >
+            Completed
+          </button>
+        </div>
       </div>
     </div>
   );

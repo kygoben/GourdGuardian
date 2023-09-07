@@ -1,12 +1,23 @@
-import React from "react";
+import { set } from "date-fns";
+import React, { use } from "react";
+import { supabase } from "./../../supabaseConnection.js";
+import { useState, useEffect } from "react"; // Import useEffect and useState
 
 const ProgressBar = () => {
+
+  //state var for percentage
+  const [percentage, setPercentage] = useState(0);
+
+  useEffect(() => {
+    //call the function to get the percentage
+    getPercentage();
+  }, []);
+
   const navbarStyle = {
     background: "#111",
     color: "#fff",
     padding: "10px",
     display: "flex",
-    justifyContent: "space-between",
     alignItems: "center",
   };
 
@@ -17,18 +28,65 @@ const ProgressBar = () => {
     color: "#fff",
   };
 
-  const linkStyle = {
-    textDecoration: "none",
-    color: "#fff",
-    marginLeft: "10px",
+  const progressBarContainer = {
+    display: "flex",
+    alignItems: "center",
   };
 
+  const progressBarStyle = {
+    width: "200px", // Adjust the width as needed
+    height: "20px",
+    backgroundColor: "#ccc",
+    borderRadius: "10px",
+    margin: "0 10px",
+  };
+
+  const progressBarFillStyle = {
+    width: percentage*2, // Set the initial progress value here
+    height: "100%",
+    backgroundColor: "#007bff", // Change the color of the progress bar fill
+    borderRadius: "10px",
+    textAlign: "center",
+    lineHeight: "20px",
+    color: "#fff",
+  };
+
+
+  const getPercentage = async () => {
+     const { data: totalData, totalError } = await supabase
+      .from('sstatus')
+      .select('sid');
+
+      const { data: completeData, completeError } = await supabase
+      .from('sstatus')
+      .select('sid')
+      .not('carving_confirmed', 'is', null);
+
+      console.log(totalData);
+      console.log(completeData);
+
+      if (totalError || completeError) {
+        // Handle the error
+      } else {
+        // Access the count result
+        const totalCount = totalData.length;
+        const completeCount = completeData.length;
+
+        console.log(completeCount/totalCount);
+        setPercentage((completeCount/totalCount*100));
+
+
+        // console.log(`Count: ${count}`);
+      }
+} 
   return (
     <div style={navbarStyle}>
-      <div> ProgressBar</div>
-      <progress id="file" value="32" max="100">
-        39%
-      </progress>
+      <div style={progressBarContainer}>
+        <div>Progress: </div>
+        <div style={progressBarStyle}>
+          <div style={progressBarFillStyle}>{percentage}</div>
+        </div>
+      </div>
     </div>
   );
 };
