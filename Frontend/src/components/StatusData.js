@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { supabase } from "./../../supabaseConnection.js";
 import { useState } from "react";
+import styles from "@/styles/statusData.module.css";
 
 const StatusData = ({
   year,
@@ -16,45 +17,6 @@ const StatusData = ({
   const [data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const successStyle = {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    background: "rgba(0, 128, 0, 0.7)" /* Use rgba to set transparency */,
-    color: "#fff",
-    padding: "10px",
-    alignItems: "center",
-    z: 9999 /* Ensure it appears on top of everything */,
-  };
-
-  const buttonStyle = {
-    backgroundColor: "green",
-    width: "24px",
-    height: "24px",
-    border: "none",
-    borderRadius: "4px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    color: "white",
-    fontSize: "16px",
-  };
-  const buttonStyle2 = {
-    backgroundColor: "red",
-    width: "24px",
-    height: "24px",
-    border: "none",
-    borderRadius: "4px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    color: "white",
-    fontSize: "16px",
-  };
 
   useEffect(() => {
     if (year !== null && loading) {
@@ -145,19 +107,19 @@ const StatusData = ({
         (item.week === week || week === "Both") &&
         ((!item.printing && notStarted) || (item.printing && completed)) ? (
           <>
-            <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.week}</td>
-            <td style={tableCellStyle}>{item.stencils.title}</td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>{item.sid}</td>
+            <td className={styles.tableCell}>{item.week}</td>
+            <td className={styles.tableCell}>{item.stencils.title}</td>
+            <td className={styles.tableCell}>
               {item.printing ? "Complete" : "Incomplete"}
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() => handleEdit(item, "printing", 1)}
               >
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "printing", 0)}
               >
                 X
@@ -179,19 +141,19 @@ const StatusData = ({
         (item.week === week || week === "Both") &&
         ((!item.cutting && notStarted) || (item.cutting && completed)) ? (
           <>
-            <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.week}</td>
-            <td style={tableCellStyle}>{item.stencils.title}</td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>{item.sid}</td>
+            <td className={styles.tableCell}>{item.week}</td>
+            <td className={styles.tableCell}>{item.stencils.title}</td>
+            <td className={styles.tableCell}>
               {item.cutting ? "Complete" : "Incomplete"}
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() => handleEdit(item, "cutting", 1)}
               >
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "cutting", 0)}
               >
                 X
@@ -235,10 +197,10 @@ const StatusData = ({
         ((item.tracing_confirmed && isConfirmed) ||
           (!item.tracing_confirmed && notConfirmed)) ? (
           <>
-            <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.week}</td>
-            <td style={tableCellStyle}>{item.stencils.title}</td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>{item.sid}</td>
+            <td className={styles.tableCell}>{item.week}</td>
+            <td className={styles.tableCell}>{item.stencils.title}</td>
+            <td className={styles.tableCell}>
               <input
                 type="datetime-local"
                 value={item.tracing_start || ""}
@@ -247,7 +209,7 @@ const StatusData = ({
                 }
               ></input>
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(item, "tracing_start", currentDate.toISOString())
                 }
@@ -255,13 +217,13 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "tracing_start", null)}
               >
                 X
               </button>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               <input
                 type="datetime-local"
                 value={item.tracing_end || ""}
@@ -270,7 +232,7 @@ const StatusData = ({
                 }
               ></input>
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(item, "tracing_end", currentDate.toISOString())
                 }
@@ -278,13 +240,13 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "tracing_end", null)}
               >
                 X
               </button>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               <form
                 onSubmit={(e) => {
                   e.preventDefault(); // Prevent the default form submission behavior
@@ -305,12 +267,12 @@ const StatusData = ({
                 />
                 <button
                   type="submit" // Specify the button type as "submit"
-                  style={buttonStyle}
+                  className={styles.greenButton}
                 >
                   ✓
                 </button>
                 <button
-                  style={buttonStyle2}
+                  className={styles.redButton}
                   onClick={() => {
                     handleEdit(item, "tracing_by", null);
                     document.getElementById(
@@ -322,10 +284,10 @@ const StatusData = ({
                 </button>
               </form>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(
                     item,
@@ -337,7 +299,7 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "tracing_confirmed", null)}
               >
                 X
@@ -381,10 +343,10 @@ const StatusData = ({
         ((item.carving_confirmed && isConfirmed) ||
           (!item.carving_confirmed && notConfirmed)) ? (
           <>
-            <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.week}</td>
-            <td style={tableCellStyle}>{item.stencils.title}</td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>{item.sid}</td>
+            <td className={styles.tableCell}>{item.week}</td>
+            <td className={styles.tableCell}>{item.stencils.title}</td>
+            <td className={styles.tableCell}>
               <input
                 type="datetime-local"
                 value={item.carving_start || ""}
@@ -393,7 +355,7 @@ const StatusData = ({
                 }
               ></input>
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(item, "carving_start", currentDate.toISOString())
                 }
@@ -401,13 +363,13 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "carving_start", null)}
               >
                 X
               </button>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               <input
                 type="datetime-local"
                 value={item.carving_end || ""}
@@ -416,7 +378,7 @@ const StatusData = ({
                 }
               ></input>
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(item, "carving_end", currentDate.toISOString())
                 }
@@ -424,13 +386,13 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "carving_end", null)}
               >
                 X
               </button>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               <form
                 onSubmit={(e) => {
                   e.preventDefault(); // Prevent the default form submission behavior
@@ -451,12 +413,12 @@ const StatusData = ({
                 />
                 <button
                   type="submit" // Specify the button type as "submit"
-                  style={buttonStyle}
+                  className={styles.greenButton}
                 >
                   ✓
                 </button>
                 <button
-                  style={buttonStyle2}
+                  className={styles.redButton}
                   onClick={() => {
                     handleEdit(item, "carving_by", null);
                     document.getElementById(
@@ -468,10 +430,10 @@ const StatusData = ({
                 </button>
               </form>
             </td>
-            <td style={tableCellStyle}>
+            <td className={styles.tableCell}>
               {item.carving_confirmed ? "Confirmed" : "Not Confirmed"}
               <button
-                style={buttonStyle}
+                className={styles.greenButton}
                 onClick={() =>
                   handleEdit(
                     item,
@@ -483,7 +445,7 @@ const StatusData = ({
                 ✓
               </button>
               <button
-                style={buttonStyle2}
+                className={styles.redButton}
                 onClick={() => handleEdit(item, "carving_confirmed", null)}
               >
                 X
@@ -501,7 +463,6 @@ const StatusData = ({
 
   return (
     <div>
-      {successMessage && <div style={successStyle}>{successMessage}</div>}
 
       {loading ? (
         <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 bg-gray-900 text-white">
@@ -514,7 +475,7 @@ const StatusData = ({
               <thead>
                 <tr>
                   {stageMapping.header.map((headerText, index) => (
-                    <th key={index} style={tableHeaderStyle}>
+                    <th key={index} className={styles.tableHeader}>
                       {headerText}
                     </th>
                   ))}
@@ -535,17 +496,5 @@ const StatusData = ({
   );
 };
 
-const tableHeaderStyle = {
-  border: "1px solid #ddd",
-  padding: "8px",
-  fontWeight: "bold",
-  textAlign: "center",
-};
-
-const tableCellStyle = {
-  border: "1px solid #ddd",
-  padding: "8px",
-  textAlign: "center",
-};
 
 export default StatusData;

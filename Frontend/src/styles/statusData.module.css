@@ -1,0 +1,60 @@
+/* StatusData.css */
+
+/* successStyle */
+.success-style {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 128, 0, 0.7);
+    color: #fff;
+    padding: 10px;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  /* buttonStyle */
+  .greenButton {
+    background-color: green;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+  }
+  
+  /* buttonStyle2 */
+  .redButton {
+    background-color: red;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+  }
+  
+  /* tableHeaderStyle */
+  .tableHeader {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* tableCellStyle */
+  .tableCell {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
