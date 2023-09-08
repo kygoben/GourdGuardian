@@ -62,24 +62,15 @@ const ProgressBar = () => {
       .select('sid')
       .not('carving_confirmed', 'is', null);
 
-      // console.log(totalData);
-      // console.log(completeData);
-
       if (totalError || completeError) {
-        // Handle the error
       } else {
-        // Access the count result
         const totalCount = totalData.length;
         const completeCount = completeData.length;
 
         let temp = completeCount/totalCount*100;
         temp = Math.round(temp * 2) / 2;
 
-        // console.log(completeCount/totalCount);
         setPercentage(temp);
-
-
-        // console.log(`Count: ${count}`);
       }
 } 
   return (
