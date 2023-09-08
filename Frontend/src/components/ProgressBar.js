@@ -72,8 +72,11 @@ const ProgressBar = () => {
         const totalCount = totalData.length;
         const completeCount = completeData.length;
 
+        let temp = completeCount/totalCount*100;
+        temp = Math.round(temp * 2) / 2;
+
         // console.log(completeCount/totalCount);
-        setPercentage((completeCount/totalCount*100));
+        setPercentage(temp);
 
 
         // console.log(`Count: ${count}`);
@@ -86,6 +89,9 @@ const ProgressBar = () => {
         <div style={progressBarStyle}>
           <div style={progressBarFillStyle}>{percentage}%</div>
         </div>
+        <button onClick={getPercentage}>
+          refresh
+        </button>
       </div>
     </div>
   );
