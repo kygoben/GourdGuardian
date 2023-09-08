@@ -188,7 +188,7 @@ const StatusData = ({
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.tracer?.toLowerCase() === searchTerm.toLowerCase() ||
+          item.tracing_by?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
         (item.week === week || week === "Both") &&
         ((!item.tracing_start && notStarted) ||

@@ -5,6 +5,7 @@ import StatusData from "@/components/StatusData";
 import SearchBar from "@/components/SearchBar";
 import styles from "@/styles/status.module.css";
 import { useState } from "react";
+import AdminSignInPrompt from "@/components/AdminSignInPrompt";
 
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -61,7 +62,7 @@ export default function Status() {
   };
 
   return (
-    <>
+    <AdminSignInPrompt>
       <Navbar />
       <div className="display: flex">
         <LeftPane
@@ -103,6 +104,6 @@ export default function Status() {
           />
         </div>
       </div>
-    </>
+    </AdminSignInPrompt>
   );
 }
