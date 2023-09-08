@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 import { supabase } from "./../../supabaseConnection.js";
-import { useState } from "react"; // Import useEffect and useState
-import { set } from "date-fns";
-
-
-
+import { useState } from "react";
 
 const StatusData = ({
   year,
@@ -19,7 +15,6 @@ const StatusData = ({
 }) => {
   const [data, setData] = useState([]);
   const [successMessage, setSuccessMessage] = useState(null);
-  //loading state
   const [loading, setLoading] = useState(true);
 
   const successStyle = {
@@ -62,54 +57,20 @@ const StatusData = ({
   };
 
   useEffect(() => {
-    getData();
+    if (year !== null && loading) {
+      getData();
+    }
   }, [year]);
 
-  useEffect(() => {
-    getData();
-  }, []);
-
   const getData = async () => {
+    console.log("Getting data");
     setLoading(true);
     try {
-      const { data: stencilsData } = await supabase
-        .from("stencils")
-        .select("sid, title");
-      const { data: sstatusData } = await supabase
+      const { data: sstatusData, error } = await supabase
         .from("sstatus")
-        .select(
-          "sid, year, week, printing, cutting, tracing_start, tracing_end, tracing_confirmed, tracing_by, carving_start, carving_end, carving_confirmed, carving_by"
-        );
-        sstatusData.sort((a, b) => {
-          const sidA = a.sid.split("-").map(Number);
-          const sidB = b.sid.split("-").map(Number);
-  
-          for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
-            const diff = (sidA[i] || 0) - (sidB[i] || 0);
-            if (diff !== 0) {
-              return diff;
-            }
-          }
-  
-          return 0;
-        });
-      console.log(sstatusData);
+        .select("*, stencils(title)");
 
-      const combinedData = stencilsData
-        .map((stencil) => {
-          const relatedSStatus = sstatusData.find((s) => s.sid === stencil.sid);
-          if (relatedSStatus && relatedSStatus.year === year) {
-            return {
-              ...stencil,
-              sstatus: relatedSStatus,
-            };
-          }
-          return null;
-        })
-        .filter(Boolean);
-      // console.log(combinedData);
-
-      combinedData.sort((a, b) => {
+      sstatusData.sort((a, b) => {
         const sidA = a.sid.split("-").map(Number);
         const sidB = b.sid.split("-").map(Number);
 
@@ -122,8 +83,9 @@ const StatusData = ({
 
         return 0;
       });
-      console.log(combinedData);
-      setData(combinedData);
+      console.log(sstatusData);
+
+      setData(sstatusData);
     } catch (error) {
       console.error("Error fetching data:", error);
       // Handle error as needed
@@ -140,12 +102,12 @@ const StatusData = ({
         .from("sstatus")
         .update(updateObject)
         .eq("sid", item.sid)
-        .eq("year", item.sstatus.year)
-        .eq("week", item.sstatus.week)
-        .select();
-        console.log(error);
+        .eq("year", item.year)
+        .eq("week", item.week)
+        .select("*, stencils(title)");
+      console.log(error);
 
-        console.log(updatedData);
+      console.log(updatedData);
       if (!error) {
         setSuccessMessage("Entry updated successfully");
 
@@ -154,7 +116,7 @@ const StatusData = ({
           const newData = [...prevData];
           const itemIndex = newData.findIndex((el) => el.sid === item.sid);
           if (itemIndex !== -1) {
-            newData[itemIndex].sstatus = updatedData[0];
+            newData[itemIndex] = updatedData[0];
           }
           return newData;
         });
@@ -173,17 +135,21 @@ const StatusData = ({
 
   const stageMappings = {
     1: {
-      header: ["SID", "Title", "Printing"],
+      header:
+        week === "Both"
+          ? ["SID", "Week", "Title", "Printing"]
+          : ["SID", "Title", "Printing"],
       render: (item) =>
-        (item.sid.toLowerCase() === searchTerm.toLowerCase() || searchTerm === "") &&
-        (item.sstatus.week === week || week === "Both") &&
-        ((!item.sstatus.printing && notStarted) ||
-          (item.sstatus.printing && completed)) ? (
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
+          searchTerm === "") &&
+        (item.week === week || week === "Both") &&
+        ((!item.printing && notStarted) || (item.printing && completed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>{item.week}</td>
+            <td style={tableCellStyle}>{item.stencils.title}</td>
             <td style={tableCellStyle}>
-              {item.sstatus.printing ? "Complete" : "Incomplete"}
+              {item.printing ? "Complete" : "Incomplete"}
               <button
                 style={buttonStyle}
                 onClick={() => handleEdit(item, "printing", 1)}
@@ -203,17 +169,21 @@ const StatusData = ({
         ),
     },
     2: {
-      header: ["SID", "Title", "Cutting"],
+      header:
+        week === "Both"
+          ? ["SID", "Week", "Title", "Cutting"]
+          : ["SID", "Title", "Cutting"],
       render: (item) =>
-        (item.sid.toLowerCase() === searchTerm.toLowerCase() || searchTerm === "") &&
-        (item.sstatus.week === week || week === "Both") &&
-        ((!item.sstatus.cutting && notStarted) ||
-          (item.sstatus.cutting && completed)) ? (
+        (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
+          searchTerm === "") &&
+        (item.week === week || week === "Both") &&
+        ((!item.cutting && notStarted) || (item.cutting && completed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>{item.week}</td>
+            <td style={tableCellStyle}>{item.stencils.title}</td>
             <td style={tableCellStyle}>
-              {item.sstatus.cutting ? "Complete" : "Incomplete"}
+              {item.cutting ? "Complete" : "Incomplete"}
               <button
                 style={buttonStyle}
                 onClick={() => handleEdit(item, "cutting", 1)}
@@ -233,34 +203,45 @@ const StatusData = ({
         ),
     },
     3: {
-      header: [
-        "SID",
-        "Title",
-        "Tracing Start",
-        "Tracing End",
-        "tracing_by",
-        "Confirm?",
-      ],
+      header:
+        week === "Both"
+          ? [
+              "SID",
+              "Week",
+              "Title",
+              "Tracing Start",
+              "Tracing End",
+              "tracing_by",
+              "Confirm?",
+            ]
+          : [
+              "SID",
+              "Title",
+              "Tracing Start",
+              "Tracing End",
+              "tracing_by",
+              "Confirm?",
+            ],
+
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.sstatus.tracer?.toLowerCase() === searchTerm.toLowerCase() ||
+          item.tracer?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
-        (item.sstatus.week === week || week === "Both") &&
-        ((!item.sstatus.tracing_start && notStarted) ||
-          (!item.sstatus.tracing_end &&
-            inProgress &&
-            item.sstatus.tracing_start) ||
-          (item.sstatus.tracing_end && completed)) &&
-        ((item.sstatus.tracing_confirmed && isConfirmed) ||
-          (!item.sstatus.tracing_confirmed && notConfirmed)) ? (
+        (item.week === week || week === "Both") &&
+        ((!item.tracing_start && notStarted) ||
+          (!item.tracing_end && inProgress && item.tracing_start) ||
+          (item.tracing_end && completed)) &&
+        ((item.tracing_confirmed && isConfirmed) ||
+          (!item.tracing_confirmed && notConfirmed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>{item.week}</td>
+            <td style={tableCellStyle}>{item.stencils.title}</td>
             <td style={tableCellStyle}>
               <input
                 type="datetime-local"
-                value={item.sstatus.tracing_start || ""}
+                value={item.tracing_start || ""}
                 onChange={(e) =>
                   handleEdit(item, "tracing_start", e.target.value)
                 }
@@ -283,7 +264,7 @@ const StatusData = ({
             <td style={tableCellStyle}>
               <input
                 type="datetime-local"
-                value={item.sstatus.tracing_end || ""}
+                value={item.tracing_end || ""}
                 onChange={(e) =>
                   handleEdit(item, "tracing_end", e.target.value)
                 }
@@ -310,8 +291,9 @@ const StatusData = ({
                   handleEdit(
                     item,
                     "tracing_by",
-                    document.getElementById(`tracing_by_${item.sid}_${item.index}`)
-                      .value
+                    document.getElementById(
+                      `tracing_by_${item.sid}_${item.index}`
+                    ).value
                   ); // Call your edit handler when the form is submitted
                 }}
               >
@@ -319,7 +301,7 @@ const StatusData = ({
                   id={`tracing_by_${item.sid}_${item.index}`}
                   type="text"
                   placeholder={"No Tracer Assigned"}
-                  defaultValue={item.sstatus.tracer}
+                  defaultValue={item.tracer}
                 />
                 <button
                   type="submit" // Specify the button type as "submit"
@@ -341,7 +323,7 @@ const StatusData = ({
               </form>
             </td>
             <td style={tableCellStyle}>
-              {item.sstatus.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+              {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
               <button
                 style={buttonStyle}
                 onClick={() =>
@@ -367,34 +349,45 @@ const StatusData = ({
         ),
     },
     4: {
-      header: [
-        "SID",
-        "Title",
-        "Carving Start",
-        "Carving End",
-        "carving_by",
-        "Confirm?",
-      ],
+      header:
+        week === "Both"
+          ? [
+              "SID",
+              "Week",
+              "Title",
+              "Carving Start",
+              "Carving End",
+              "carving_by",
+              "Confirm?",
+            ]
+          : [
+              "SID",
+              "Title",
+              "Carving Start",
+              "Carving End",
+              "carving_by",
+              "Confirm?",
+            ],
+
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "" ||
-          item.sstatus.carving_by?.toLowerCase() === searchTerm.toLowerCase() ||
+          item.carving_by?.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
-        (item.sstatus.week === week || week === "Both") &&
-        ((!item.sstatus.carving_start && notStarted) ||
-          (!item.sstatus.carving_end &&
-            inProgress &&
-            item.sstatus.carving_start) ||
-          (item.sstatus.carving_end && completed)) &&
-        ((item.sstatus.carving_confirmed && isConfirmed) ||
-          (!item.sstatus.carving_confirmed && notConfirmed)) ? (
+        (item.week === week || week === "Both") &&
+        ((!item.carving_start && notStarted) ||
+          (!item.carving_end && inProgress && item.carving_start) ||
+          (item.carving_end && completed)) &&
+        ((item.carving_confirmed && isConfirmed) ||
+          (!item.carving_confirmed && notConfirmed)) ? (
           <>
             <td style={tableCellStyle}>{item.sid}</td>
-            <td style={tableCellStyle}>{item.title}</td>
+            <td style={tableCellStyle}>{item.week}</td>
+            <td style={tableCellStyle}>{item.stencils.title}</td>
             <td style={tableCellStyle}>
               <input
                 type="datetime-local"
-                value={item.sstatus.carving_start || ""}
+                value={item.carving_start || ""}
                 onChange={(e) =>
                   handleEdit(item, "carving_start", e.target.value)
                 }
@@ -417,7 +410,7 @@ const StatusData = ({
             <td style={tableCellStyle}>
               <input
                 type="datetime-local"
-                value={item.sstatus.carving_end || ""}
+                value={item.carving_end || ""}
                 onChange={(e) =>
                   handleEdit(item, "carving_end", e.target.value)
                 }
@@ -444,8 +437,9 @@ const StatusData = ({
                   handleEdit(
                     item,
                     "carving_by",
-                    document.getElementById(`carving_by_${item.sid}_${item.index}`)
-                      .value
+                    document.getElementById(
+                      `carving_by_${item.sid}_${item.index}`
+                    ).value
                   ); // Call your edit handler when the form is submitted
                 }}
               >
@@ -453,7 +447,7 @@ const StatusData = ({
                   id={`carving_by_${item.sid}_${item.index}`}
                   type="text"
                   placeholder={"No Carver Assigned"}
-                  defaultValue={item.sstatus.carving_by}
+                  defaultValue={item.carving_by}
                 />
                 <button
                   type="submit" // Specify the button type as "submit"
@@ -475,7 +469,7 @@ const StatusData = ({
               </form>
             </td>
             <td style={tableCellStyle}>
-              {item.sstatus.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+              {item.carving_confirmed ? "Confirmed" : "Not Confirmed"}
               <button
                 style={buttonStyle}
                 onClick={() =>
@@ -528,7 +522,9 @@ const StatusData = ({
               </thead>
               <tbody>
                 {data.map((item, rowIndex) => (
-                  <tr key={item.sid}>{stageMapping.render(item)}</tr>
+                  <tr key={`stencil_${item.sid}_${item.week}_${item.year}`}>
+                    {stageMapping.render(item)}
+                  </tr>
                 ))}
               </tbody>
             </>
