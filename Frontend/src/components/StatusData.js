@@ -100,7 +100,7 @@ const StatusData = ({
       header:
         week === "Both"
           ? ["SID", "Week", "Title", "Printing"]
-          : ["SID", "Week", "Title", "Printing"],
+          : ["SID", "Title", "Printing"],
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
@@ -108,7 +108,7 @@ const StatusData = ({
         ((!item.printing && notStarted) || (item.printing && completed)) ? (
           <>
             <td className={styles.tableCell}>{item.sid}</td>
-            <td className={styles.tableCell}>{item.week}</td>
+            {(week === "Both") ?  <td className={styles.tableCell}>{item.week}</td> : <></>}
             <td className={styles.tableCell}>{item.stencils.title}</td>
             <td className={styles.tableCell}>
               {item.printing ? "Complete" : "Incomplete"}
@@ -134,7 +134,7 @@ const StatusData = ({
       header:
         week === "Both"
           ? ["SID", "Week", "Title", "Cutting"]
-          : ["SID", "Week", "Title", "Cutting"],
+          : ["SID", "Title", "Cutting"],
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
@@ -142,7 +142,7 @@ const StatusData = ({
         ((!item.cutting && notStarted) || (item.cutting && completed)) ? (
           <>
             <td className={styles.tableCell}>{item.sid}</td>
-            <td className={styles.tableCell}>{item.week}</td>
+            {(week === "Both") ?  <td className={styles.tableCell}>{item.week}</td> : <></>}
             <td className={styles.tableCell}>{item.stencils.title}</td>
             <td className={styles.tableCell}>
               {item.cutting ? "Complete" : "Incomplete"}
@@ -178,7 +178,6 @@ const StatusData = ({
             ]
           : [
               "SID",
-              "Week",
               "Title",
               "Tracing Start",
               "Tracing End",
@@ -199,7 +198,8 @@ const StatusData = ({
           (!item.tracing_confirmed && notConfirmed)) ? (
           <>
             <td className={styles.tableCell}>{item.sid}</td>
-            <td className={styles.tableCell}>{item.week}</td>
+            {(week === "Both") ?  <td className={styles.tableCell}>{item.week}</td> : <></>}
+           
             <td className={styles.tableCell}>{item.stencils.title}</td>
             <td className={styles.tableCell}>
               <input
@@ -325,7 +325,6 @@ const StatusData = ({
             ]
           : [
               "SID",
-              "Week", 
               "Title",
               "Carving Start",
               "Carving End",
@@ -346,7 +345,7 @@ const StatusData = ({
           (!item.carving_confirmed && notConfirmed)) ? (
           <>
             <td className={styles.tableCell}>{item.sid}</td>
-            <td className={styles.tableCell}>{item.week}</td>
+            {(week === "Both") ?  <td className={styles.tableCell}>{item.week}</td> : <></>}
             <td className={styles.tableCell}>{item.stencils.title}</td>
             <td className={styles.tableCell}>
               <input
