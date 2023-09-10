@@ -100,7 +100,7 @@ const StatusData = ({
       header:
         week === "Both"
           ? ["SID", "Week", "Title", "Printing"]
-          : ["SID", "Title", "Printing"],
+          : ["SID", "Week", "Title", "Printing"],
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
@@ -134,7 +134,7 @@ const StatusData = ({
       header:
         week === "Both"
           ? ["SID", "Week", "Title", "Cutting"]
-          : ["SID", "Title", "Cutting"],
+          : ["SID", "Week", "Title", "Cutting"],
       render: (item) =>
         (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
           searchTerm === "") &&
@@ -178,6 +178,7 @@ const StatusData = ({
             ]
           : [
               "SID",
+              "Week",
               "Title",
               "Tracing Start",
               "Tracing End",
@@ -324,6 +325,7 @@ const StatusData = ({
             ]
           : [
               "SID",
+              "Week", 
               "Title",
               "Carving Start",
               "Carving End",
