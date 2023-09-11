@@ -121,13 +121,13 @@ function TracingStatus({
                 handleEdit(item, "tracing_confirmed", currentDate.toISOString())
               }
             >
-              ✓
+              Confirm
             </button>
             <button
               className={styles.redButton}
               onClick={() => handleEdit(item, "tracing_confirmed", null)}
             >
-              X
+              Unconfirm
             </button>
           </div>
         </td>

@@ -27,13 +27,13 @@ function CuttingStatus({
             className={styles.greenButton}
             onClick={() => handleEdit(item, "cutting", 1)}
           >
-            ✓
+            Complete
           </button>
           <button
             className={styles.redButton}
             onClick={() => handleEdit(item, "cutting", 0)}
           >
-            X
+            Clear
           </button></div>
         </td>
       </>

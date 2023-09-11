@@ -27,13 +27,13 @@ function PrintingStatus({
               className={styles.greenButton}
               onClick={() => handleEdit(item, "printing", 1)}
             >
-              ✓
+              Complete
             </button>
             <button
               className={styles.redButton}
               onClick={() => handleEdit(item, "printing", 0)}
             >
-              X
+              Clear
             </button>
             </div>
         </td>
