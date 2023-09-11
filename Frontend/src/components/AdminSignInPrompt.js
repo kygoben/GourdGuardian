@@ -15,7 +15,7 @@ const AdminSignInPrompt = ({ children }) => {
 
   useEffect(() => {
     supabase.auth.getSession().then((data) => {
-      if (data.data.session && data.data.session.expires_at) {
+      if (data.data.session && data.data.session.expires_at && data.data.session.user.email != 'volunteer@gmail.com') {
         const sessionExpirationTime = new Date(data.data.session.expires_at).getTime();
         const currentTime = Date.now() / 1000;
         
@@ -56,7 +56,7 @@ const AdminSignInPrompt = ({ children }) => {
           </button>
         )}
       </div>
-      {!isSignedIn ? (
+      {!isSignedIn? (
         <div>
         <div className={styles.container}>
           <h1 className={styles.title}>
