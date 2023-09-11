@@ -1,6 +1,6 @@
 import React from "react";
 
-const PaginationButtons = ({ updateCurrentPage, itemsPerPage, data, updateItemsPerPage }) => {
+const PaginationButtons = ({ updateCurrentPage, itemsPerPage, length, updateItemsPerPage }) => {
   const buttonStyle = {
     backgroundColor: "#007bff",
     border: "none",
@@ -37,7 +37,7 @@ const PaginationButtons = ({ updateCurrentPage, itemsPerPage, data, updateItemsP
           style={buttonStyle}
           onClick={() =>
             updateCurrentPage((prev) =>
-              Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
+              Math.min(prev + 1, Math.ceil(length / itemsPerPage))
             )
           }
         >
@@ -45,7 +45,7 @@ const PaginationButtons = ({ updateCurrentPage, itemsPerPage, data, updateItemsP
         </button>
         <button
           style={buttonStyle}
-          onClick={() => updateCurrentPage(Math.ceil(data.length / itemsPerPage))}
+          onClick={() => updateCurrentPage(Math.ceil(length / itemsPerPage))}
         >
           Last
         </button>

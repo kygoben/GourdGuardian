@@ -22,10 +22,7 @@ const LeftPane = ({
   const stages = ["Printing", "Cutting", 'Tracing', "Carving"]; // Update with your desired stages
 
   const handleYearChange = (newYear) => {
-    const parsedYear = parseInt(newYear);
-    if (!isNaN(parsedYear)) {
-      updateYear(parsedYear);
-    }
+    updateYear(newYear);
   };
 
   const handleIsConfirmedToggle = () => {
@@ -66,7 +63,7 @@ const LeftPane = ({
         </label>
         <div style={{ display: "flex", alignItems: "center" }}>
           <button
-            style={{ padding: "5px", borderRadius: "50%" }}
+            style={{ padding: "5px", borderRadius: "50%", color: "#b0b0b0" }}
             onClick={() => handleYearChange(year - 1)}
           >
             &#8592;
@@ -87,7 +84,7 @@ const LeftPane = ({
           }}
         />
           <button
-            style={{ padding: "5px", borderRadius: "50%", marginLeft: "10px" }}
+            style={{ padding: "5px", borderRadius: "50%", marginLeft: "10px", color: "#b0b0b0"}}
             onClick={() => handleYearChange(year + 1)}
           >
             &#8594;

@@ -45,7 +45,8 @@ const StatusData = ({
     try {
       const { data: sstatusData, error } = await supabase
         .from("sstatus")
-        .select("*, stencils(title)");
+        .select("*, stencils(title)")
+        .eq("year", year);
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -160,6 +161,10 @@ const StatusData = ({
             "Confirm?",
           ],
   };
+  //if data lenth is 0 return There is no Data to show
+  if (data.length === 0) {
+    return <div>There is no data to show</div>;
+  }
 
   return (
     <div>
@@ -169,9 +174,10 @@ const StatusData = ({
           updateSearchTerm={updateSearchTerm}
         />
         <PaginationButtons
-          setCurrentPage={updateCurrentPage}
+          updateCurrentPage={updateCurrentPage}
           itemsPerPage={itemsPerPage}
           updateItemsPerPage={updateItemsPerPage}
+          length={data.length}
         />
       </div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
