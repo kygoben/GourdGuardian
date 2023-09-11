@@ -92,7 +92,7 @@ const StatusData = ({
       if (!error) {
         setData((prevData) => {
           const newData = [...prevData];
-          const itemIndex = newData.findIndex((el) => el.sid === item.sid);
+          const itemIndex = newData.findIndex((el) => el.sid === item.sid && el.year === item.year && el.week === item.week);
           if (itemIndex !== -1) {
             newData[itemIndex] = updatedData[0];
           }
