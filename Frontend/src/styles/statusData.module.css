@@ -1,8 +1,6 @@
 .tableCell {
   padding: 10px;
-  border-bottom: 1px solid #333;
-  border-right: 1px solid #333;
-  border-left: 1px solid #333;
+  border: 1px solid #333;
   color: #b0b0b0;
   background-color: #181818;
 }
