@@ -4,7 +4,7 @@
   justify-content: center;
   flex-direction: column;
   height: 100vh;
-  background-color: #575555;
+  background-color: #F8F1E6; /* Light brown background */
 }
 
 .popup {
@@ -14,13 +14,13 @@
   background-color: white;
   padding: 2rem;
   border-radius: 2rem;
-  box-shadow: -1.25rem 1.25rem #323030;
+  box-shadow: -1.25rem 1.25rem #8B4513; /* Darker brown for shadow */
 }
 
 .button {
   font-size: 2rem;
-  background-color: #EFA846;
-  border: white;
+  background-color: #FFA500; /* Orange color for the button */
+  border: none; /* Removed the white border */
   border-radius: 2rem;
   cursor: pointer;
   margin: 1rem;
@@ -31,9 +31,10 @@
 
 .buttonNo {
   font-size: 2rem;
-  border-color: black;
-  border-width: .01rem;
+  border: 0.1rem solid black; /* Adjusted border width and added border style */
   border-radius: 2rem;
+  background-color: white; /* Added a background color */
+  color: black; /* Added a text color */
   cursor: pointer;
   margin: 1rem;
   text-align: center;
@@ -50,9 +51,10 @@
 
 .input {
   font-size: 30px;
-  background-color: #FBF5EA;
-  border: white;
+  background-color: #FBF5EA; /* Light background for the input */
+  border: none; /* Removed the white border */
   border-radius: 50px;
-  cursor: pointer;
+  cursor: text; /* Changed cursor to text for better UX */
   margin: 10px;
+  padding: 10px; /* Added padding inside the input */
 }

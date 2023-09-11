@@ -1,18 +1,19 @@
-.id {
+.id, .title {
   font-size: 30px;
   text-align: center;
+  color: #8B4513; /* Brown color for text */
 }
 
 .title {
-  font-size: 30px;
-  text-align: center;
   font-weight: bold;
 }
 
-.category {
+.category, .instructions {
   font-size: 20px;
   text-align: center;
+  color: #8B4513; /* Brown color for text */
 }
+
 .pidForm {
   display: flex;
   height: 100vh;
@@ -20,7 +21,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  /* background-color: #575555; */
+  background-color: #F8F1E6; /* Light brown background */
   padding: 0;
   margin: -10px;
 }
@@ -29,13 +30,13 @@
   background-color: white;
   padding: 100px;
   border-radius: 50px;
-  box-shadow: -15px 15px #323030;
+  box-shadow: -15px 15px #8B4513; /* Darker brown for shadow */
 }
 
 .button {
   font-size: 30px;
-  background-color: #EFA846;
-  border: white;
+  background-color: #FFA500; /* Orange color for the button */
+  border: none; /* Removed the white border */
   border-radius: 50px;
   cursor: pointer;
   margin: 10px;
@@ -47,6 +48,7 @@
 .buttonNo {
   font-size: 30px;
   background-color: white;
+  border: 2px solid #8B4513; /* Added a brown border */
   border-radius: 50px;
   cursor: pointer;
   margin: 10px;
@@ -59,20 +61,14 @@
   text-align: center;
 }
 
-.instructions {
-  color: black;
-  font-size: 20px;
-  margin: 10px;
-  text-align: center;
-}
-
 .input {
   font-size: 30px;
-  background-color: #FBF5EA;
-  border: white;
+  background-color: #FBF5EA; /* Light background for the input */
+  border: none; /* Removed the white border */
   border-radius: 50px;
-  cursor: pointer;
+  cursor: text; /* Changed cursor to text for better UX */
   margin: 10px;
+  padding: 10px; /* Added padding inside the input */
 }
 
 .section {
@@ -83,10 +79,9 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
- border-color: rgb(161, 161, 161);
+  border-color: #8B4513; /* Brown color for the border */
   border-radius: 30px;
   padding: 10px;
   margin-top: 50px;
-  box-shadow: -5px 5px rgb(161, 161, 161);
-  
+  box-shadow: -5px 5px #8B4513; /* Brown color for the shadow */
 }

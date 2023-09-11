@@ -15,7 +15,6 @@ const pumpkinData = (props) => {
   const [status, setStatus] = useState("Error"); //string of status
   const [nextStage, setNextStage] = useState("Error"); //button to show
   const [name, setName] = useState(null);
-  console.log(props);
 
   useEffect(() => {
     // Fetch data from cookie when the component mounts
@@ -64,7 +63,7 @@ const pumpkinData = (props) => {
           //start time
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_start: time, tracer: name })
+            .update({ tracing_start: time, tracing_by: name })
             .eq("sid", sstatus.sid)
             .select();
 
@@ -72,7 +71,7 @@ const pumpkinData = (props) => {
         } else if (!sstatus.tracing_end) {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_end: time, tracer: name })
+            .update({ tracing_end: time, tracing_by: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
@@ -81,14 +80,14 @@ const pumpkinData = (props) => {
         if (status == "Not Started") {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ carving_start: time, carver: name })
+            .update({ carving_start: time, carving_by: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
         } else if (!sstatus.carving_end) {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ carving_end: time, carver: name })
+            .update({ carving_end: time, carving_by: name })
             .eq("sid", sstatus.sid)
             .select();
           console.log(data, error);
@@ -228,10 +227,9 @@ const pumpkinData = (props) => {
     <SignInPrompt>
       <div className={styles.section}>
         <PumpkinData
-          className={styles.section}
           sid={router.query.sid}
           title={router.query.title}
-          category={router.query.cname}
+          category={router.query.category}
         ></PumpkinData>
       </div>
       <div className={styles.section}>

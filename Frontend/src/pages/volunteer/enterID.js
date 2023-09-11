@@ -24,8 +24,13 @@ export default function Home() {
 
     let { data: stencils, error } = await supabase
       .from("stencils")
-      .select("*")
+      .select("sid, title, category(cname)")
       .eq("sid", sid);
+
+      console.log(stencils[0].category.cname);
+
+      stencils[0].category=stencils[0].category.cname;
+      console.log(stencils);
 
     if (stencils.length < 1) {
       router.push({
@@ -34,6 +39,7 @@ export default function Home() {
       });
     } else {
       const query = stencils[0];
+      console.log(query);
       router.push({
         pathname: "/volunteer/confirm",
         query: query,

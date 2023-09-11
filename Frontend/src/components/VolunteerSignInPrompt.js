@@ -20,7 +20,7 @@ const SignInPrompt = ({ children }) => {
     supabase.auth.getSession().then((data) => {
       if (data.data.session && data.data.session.expires_at) {
         const sessionExpirationTime = new Date(data.data.session.expires_at).getTime();
-        const currentTime = Date.now();
+        const currentTime = Date.now() / 1000;
         
         setIsSignedIn(sessionExpirationTime > currentTime);
       } else {
@@ -88,12 +88,12 @@ const SignInPrompt = ({ children }) => {
           </h1>
           <div>Your Name:</div>
           <input
-            className="border-2 border-black rounded-md w-72 p-2 mb-2"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
-          />
+  className="border-2 border-black rounded-md w-72 p-2 mb-2 inputField"
+  type="text"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+  placeholder="Name"
+/>
           {nameError && <p className="text-red-500">{nameError}</p>}{" "}
           <div>Event Code:</div>
           <input
@@ -106,12 +106,12 @@ const SignInPrompt = ({ children }) => {
           {passwordError && <p className="text-red-500">{passwordError}</p>}{" "}
         </div>
         <div className="flex flex-row justify-center items-center">
-          <button
-            className="border-2 border-black rounded-md w-32 p-2 m-2"
-            onClick={handleSignIn}
-          >
-            Submit
-          </button>
+        <button
+  className="border-2 border-black rounded-md w-32 p-2 m-2 submitButton"
+  onClick={handleSignIn}
+>
+  Submit
+</button>
         </div>
         </div>
       ) : (

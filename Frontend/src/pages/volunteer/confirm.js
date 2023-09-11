@@ -19,7 +19,7 @@ export function confirm() {
         <PumpkinData
           title={router.query.title}
           sid={router.query.sid}
-          category={router.query.cname}
+          category={router.query.category}
         ></PumpkinData>
         <div className={styles.instructions}>Is this your stencil?</div>
         <button className={styles.button} onClick={callAPI}>
