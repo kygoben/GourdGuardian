@@ -121,13 +121,13 @@ function CarvingStatus({
                 handleEdit(item, "carving_confirmed", currentDate.toISOString())
               }
             >
-              ✓
+              Confirm
             </button>
             <button
               className={styles.redButton}
               onClick={() => handleEdit(item, "carving_confirmed", null)}
             >
-              X
+              Unconfirm
             </button>
           </div>
         </td>

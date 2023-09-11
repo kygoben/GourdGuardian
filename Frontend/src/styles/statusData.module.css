@@ -25,10 +25,12 @@
     padding-right: 5px;
     padding-top: 2px;
     padding-bottom: 2px;
+    margin-right: 4px;
   }
   
   /* buttonStyle2 */
   .redButton {
+    margin-left: 4px;
     background-color: red;
     border: none;
     border-radius: 4px;

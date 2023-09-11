@@ -120,7 +120,7 @@ const StatusData = ({
             "Title",
             "Tracing Start",
             "Tracing End",
-            "tracing_by",
+            "Tracer",
             "Confirm?",
           ]
         : [
@@ -128,7 +128,7 @@ const StatusData = ({
             "Title",
             "Tracing Start",
             "Tracing End",
-            "tracing_by",
+            "Tracer",
             "Confirm?",
           ],
     4:
@@ -139,7 +139,7 @@ const StatusData = ({
             "Title",
             "Carving Start",
             "Carving End",
-            "carving_by",
+            "Carver",
             "Confirm?",
           ]
         : [
@@ -147,17 +147,28 @@ const StatusData = ({
             "Title",
             "Carving Start",
             "Carving End",
-            "carving_by",
+            "Carver",
             "Confirm?",
           ],
   };
 
   return (
     <div>
-      <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+      <div className="flex justify-center my-4">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l border border-white"
+          onClick={() => setCurrentPage(1)}
+        >
+          First
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-white"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        >
           Previous
         </button>
         <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-white"
           onClick={() =>
             setCurrentPage((prev) =>
               Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
@@ -166,6 +177,13 @@ const StatusData = ({
         >
           Next
         </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r border border-white"
+          onClick={() => setCurrentPage(Math.ceil(data.length / itemsPerPage))}
+        >
+          Last
+        </button>
+      </div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
@@ -195,13 +213,21 @@ const StatusData = ({
           ))}
         </tbody>
       </table>
-      <div
-        style={{ display: "flex", justifyContent: "center", margin: "20px" }}
-      >
-        <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+      <div className="flex justify-center my-4">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-l border border-white"
+          onClick={() => setCurrentPage(1)}
+        >
+          First
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-white"
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        >
           Previous
         </button>
         <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-white"
           onClick={() =>
             setCurrentPage((prev) =>
               Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
@@ -209,6 +235,12 @@ const StatusData = ({
           }
         >
           Next
+        </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r border border-white"
+          onClick={() => setCurrentPage(Math.ceil(data.length / itemsPerPage))}
+        >
+          Last
         </button>
       </div>
     </div>
