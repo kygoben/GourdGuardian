@@ -91,7 +91,7 @@ function TracingStatus({
             <input
               id={`tracing_by_${item.sid}_${item.index}`}
               type="text"
-              placeholder={"No Tracer Assigned"}
+              placeholder={"No Tracer"}
               defaultValue={item.tracer}
             />
             <div>
