@@ -48,7 +48,11 @@ export default function Status() {
   };
 
   const updateStage = (newValue) => {
-    setStage(newValue);
+    if(newValue === "Printing") setStage(1);
+    else if(newValue === "Cutting") setStage(2);
+    else if(newValue === "Tracing") setStage(3);
+    else if(newValue === "Carving") setStage(4);
+    // setStage(newValue);
   };
 
   const updateIsConfirmed = (newValue) => {

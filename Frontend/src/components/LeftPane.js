@@ -19,7 +19,7 @@ const LeftPane = ({
   updateCompleted,
 }) => {
   const weeks = [1, 2, 'Both']; // Update with your desired weeks
-  const stages = [1, 2, 3, 4]; // Update with your desired stages
+  const stages = ["Printing", "Cutting", 'Tracing', "Carving"]; // Update with your desired stages
 
   const handleYearChange = (newYear) => {
     const parsedYear = parseInt(newYear);
@@ -48,8 +48,15 @@ const LeftPane = ({
     updateNotConfirmed(!notConfirmed);
   };
 
+  const stageCalc = (s) => {
+    if(s === "Printing") return 1;
+    else if(s === "Cutting") return 2;
+    else if(s === "Tracing") return 3;
+    else if(s === "Carving") return 4;
+  }
+
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f0f0f0" }}>
+    <div style={{ padding: "5px", backgroundColor: "#f0f0f0" }}>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="year"
@@ -118,7 +125,7 @@ const LeftPane = ({
         >
           Stage:
         </label>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: 'column', gap: "5px" }}>
           {stages.map((s) => (
             <button
               key={s}
@@ -127,13 +134,13 @@ const LeftPane = ({
               style={{
                 padding: "5px 10px",
                 borderRadius: "20px",
-                backgroundColor: stage === s ? "#007bff" : "transparent",
-                color: stage === s ? "#fff" : "#000",
+                backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
+                color: stage === stageCalc(s) ? "#fff" : "#000",
                 border: "1px solid #ccc",
                 cursor: "pointer",
               }}
             >
-              Stage {s}
+              {s}
             </button>
           ))}
         </div>
@@ -141,7 +148,7 @@ const LeftPane = ({
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="isConfirmed"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
+          style={{ fontWeight: "bold" }}
         >
           Confirmed:
         </label>
@@ -181,7 +188,7 @@ const LeftPane = ({
         >
           Status:
         </label>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <button
             // className={notStarted ? "selected" : ""}
             onClick={handleNotStartedToggle}
