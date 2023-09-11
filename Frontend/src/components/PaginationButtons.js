@@ -1,6 +1,6 @@
 import React from "react";
 
-const PaginationButtons = ({ setCurrentPage, itemsPerPage, data, setItemsPerPage }) => {
+const PaginationButtons = ({ updateCurrentPage, itemsPerPage, data, updateItemsPerPage }) => {
   const buttonStyle = {
     backgroundColor: "#007bff",
     border: "none",
@@ -23,20 +23,20 @@ const PaginationButtons = ({ setCurrentPage, itemsPerPage, data, setItemsPerPage
       <div style={{ display: "flex", gap: "10px" }}>
         <button
           style={buttonStyle}
-          onClick={() => setCurrentPage(1)}
+          onClick={() => updateCurrentPage(1)}
         >
           First
         </button>
         <button
           style={buttonStyle}
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          onClick={() => updateCurrentPage((prev) => Math.max(prev - 1, 1))}
         >
           Previous
         </button>
         <button
           style={buttonStyle}
           onClick={() =>
-            setCurrentPage((prev) =>
+            updateCurrentPage((prev) =>
               Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
             )
           }
@@ -45,7 +45,7 @@ const PaginationButtons = ({ setCurrentPage, itemsPerPage, data, setItemsPerPage
         </button>
         <button
           style={buttonStyle}
-          onClick={() => setCurrentPage(Math.ceil(data.length / itemsPerPage))}
+          onClick={() => updateCurrentPage(Math.ceil(data.length / itemsPerPage))}
         >
           Last
         </button>
@@ -58,7 +58,7 @@ const PaginationButtons = ({ setCurrentPage, itemsPerPage, data, setItemsPerPage
           id="itemsPerPage"
           style={{ border: "1px solid #333", borderRadius: "4px", padding: "10px 20px", backgroundColor: "#282828", color: "#b0b0b0" }}
           value={itemsPerPage}
-          onChange={(e) => setItemsPerPage(Number(e.target.value))}
+          onChange={(e) => updateItemsPerPage(Number(e.target.value))}
         >
           <option value={100}>100</option>
           <option value={400}>400</option>

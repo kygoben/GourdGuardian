@@ -26,6 +26,14 @@ const StatusData = ({
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
 
+  const updateItemsPerPage = (newValue) => {
+    setItemsPerPage(newValue);
+  };
+
+  const updateCurrentPage = (newValue) => {
+    setCurrentPage(newValue);
+  };
+
   useEffect(() => {
     if (year !== null) {
       getData();
@@ -161,8 +169,9 @@ const StatusData = ({
           updateSearchTerm={updateSearchTerm}
         />
         <PaginationButtons
-          setCurrentPage={setCurrentPage}
+          setCurrentPage={updateCurrentPage}
           itemsPerPage={itemsPerPage}
+          updateItemsPerPage={updateItemsPerPage}
         />
       </div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -197,6 +206,7 @@ const StatusData = ({
       <PaginationButtons
         setCurrentPage={setCurrentPage}
         itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
       />
     </div>
   );

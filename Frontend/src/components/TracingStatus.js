@@ -36,7 +36,7 @@ function TracingStatus({
         type="datetime-local"
         value={item.tracing_start || ""}
         onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
-        style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
+        style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px", fontSize: "14px"  }}
       ></input>
       <div>
         <button
@@ -59,7 +59,7 @@ function TracingStatus({
           <input
             type="datetime-local"
             value={item.tracing_end || ""}
-            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
+            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" , fontSize: "14px" }}
             onChange={(e) => handleEdit(item, "tracing_end", e.target.value)}
           ></input>
           <div>
@@ -94,7 +94,7 @@ function TracingStatus({
             <input
               id={`tracing_by_${item.sid}_${item.index}`}
               type="text"
-              style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
+              style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px", fontSize: "14px"  }}
               placeholder={"No Tracer"}
               defaultValue={item.tracer}
             />
@@ -131,7 +131,7 @@ function TracingStatus({
               className={styles.redButton}
               onClick={() => handleEdit(item, "tracing_confirmed", null)}
             >
-              Unconfirm
+              Clear
             </button>
           </div>
         </td>
