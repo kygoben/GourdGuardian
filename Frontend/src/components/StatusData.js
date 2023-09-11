@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "./../../supabaseConnection.js";
 import styles from "@/styles/statusData.module.css";
-import PrintingStatus from './PrintingStatus';
-import CuttingStatus from './CuttingStatus';
-import TracingStatus from './TracingStatus';
-import CarvingStatus from './CarvingStatus';
+import PrintingStatus from "./PrintingStatus";
+import CuttingStatus from "./CuttingStatus";
+import TracingStatus from "./TracingStatus";
+import CarvingStatus from "./CarvingStatus";
 
 const StatusData = ({
   initialData,
@@ -19,6 +19,8 @@ const StatusData = ({
   searchTerm,
 }) => {
   const [data, setData] = useState(initialData || []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
 
   useEffect(() => {
@@ -34,6 +36,10 @@ const StatusData = ({
         .from("sstatus")
         .select("*, stencils(title)");
 
+      if (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
       sstatusData.sort((a, b) => {
         const sidA = a.sid.split("-").map(Number);
         const sidB = b.sid.split("-").map(Number);
@@ -52,9 +58,13 @@ const StatusData = ({
       setData(sstatusData);
     } catch (error) {
       console.error("Error fetching data:", error);
-      // Handle error as needed
     }
   };
+
+  const paginatedData = data.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleEdit = async (item, field, value) => {
     try {
@@ -94,14 +104,68 @@ const StatusData = ({
   const StageComponent = stageComponents[stage];
 
   const headers = {
-    1: week === "Both" ? ["SID", "Week", "Title", "Printing"] : ["SID", "Title", "Printing"],
-    2: week === "Both" ? ["SID", "Week", "Title", "Cutting"] : ["SID", "Title", "Cutting"],
-    3: week === "Both" ? ["SID", "Week", "Title", "Tracing Start", "Tracing End", "tracing_by", "Confirm?"] : ["SID", "Title", "Tracing Start", "Tracing End", "tracing_by", "Confirm?"],
-    4: week === "Both" ? ["SID", "Week", "Title", "Carving Start", "Carving End", "carving_by", "Confirm?"] : ["SID", "Title", "Carving Start", "Carving End", "carving_by", "Confirm?"],
+    1:
+      week === "Both"
+        ? ["SID", "Week", "Title", "Printing"]
+        : ["SID", "Title", "Printing"],
+    2:
+      week === "Both"
+        ? ["SID", "Week", "Title", "Cutting"]
+        : ["SID", "Title", "Cutting"],
+    3:
+      week === "Both"
+        ? [
+            "SID",
+            "Week",
+            "Title",
+            "Tracing Start",
+            "Tracing End",
+            "tracing_by",
+            "Confirm?",
+          ]
+        : [
+            "SID",
+            "Title",
+            "Tracing Start",
+            "Tracing End",
+            "tracing_by",
+            "Confirm?",
+          ],
+    4:
+      week === "Both"
+        ? [
+            "SID",
+            "Week",
+            "Title",
+            "Carving Start",
+            "Carving End",
+            "carving_by",
+            "Confirm?",
+          ]
+        : [
+            "SID",
+            "Title",
+            "Carving Start",
+            "Carving End",
+            "carving_by",
+            "Confirm?",
+          ],
   };
 
   return (
     <div>
+      <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+          Previous
+        </button>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) =>
+              Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
+            )
+          }
+        >
+          Next
+        </button>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
@@ -113,7 +177,7 @@ const StatusData = ({
           </tr>
         </thead>
         <tbody>
-          {data.map((item, rowIndex) => (
+          {paginatedData.map((item, rowIndex) => (
             <tr key={`stencil_${item.sid}_${item.week}_${item.year}`}>
               <StageComponent
                 item={item}
@@ -131,10 +195,24 @@ const StatusData = ({
           ))}
         </tbody>
       </table>
+      <div
+        style={{ display: "flex", justifyContent: "center", margin: "20px" }}
+      >
+        <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}>
+          Previous
+        </button>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) =>
+              Math.min(prev + 1, Math.ceil(data.length / itemsPerPage))
+            )
+          }
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
-
-
 
 export default StatusData;

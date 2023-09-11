@@ -22,18 +22,20 @@ function PrintingStatus({
         <td className={styles.tableCell}>{item.stencils.title}</td>
         <td className={styles.tableCell}>
           {item.printing ? "Complete" : "Incomplete"}
-          <button
-            className={styles.greenButton}
-            onClick={() => handleEdit(item, "printing", 1)}
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "printing", 0)}
-          >
-            X
-          </button>
+          <div>
+            <button
+              className={styles.greenButton}
+              onClick={() => handleEdit(item, "printing", 1)}
+            >
+              ✓
+            </button>
+            <button
+              className={styles.redButton}
+              onClick={() => handleEdit(item, "printing", 0)}
+            >
+              X
+            </button>
+            </div>
         </td>
       </>
     );

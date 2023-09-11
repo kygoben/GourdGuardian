@@ -16,31 +16,29 @@
   /* buttonStyle */
   .greenButton {
     background-color: green;
-    width: 24px;
-    height: 24px;
     border: none;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
     color: white;
     font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
   
   /* buttonStyle2 */
   .redButton {
     background-color: red;
-    width: 24px;
-    height: 24px;
     border: none;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
     color: white;
     font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
   
   /* tableHeaderStyle */

@@ -36,20 +36,22 @@ function TracingStatus({
             value={item.tracing_start || ""}
             onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
           ></input>
-          <button
-            className={styles.greenButton}
-            onClick={() =>
-              handleEdit(item, "tracing_start", currentDate.toISOString())
-            }
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "tracing_start", null)}
-          >
-            X
-          </button>
+          <div>
+            <button
+              className={styles.greenButton}
+              onClick={() =>
+                handleEdit(item, "tracing_start", currentDate.toISOString())
+              }
+            >
+              ✓
+            </button>
+            <button
+              className={styles.redButton}
+              onClick={() => handleEdit(item, "tracing_start", null)}
+            >
+              X
+            </button>
+          </div>
         </td>
         <td className={styles.tableCell}>
           <input
@@ -57,20 +59,22 @@ function TracingStatus({
             value={item.tracing_end || ""}
             onChange={(e) => handleEdit(item, "tracing_end", e.target.value)}
           ></input>
-          <button
-            className={styles.greenButton}
-            onClick={() =>
-              handleEdit(item, "tracing_end", currentDate.toISOString())
-            }
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "tracing_end", null)}
-          >
-            X
-          </button>
+          <div>
+            <button
+              className={styles.greenButton}
+              onClick={() =>
+                handleEdit(item, "tracing_end", currentDate.toISOString())
+              }
+            >
+              ✓
+            </button>
+            <button
+              className={styles.redButton}
+              onClick={() => handleEdit(item, "tracing_end", null)}
+            >
+              X
+            </button>
+          </div>
         </td>
         <td className={styles.tableCell}>
           <form
@@ -90,38 +94,42 @@ function TracingStatus({
               placeholder={"No Tracer Assigned"}
               defaultValue={item.tracer}
             />
-            <button type="submit" className={styles.greenButton}>
-              ✓
-            </button>
-            <button
-              className={styles.redButton}
-              onClick={() => {
-                handleEdit(item, "tracing_by", null);
-                document.getElementById(
-                  `tracing_by_${item.sid}_${item.index}`
-                ).value = null;
-              }}
-            >
-              X
-            </button>
+            <div>
+              <button type="submit" className={styles.greenButton}>
+                Save
+              </button>
+              <button
+                className={styles.redButton}
+                onClick={() => {
+                  handleEdit(item, "tracing_by", null);
+                  document.getElementById(
+                    `tracing_by_${item.sid}_${item.index}`
+                  ).value = null;
+                }}
+              >
+                Clear
+              </button>
+            </div>
           </form>
         </td>
         <td className={styles.tableCell}>
           {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
-          <button
-            className={styles.greenButton}
-            onClick={() =>
-              handleEdit(item, "tracing_confirmed", currentDate.toISOString())
-            }
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "tracing_confirmed", null)}
-          >
-            X
-          </button>
+          <div>
+            <button
+              className={styles.greenButton}
+              onClick={() =>
+                handleEdit(item, "tracing_confirmed", currentDate.toISOString())
+              }
+            >
+              ✓
+            </button>
+            <button
+              className={styles.redButton}
+              onClick={() => handleEdit(item, "tracing_confirmed", null)}
+            >
+              X
+            </button>
+          </div>
         </td>
       </>
     );

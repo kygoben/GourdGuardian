@@ -22,6 +22,7 @@ function CuttingStatus({
         <td className={styles.tableCell}>{item.stencils.title}</td>
         <td className={styles.tableCell}>
           {item.cutting ? "Complete" : "Incomplete"}
+          <div>
           <button
             className={styles.greenButton}
             onClick={() => handleEdit(item, "cutting", 1)}
@@ -33,7 +34,7 @@ function CuttingStatus({
             onClick={() => handleEdit(item, "cutting", 0)}
           >
             X
-          </button>
+          </button></div>
         </td>
       </>
     );
