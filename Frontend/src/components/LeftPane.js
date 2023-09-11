@@ -56,33 +56,36 @@ const LeftPane = ({
   }
 
   return (
-    <div style={{ padding: "5px", backgroundColor: "#f0f0f0" }}>
+    <div style={{ padding: "5px", backgroundColor: "#181818", width: '15%'}}>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="year"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Year:
         </label>
         <div style={{ display: "flex", alignItems: "center" }}>
           <button
-            style={{ padding: "5px", borderRadius: "50%", marginRight: "10px" }}
+            style={{ padding: "5px", borderRadius: "50%" }}
             onClick={() => handleYearChange(year - 1)}
           >
             &#8592;
           </button>
           <input
-            type="number"
-            id="year"
-            value={year}
-            onChange={(e) => handleYearChange(e.target.value)}
-            style={{
-              width: "60px",
-              padding: "5px",
-              borderRadius: "5px",
-              textAlign: "center",
-            }}
-          />
+          type="number"
+          id="year"
+          value={year}
+          onChange={(e) => handleYearChange(e.target.value)}
+          style={{
+            width: "60px",
+            padding: "5px",
+            borderRadius: "5px",
+            textAlign: "center",
+            backgroundColor: "#282828",
+            color: "#b0b0b0",
+            border: "1px solid #333",
+          }}
+        />
           <button
             style={{ padding: "5px", borderRadius: "50%", marginLeft: "10px" }}
             onClick={() => handleYearChange(year + 1)}
@@ -91,67 +94,68 @@ const LeftPane = ({
           </button>
         </div>
       </div>
-      <div style={{ marginBottom: "20px" }}>
+      <div>
         <label
           htmlFor="week"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Week:
         </label>
         <div style={{ display: "flex", gap: "10px" }}>
           {weeks.map((w) => (
             <button
-              key={w}
-              className={week === w ? "selected" : ""}
-              onClick={() => updateWeek(w)}
-              style={{
-                padding: "5px 10px",
-                borderRadius: "20px",
-                backgroundColor: week === w ? "#007bff" : "transparent",
-                color: week === w ? "#fff" : "#000",
-                border: "1px solid #ccc",
-                cursor: "pointer",
-              }}
-            >
-              {w}
-            </button>
+            key={w}
+            className={week === w ? "selected" : ""}
+            onClick={() => updateWeek(w)}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: week === w ? "#007bff" : "transparent",
+              color: week === w ? "#fff" : "#b0b0b0",
+              border: "1px solid #333",
+              cursor: "pointer",
+            }}
+          >
+            {w}
+          </button>
           ))}
         </div>
       </div>
       <div>
-        <label
+      <label
           htmlFor="stage"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Stage:
         </label>
         <div style={{ display: "flex", flexDirection: 'column', gap: "5px" }}>
           {stages.map((s) => (
             <button
-              key={s}
-              className={stage === s ? "selected" : ""}
-              onClick={() => updateStage(s)}
-              style={{
-                padding: "5px 10px",
-                borderRadius: "20px",
-                backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
-                color: stage === stageCalc(s) ? "#fff" : "#000",
-                border: "1px solid #ccc",
-                cursor: "pointer",
-              }}
-            >
-              {s}
-            </button>
+            key={s}
+            className={stage === s ? "selected" : ""}
+            onClick={() => updateStage(s)}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
+              color: stage === stageCalc(s) ? "#fff" : "#b0b0b0",
+              border: "1px solid #333",
+              cursor: "pointer",
+            }}
+          >
+            {s}
+          </button>
           ))}
         </div>
       </div>
-      <div style={{ marginBottom: "20px" }}>
-        <label
-          htmlFor="isConfirmed"
-          style={{ fontWeight: "bold" }}
+      <div style={{display: 'flex', flexDirection: 'column', marginBottom: "20px" }}>
+      <label
+          htmlFor="year"
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Confirmed:
         </label>
+        <div style={{display: "flex", gap: "10px" }}>
         <button
           className={isConfirmed ? "selected" : ""}
           onClick={handleNotConfirmedToggle}
@@ -159,7 +163,7 @@ const LeftPane = ({
             padding: "5px 10px",
             borderRadius: "20px",
             backgroundColor: notConfirmed ? "#007bff" : "transparent",
-            color: notConfirmed ? "#fff" : "#000",
+            color: notConfirmed ? "#fff" : "#b0b0b0",
             border: "1px solid #ccc",
             cursor: "pointer",
           }}
@@ -173,7 +177,7 @@ const LeftPane = ({
             padding: "5px 10px",
             borderRadius: "20px",
             backgroundColor: isConfirmed ? "#007bff" : "transparent",
-            color: isConfirmed ? "#fff" : "#000",
+            color: isConfirmed ? "#fff" : "#b0b0b0",
             border: "1px solid #ccc",
             cursor: "pointer",
           }}
@@ -181,10 +185,11 @@ const LeftPane = ({
           Is Confirmed
         </button>
       </div>
+      </div>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="status"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Status:
         </label>
@@ -196,7 +201,7 @@ const LeftPane = ({
               padding: "5px 10px",
               borderRadius: "20px",
               backgroundColor: notStarted ? "#007bff" : "transparent",
-              color: notStarted ? "#fff" : "#000",
+              color: notStarted ? "#fff" : "#b0b0b0",
               border: "1px solid #ccc",
               cursor: "pointer",
             }}
@@ -210,7 +215,7 @@ const LeftPane = ({
               padding: "5px 10px",
               borderRadius: "20px",
               backgroundColor: inProgress ? "#007bff" : "transparent",
-              color: inProgress ? "#fff" : "#000",
+              color: inProgress ? "#fff" : "#b0b0b0",
               border: "1px solid #ccc",
               cursor: "pointer",
             }}
@@ -224,7 +229,7 @@ const LeftPane = ({
               padding: "5px 10px",
               borderRadius: "20px",
               backgroundColor: completed ? "#007bff" : "transparent",
-              color: completed ? "#fff" : "#000",
+              color: completed ? "#fff" : "#b0b0b0",
               border: "1px solid #ccc",
               cursor: "pointer",
             }}

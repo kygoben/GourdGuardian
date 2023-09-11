@@ -68,7 +68,7 @@ export default function Status() {
   return (
     <AdminSignInPrompt>
       <Navbar />
-      <div className="display: flex">
+      <div style={{ display: "flex" }}>
         <LeftPane
           className={styles.leftPane}
           year={year}

@@ -1,60 +1,26 @@
-/* StatusData.css */
+.tableCell {
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  color: #b0b0b0;
+  background-color: #181818;
+}
 
-/* successStyle */
-.success-style {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 128, 0, 0.7);
-    color: #fff;
-    padding: 10px;
-    align-items: center;
-    z-index: 9999;
-  }
-  
-  /* buttonStyle */
-  .greenButton {
-    background-color: green;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    margin-right: 4px;
-  }
-  
-  /* buttonStyle2 */
-  .redButton {
-    margin-left: 4px;
-    background-color: red;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-  }
-  
-  /* tableHeaderStyle */
-  .tableHeader {
-    border: 1px solid #ddd;
-    padding: 8px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  /* tableCellStyle */
-  .tableCell {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
+.greenButton {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.redButton {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 5px;
+}

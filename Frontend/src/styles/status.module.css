@@ -1,13 +1,19 @@
-.leftPane{
-    width: 15%;
-}
-
-.data{
-    display: flex;
-    flex-direction: column;
-    width: 85%;
-}
-
-.dataRow{
-    height: 60%;
-}
+.leftPane {
+    background-color: #181818;
+    color: #b0b0b0;
+    padding: 10px;
+    border-right: 1px solid #333;
+  }
+  
+  .data {
+    background-color: #181818;
+    color: #b0b0b0;
+    padding: 10px;
+    flex: 1;
+  }
+  
+  .dataRow {
+    border-bottom: 1px solid #333;
+    padding: 10px 0;
+  }
+  

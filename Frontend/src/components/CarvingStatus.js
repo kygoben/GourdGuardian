@@ -34,6 +34,7 @@ function CarvingStatus({
           <input
             type="datetime-local"
             value={item.carving_start || ""}
+            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
             onChange={(e) => handleEdit(item, "carving_start", e.target.value)}
           ></input>
           <div>
@@ -57,6 +58,7 @@ function CarvingStatus({
           <input
             type="datetime-local"
             value={item.carving_end || ""}
+            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
             onChange={(e) => handleEdit(item, "carving_end", e.target.value)}
           ></input>
           <div>
@@ -92,6 +94,7 @@ function CarvingStatus({
               id={`carving_by_${item.sid}_${item.index}`}
               type="text"
               placeholder={"No Carver Assigned"}
+              style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
               defaultValue={item.carving_by}
             />
             <div>

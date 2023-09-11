@@ -24,20 +24,38 @@ const ProgressBar = () => {
   };
 
   return (
-    <div className="bg-gray-800 text-white p-4 flex items-center">
-      <div className="flex items-center space-x-2">
+    <div style={{ background: "#181818", color: "#b0b0b0", padding: "10px", display: "flex", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         <div>Progress:</div>
-        <div className="relative w-52 h-5 bg-gray-300 rounded-full overflow-hidden">
+        <div style={{ width: "130px", height: "10px", background: "#282828", borderRadius: "50px", overflow: "hidden", position: "relative" }}>
           <div
-            className="absolute top-0 left-0 h-full bg-blue-500 rounded-full flex items-center justify-center"
-            style={{ width: `${percentage}%` }}
+            style={{
+              position: "absolute",
+              top: "0",
+              left: "0",
+              height: "100%",
+              background: "#007bff",
+              borderRadius: "50px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: `${percentage}%`,
+            }}
           >
             {percentage > 5 && <span>{percentage}%</span>}
           </div>
         </div>
-        {percentage <= 5 && <span className="ml-2">{percentage}%</span>}
+        {percentage <= 5 && <span style={{ marginLeft: "10px" }}>{percentage}%</span>}
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+          style={{
+            background: "#007bff",
+            color: "#fff",
+            padding: "10px 20px",
+            borderRadius: "5px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+            border: "none",
+            cursor: "pointer",
+          }}
           onClick={getPercentage}
         >
           Refresh

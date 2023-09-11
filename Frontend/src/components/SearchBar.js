@@ -2,12 +2,13 @@ import React from "react";
 
 const SearchBar = ({ searchTerm, updateSearchTerm }) => {
   const searchBarStyle = {
-    background: "#111",
-    color: "#fff",
+    background: "#181818",  // Dark background color
+    color: "#b0b0b0",  // Lighter text color for better contrast against the dark background
     padding: "10px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    borderRadius: "5px",  // Adding border-radius for a rounded corner effect
   };
 
   const inputStyle = {
@@ -15,14 +16,15 @@ const SearchBar = ({ searchTerm, updateSearchTerm }) => {
     marginRight: "10px",
     padding: "5px",
     borderRadius: "4px",
-    border: "none",
+    border: "1px solid #333",  // Adding a subtle border
     fontSize: "16px",
-    color: "black",
+    color: "#b0b0b0",  // Lighter text color for better contrast against the dark background
+    background: "#282828",  // Dark background color for the input field
   };
 
   const buttonStyle = {
-    backgroundColor: "#007bff",
-    color: "#fff",
+    backgroundColor: "#007bff",  // Blue background color for the buttons
+    color: "#fff",  // White text color for the buttons
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",

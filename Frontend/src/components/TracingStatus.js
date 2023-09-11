@@ -26,37 +26,40 @@ function TracingStatus({
       (!item.tracing_confirmed && notConfirmed))
   ) {
     return (
-      <>
-        <td className={styles.tableCell}>{item.sid}</td>
-        {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
-        <td className={styles.tableCell}>{item.stencils.title}</td>
-        <td className={styles.tableCell}>
-          <input
-            type="datetime-local"
-            value={item.tracing_start || ""}
-            onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
-          ></input>
-          <div>
-            <button
-              className={styles.greenButton}
-              onClick={() =>
-                handleEdit(item, "tracing_start", currentDate.toISOString())
-              }
-            >
-              ✓
-            </button>
-            <button
-              className={styles.redButton}
-              onClick={() => handleEdit(item, "tracing_start", null)}
-            >
-              X
-            </button>
-          </div>
-        </td>
+      
+    <>
+    <td className={styles.tableCell}>{item.sid}</td>
+    {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
+    <td className={styles.tableCell}>{item.stencils.title}</td>
+    <td className={styles.tableCell}>
+      <input
+        type="datetime-local"
+        value={item.tracing_start || ""}
+        onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
+        style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
+      ></input>
+      <div>
+        <button
+          className={styles.greenButton}
+          onClick={() =>
+            handleEdit(item, "tracing_start", currentDate.toISOString())
+          }
+        >
+          ✓
+        </button>
+        <button
+          className={styles.redButton}
+          onClick={() => handleEdit(item, "tracing_start", null)}
+        >
+          X
+        </button>
+      </div>
+    </td>
         <td className={styles.tableCell}>
           <input
             type="datetime-local"
             value={item.tracing_end || ""}
+            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
             onChange={(e) => handleEdit(item, "tracing_end", e.target.value)}
           ></input>
           <div>
@@ -91,6 +94,7 @@ function TracingStatus({
             <input
               id={`tracing_by_${item.sid}_${item.index}`}
               type="text"
+              style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" }}
               placeholder={"No Tracer"}
               defaultValue={item.tracer}
             />
