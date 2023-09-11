@@ -10,7 +10,7 @@ export default function index() {
       <Link className={styles.back} href="/volunteer/landingPage">
         Click here to go to volunteer page
       </Link></p>
-      <Link className={styles.back} href="/admin/home">
+      <Link className={styles.back} href="/admin/status">
         Click here to go to admin page
       </Link>
     </div>

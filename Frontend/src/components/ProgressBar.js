@@ -1,91 +1,51 @@
 import { set } from "date-fns";
-import React, { use } from "react";
+import React from "react";
 import { supabase } from "./../../supabaseConnection.js";
-import { useState, useEffect } from "react"; // Import useEffect and useState
+import { useState, useEffect } from "react";
 
 const ProgressBar = () => {
-
-  //state var for percentage
   const [percentage, setPercentage] = useState(0);
 
   useEffect(() => {
-    //call the function to get the percentage
     getPercentage();
   }, []);
 
-  const navbarStyle = {
-    background: "#111",
-    color: "#fff",
-    padding: "10px",
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const logoStyle = {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textDecoration: "none",
-    color: "#fff",
-  };
-
-  const progressBarContainer = {
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const progressBarStyle = {
-    width: "200px", // Adjust the width as needed
-    height: "20px",
-    backgroundColor: "#ccc",
-    borderRadius: "10px",
-    margin: "0 10px",
-  };
-
-  const progressBarFillStyle = {
-    width: percentage*2, // Set the initial progress value here
-    height: "100%",
-    backgroundColor: "#007bff", // Change the color of the progress bar fill
-    borderRadius: "10px",
-    textAlign: "center",
-    lineHeight: "20px",
-    color: "#fff",
-  };
-
-
   const getPercentage = async () => {
-     const { data: totalData, totalError } = await supabase
-      .from('sstatus')
-      .select('sid');
+    const { data: totalData, totalError } = await supabase.from('sstatus').select('sid');
+    const { data: completeData, completeError } = await supabase.from('sstatus').select('sid').not('carving_confirmed', 'is', null);
 
-      const { data: completeData, completeError } = await supabase
-      .from('sstatus')
-      .select('sid')
-      .not('carving_confirmed', 'is', null);
+    if (!totalError && !completeError) {
+      const totalCount = totalData.length;
+      const completeCount = completeData.length;
+      let temp = (completeCount / totalCount) * 100;
+      temp = Math.round(temp * 2) / 2;
+      setPercentage(temp);
+    }
+  };
 
-      if (totalError || completeError) {
-      } else {
-        const totalCount = totalData.length;
-        const completeCount = completeData.length;
-
-        let temp = completeCount/totalCount*100;
-        temp = Math.round(temp * 2) / 2;
-
-        setPercentage(temp);
-      }
-} 
   return (
-    <div style={navbarStyle}>
-      <div style={progressBarContainer}>
-        <div>Progress: </div>
-        <div style={progressBarStyle}>
-          <div style={progressBarFillStyle}>{percentage}%</div>
+    <div className="bg-gray-800 text-white p-4 flex items-center">
+      <div className="flex items-center space-x-2">
+        <div>Progress:</div>
+        <div className="relative w-52 h-5 bg-gray-300 rounded-full overflow-hidden">
+          <div
+            className="absolute top-0 left-0 h-full bg-blue-500 rounded-full flex items-center justify-center"
+            style={{ width: `${percentage}%` }}
+          >
+            {percentage > 5 && <span>{percentage}%</span>}
+          </div>
         </div>
-        <button onClick={getPercentage}>
-          refresh
+        {percentage <= 5 && <span className="ml-2">{percentage}%</span>}
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+          onClick={getPercentage}
+        >
+          Refresh
         </button>
       </div>
     </div>
   );
+  
 };
 
 export default ProgressBar;
