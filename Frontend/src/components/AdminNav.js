@@ -1,5 +1,6 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
+import { supabase } from "./../../supabaseConnection.js";
 
 const Navbar = () => {
   const navbarStyle = {
@@ -27,10 +28,16 @@ const Navbar = () => {
     borderRadius: "5px",  // Adding border-radius for hover effect
     transition: "background 0.3s",  // Adding transition for smooth background change on hover
   };
+  const handleSignOut = async () => {
+    const { data, error } = await supabase.auth.signOut();
+    console.log(data);
+    router.refresh();
+  };
 
   return (
     <div style={navbarStyle}>
       <div style={logoStyle}>MyLogo</div>
+      <button onClick={handleSignOut}>Logout</button>
       <ProgressBar />
       <div>
         <a style={linkStyle} href="/admin/home" onMouseEnter={(e) => e.target.style.background = '#333'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>

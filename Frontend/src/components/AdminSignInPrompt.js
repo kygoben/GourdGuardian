@@ -42,20 +42,9 @@ const AdminSignInPrompt = ({ children }) => {
     }
     router.refresh();
   };
-  const handleSignOut = async () => {
-    const { data, error } = await supabase.auth.signOut();
-    console.log(data);
-    router.refresh();
-  };
+  
   return (
     <>
-      <div>
-        {isSignedIn && (
-          <button className={styles.signOutButton} onClick={handleSignOut}>
-            Sign Out
-          </button>
-        )}
-      </div>
       {!isSignedIn? (
         <div>
         <div className={styles.container}>

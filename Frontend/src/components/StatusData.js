@@ -6,6 +6,7 @@ import CuttingStatus from "./CuttingStatus";
 import TracingStatus from "./TracingStatus";
 import CarvingStatus from "./CarvingStatus";
 import PaginationButtons from "./PaginationButtons";
+import SearchBar from "./SearchBar";
 
 const StatusData = ({
   initialData,
@@ -18,6 +19,7 @@ const StatusData = ({
   inProgress,
   completed,
   searchTerm,
+  updateSearchTerm,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -151,11 +153,18 @@ const StatusData = ({
           ],
   };
 
-
-
   return (
     <div>
-      <PaginationButtons setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage}/>
+      <div className="flex justify-between items-center mb-4">
+        <SearchBar
+          searchTerm={searchTerm}
+          updateSearchTerm={updateSearchTerm}
+        />
+        <PaginationButtons
+          setCurrentPage={setCurrentPage}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
@@ -185,7 +194,10 @@ const StatusData = ({
           ))}
         </tbody>
       </table>
-      <PaginationButtons setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage}/>
+      <PaginationButtons
+        setCurrentPage={setCurrentPage}
+        itemsPerPage={itemsPerPage}
+      />
     </div>
   );
 };

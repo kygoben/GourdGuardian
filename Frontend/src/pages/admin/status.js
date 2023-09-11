@@ -90,11 +90,10 @@ export default function Status() {
           updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
-          <SearchBar 
-            searchTerm={searchTerm}
-            updateSearchTerm={updateSearchTerm}
-            />
+          
           <StatusData
+          // searchTerm={searchTerm}
+          updateSearchTerm={updateSearchTerm}
             className={styles.dataRow}
             year={year}
             week={week}
