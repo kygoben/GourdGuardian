@@ -210,10 +210,11 @@ const StatusData = ({
         </tbody>
       </table>
       <PaginationButtons
-        setCurrentPage={setCurrentPage}
-        itemsPerPage={itemsPerPage}
-        updateItemsPerPage={updateItemsPerPage}
-      />
+          updateCurrentPage={updateCurrentPage}
+          itemsPerPage={itemsPerPage}
+          updateItemsPerPage={updateItemsPerPage}
+          length={data.length}
+        />
     </div>
   );
 };
