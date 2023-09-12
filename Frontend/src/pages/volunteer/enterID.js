@@ -22,15 +22,23 @@ export default function Home() {
 
     // console.log(cookies().get('name'));
 
+    let{data: admin_data, error: adminError} = await supabase
+            .from("admin_data")
+            .select('*');
+            console.log(admin_data[0]);
+    const year = admin_data[0].year;
+    const week = admin_data[0].week;
+
+
+
     let { data: stencils, error } = await supabase
-      .from("stencils")
-      .select("sid, title, category(cname)")
-      .eq("sid", sid);
+      .from("sstatus")
+      .select("sid, stencils(title, category(cname))")
+      .eq("sid", sid)
+      .eq("year", year)
+      .eq("week", week);
 
-      console.log(stencils[0].category.cname);
-
-      stencils[0].category=stencils[0].category.cname;
-      console.log(stencils);
+     
 
     if (stencils.length < 1) {
       router.push({
@@ -38,8 +46,10 @@ export default function Home() {
         query: { error: "400" },
       });
     } else {
+
+      stencils[0].category=stencils[0].stencils.category.cname;
+      stencils[0].title=stencils[0].stencils.title;
       const query = stencils[0];
-      console.log(query);
       router.push({
         pathname: "/volunteer/confirm",
         query: query,

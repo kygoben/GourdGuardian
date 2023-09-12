@@ -56,6 +56,9 @@ const pumpkinData = (props) => {
   }
 
   const updateStatus = async () => {
+    let{data: admin_data, error: adminError} = await supabase
+            .from("admin_data")
+            .select('*');
     const time = getCurrentFormattedTime();
     if (sstatus != null) {
       if (sstage == 3) {
@@ -65,6 +68,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ tracing_start: time, tracing_by: name })
             .eq("sid", sstatus.sid)
+            .eq("year", admin_data[0].year)
+            .eq("week", admin_data[0].week)
             .select();
 
           console.log(data, error);
@@ -73,6 +78,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ tracing_end: time, tracing_by: name })
             .eq("sid", sstatus.sid)
+            .eq("year", admin_data[0].year)
+            .eq("week", admin_data[0].week)
             .select();
           console.log(data, error);
         }
@@ -82,6 +89,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ carving_start: time, carving_by: name })
             .eq("sid", sstatus.sid)
+            .eq("year", admin_data[0].year)
+            .eq("week", admin_data[0].week)
             .select();
           console.log(data, error);
         } else if (!sstatus.carving_end) {
@@ -89,6 +98,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ carving_end: time, carving_by: name })
             .eq("sid", sstatus.sid)
+            .eq("year", admin_data[0].year)
+            .eq("week", admin_data[0].week)
             .select();
           console.log(data, error);
         }
