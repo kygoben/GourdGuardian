@@ -28,12 +28,13 @@ export default function Home() {
             console.log(admin_data[0]);
     const year = admin_data[0].year;
     const week = admin_data[0].week;
+    const stage = admin_data[0].stage;
 
 
 
     let { data: stencils, error } = await supabase
       .from("sstatus")
-      .select("sid, stencils(title, category(cname))")
+      .select("*, stencils(title, category(cname))")
       .eq("sid", sid)
       .eq("year", year)
       .eq("week", week);
@@ -49,6 +50,9 @@ export default function Home() {
 
       stencils[0].category=stencils[0].stencils.category.cname;
       stencils[0].title=stencils[0].stencils.title;
+      stencils[0].week=week;
+      stencils[0].year=year;
+      stencils[0].stage=stage;
       const query = stencils[0];
       router.push({
         pathname: "/volunteer/confirm",

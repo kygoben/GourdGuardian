@@ -17,7 +17,6 @@ const pumpkinData = (props) => {
   const [name, setName] = useState(null);
 
   useEffect(() => {
-    // Fetch data from cookie when the component mounts
     const cookieValue = getCookieValue("name");
     setName(cookieValue);
   }, []);
@@ -112,23 +111,22 @@ const pumpkinData = (props) => {
   };
 
   async function fetchSStatusData() {
-    let { data: sstatus, statusError } = await supabase
-      .from("sstatus")
-      .select("*")
-      .eq("sid", router.query.sid);
-
-    // console.log(sstatus[0]);
-    setSStatus(sstatus[0]);
-
-    let { data: admin_data, stageError } = await supabase
-      .from("admin_data")
-      .select("stage");
-    setSStage(admin_data[0].stage);
-
-    if (stageError || statusError) {
-      console.error(error);
-      return;
+    setSStatus(router.query);
+    setSStage(router.query.stage);
+    if(router.query.stage == 1){
+      setStage("Printing");
+    } else if(router.query.stage == 2){
+      setStage("Cutting");
     }
+    else if(router.query.stage == 3){
+
+      setStage("Tracing");
+    }
+    else if(router.query.stage == 4){
+      setStage("Carving");
+    }
+
+
   }
 
   useEffect(() => {
@@ -136,6 +134,7 @@ const pumpkinData = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(sstatus);
     // This effect will run whenever sstatus gets updated
 
     if (sstatus !== null) {

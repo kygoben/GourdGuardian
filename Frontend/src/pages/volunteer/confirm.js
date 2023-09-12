@@ -7,6 +7,7 @@ export function confirm() {
   const router = useRouter();
 
   const callAPI = async () => {
+    console.log(router.query);
     router.push({
       pathname: "/volunteer/pumpkinData",
       query: router.query,
