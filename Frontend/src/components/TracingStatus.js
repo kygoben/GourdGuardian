@@ -85,7 +85,7 @@ function TracingStatus({
               type="text"
               style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px", fontSize: "14px"  }}
               placeholder={"No Tracer"}
-              defaultValue={item.tracer}
+              defaultValue={item.tracing_by}
             />
             <div>
               <button type="submit" className={styles.greenButton}>
