@@ -161,7 +161,7 @@ const LeftPane = ({
             borderRadius: "20px",
             backgroundColor: notConfirmed ? "#007bff" : "transparent",
             color: notConfirmed ? "#fff" : "#b0b0b0",
-            border: "1px solid #ccc",
+            border: "1px solid #333",
             cursor: "pointer",
           }}
         >
@@ -175,7 +175,7 @@ const LeftPane = ({
             borderRadius: "20px",
             backgroundColor: isConfirmed ? "#007bff" : "transparent",
             color: isConfirmed ? "#fff" : "#b0b0b0",
-            border: "1px solid #ccc",
+            border: "1px solid #333",
             cursor: "pointer",
           }}
         >
@@ -199,7 +199,7 @@ const LeftPane = ({
               borderRadius: "20px",
               backgroundColor: notStarted ? "#007bff" : "transparent",
               color: notStarted ? "#fff" : "#b0b0b0",
-              border: "1px solid #ccc",
+              border: "1px solid #333",
               cursor: "pointer",
             }}
           >
@@ -213,7 +213,7 @@ const LeftPane = ({
               borderRadius: "20px",
               backgroundColor: inProgress ? "#007bff" : "transparent",
               color: inProgress ? "#fff" : "#b0b0b0",
-              border: "1px solid #ccc",
+              border: "1px solid #333",
               cursor: "pointer",
             }}
           >
@@ -227,7 +227,7 @@ const LeftPane = ({
               borderRadius: "20px",
               backgroundColor: completed ? "#007bff" : "transparent",
               color: completed ? "#fff" : "#b0b0b0",
-              border: "1px solid #ccc",
+              border: "1px solid #333",
               cursor: "pointer",
             }}
           >
