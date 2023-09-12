@@ -45,7 +45,7 @@ const StatusData = ({
     try {
       const { data: sstatusData, error } = await supabase
         .from("sstatus")
-        .select("*, stencils(title)")
+        .select("*, stencils(title, cid)")
         .eq("year", year);
 
       if (error) {
@@ -77,24 +77,41 @@ const StatusData = ({
     setCurrentPage(1);
     if (data)
       return data.filter((item) => {
-        if (
-          (stage === 1 || stage === 2) &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-            searchTerm !== "") ||
-            (item.week !== week && week !== "Both"))
-        ) {
-          return false;
-        }
+        // if (
+        //   (stage === 1 || stage === 2) &&
+        //   ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+        //     searchTerm !== "" && item.stencils.category.toLowerCase() !== searchTerm.toLowerCase()) ||
+        //     (item.week !== week && week !== "Both"))
+        // ) {
+        //   return false;
+        // }
         if (
           stage === 1 &&
-          ((item.printing && notStarted) || (!item.printing && completed))
-        ) {
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&(
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0 )||
+            (item.week !== week && week !== "Both") ||
+            (!item.printing && !notStarted) ||
+            (item.printing && !completed))
+        ) ){
+          // console.log(item.stencils.cid, searchTerm);
           return false;
         }
 
         if (
           stage === 2 &&
-          ((item.cutting && notStarted) || (!item.cutting && completed))
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+          searchTerm !== "" &&
+          item.stencils.cid != searchTerm &&(
+          item.stencils.title
+            .toLowerCase()
+            .indexOf(searchTerm.toLowerCase()) < 0 )||
+          (item.week !== week && week !== "Both") ||
+          (!item.cutting && !notStarted) ||
+          (item.cutting && !completed)))
         ) {
           return false;
         }
@@ -103,7 +120,10 @@ const StatusData = ({
           stage === 3 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
-            item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase())) < 0 ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
@@ -111,7 +131,7 @@ const StatusData = ({
             (!isConfirmed && item.tracing_confirmed) ||
             (!notConfirmed && !item.tracing_confirmed))
         ) {
-          console.log((!isConfirmed && item.tracing_confirmed));
+          console.log(!isConfirmed && item.tracing_confirmed);
           return false;
         }
 
@@ -119,7 +139,10 @@ const StatusData = ({
           stage === 4 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
-            item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase())) < 0 ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
@@ -129,7 +152,8 @@ const StatusData = ({
         ) {
           return false;
         }
-        console.log(item);
+        // console.log(item);
+        // console.log(item.stencils.cid, searchTerm);
         return true;
       });
   }, [
