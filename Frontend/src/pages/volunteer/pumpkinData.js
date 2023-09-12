@@ -110,6 +110,7 @@ const pumpkinData = (props) => {
     }
   };
 
+
   async function fetchSStatusData() {
     setSStatus(router.query);
     setSStage(router.query.stage);
@@ -224,9 +225,9 @@ const pumpkinData = (props) => {
   } else {
     buttons = (
       <div className={styles.section}>
-        <Link className={styles.back} href="/volunteer/enterID">
-          Back to Home Page
-        </Link>
+        <button className={styles.button} onClick={endScreen}>
+          Finish
+        </button>
       </div>
     );
   }
