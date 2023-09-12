@@ -13,18 +13,7 @@ function TracingStatus({
   notConfirmed,
   currentDate,
 }) {
-  if (
-    (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
-      searchTerm === "" ||
-      item.tracing_by?.toLowerCase() === searchTerm.toLowerCase() ||
-      searchTerm === "") &&
-    (item.week === week || week === "Both") &&
-    ((!item.tracing_start && notStarted) ||
-      (!item.tracing_end && inProgress && item.tracing_start) ||
-      (item.tracing_end && completed)) &&
-    ((item.tracing_confirmed && isConfirmed) ||
-      (!item.tracing_confirmed && notConfirmed))
-  ) {
+
     return (
       
     <>
@@ -138,7 +127,5 @@ function TracingStatus({
       </>
     );
   }
-  return null;
-}
 
 export default TracingStatus;

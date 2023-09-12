@@ -73,7 +73,61 @@ const StatusData = ({
     }
   };
 
-  const paginatedData = data.slice(
+  const filteredData = data.filter((item) => {
+    let isValid = true;
+    if (
+      (stage === 1 || stage === 2) &&
+      ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+        searchTerm !== "") ||
+        (item.week !== week && week !== "Both"))
+    ) {
+      return false;
+    }
+    if (
+      stage === 1 &&
+      ((item.printing && notStarted) || (!item.printing && completed))
+    ) {
+      return false;
+    }
+
+    if (
+      stage === 2 &&
+      ((item.cutting && notStarted) || (!item.cutting && completed))
+    ) {
+      return false;
+    }
+
+    if (
+      stage === 3 &&
+      ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+        searchTerm !== "" &&
+        item.tracing_by.toLowerCase() !== searchTerm.toLowerCase()) ||
+        (item.week !== week && week !== "Both") ||
+        (!item.tracing_start && !notStarted) ||
+        (item.tracing_end && !completed) ||
+        (!inProgress && item.tracing_start && !item.tracing_end))
+    ) {
+      return false;
+    }
+
+    if (
+      stage === 3 &&
+      ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+        searchTerm !== "" &&
+        item.carving_by.toLowerCase() !== searchTerm.toLowerCase()) ||
+        (item.week !== week && week !== "Both") ||
+        (!item.carving_start && !notStarted) ||
+        (item.carving_end && !completed) ||
+        (!inProgress && item.carving_start && !item.carving_end))
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  console.log(filteredData);
+
+  const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -92,7 +146,12 @@ const StatusData = ({
       if (!error) {
         setData((prevData) => {
           const newData = [...prevData];
-          const itemIndex = newData.findIndex((el) => el.sid === item.sid && el.year === item.year && el.week === item.week);
+          const itemIndex = newData.findIndex(
+            (el) =>
+              el.sid === item.sid &&
+              el.year === item.year &&
+              el.week === item.week
+          );
           if (itemIndex !== -1) {
             newData[itemIndex] = updatedData[0];
           }
@@ -162,7 +221,7 @@ const StatusData = ({
           ],
   };
   //if data lenth is 0 return There is no Data to show
-  if (data.length === 0) {
+  if (filteredData.length === 0) {
     return <div>There is no data to show</div>;
   }
 
@@ -177,7 +236,7 @@ const StatusData = ({
           updateCurrentPage={updateCurrentPage}
           itemsPerPage={itemsPerPage}
           updateItemsPerPage={updateItemsPerPage}
-          length={data.length}
+          length={filteredData.length}
         />
       </div>
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -210,11 +269,11 @@ const StatusData = ({
         </tbody>
       </table>
       <PaginationButtons
-          updateCurrentPage={updateCurrentPage}
-          itemsPerPage={itemsPerPage}
-          updateItemsPerPage={updateItemsPerPage}
-          length={data.length}
-        />
+        updateCurrentPage={updateCurrentPage}
+        itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
+        length={filteredData.length}
+      />
     </div>
   );
 };
