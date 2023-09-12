@@ -108,9 +108,10 @@ const StatusData = ({
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
             (!inProgress && item.tracing_start && !item.tracing_end) ||
-            (!isConfirmed && item.tracing_isConfirmed) ||
-            (!notConfirmed && !item.tracing_isConfirmed))
+            (!isConfirmed && item.tracing_confirmed) ||
+            (!notConfirmed && !item.tracing_confirmed))
         ) {
+          console.log((!isConfirmed && item.tracing_confirmed));
           return false;
         }
 
@@ -123,8 +124,8 @@ const StatusData = ({
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
             (!inProgress && item.carving_start && !item.carving_end) ||
-            (!isConfirmed && item.carving_isConfirmed) ||
-            (!notConfirmed && !item.carving_isConfirmed))
+            (!isConfirmed && item.carving_confirmed) ||
+            (!notConfirmed && !item.carving_confirmed))
         ) {
           return false;
         }
