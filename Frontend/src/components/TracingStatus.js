@@ -13,119 +13,138 @@ function TracingStatus({
   notConfirmed,
   currentDate,
 }) {
-
-    return (
-      
+  return (
     <>
-    <td className={styles.tableCell}>{item.sid}</td>
-    {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
-    <td className={styles.tableCell}>{item.stencils.title}</td>
-    <td className={styles.tableCell}>
-      <input
-        type="datetime-local"
-        value={item.tracing_start || ""}
-        onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
-        style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px", fontSize: "14px"  }}
-      ></input>
-      <div>
-        <button
-          className={styles.greenButton}
-          onClick={() =>
-            handleEdit(item, "tracing_start", currentDate.toISOString())
-          }
-        >
-          ✓
-        </button>
-        <button
-          className={styles.redButton}
-          onClick={() => handleEdit(item, "tracing_start", null)}
-        >
-          X
-        </button>
-      </div>
-    </td>
-        <td className={styles.tableCell}>
-          <input
-            type="datetime-local"
-            value={item.tracing_end || ""}
-            style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px" , fontSize: "14px" }}
-            onChange={(e) => handleEdit(item, "tracing_end", e.target.value)}
-          ></input>
-          <div>
-            <button
-              className={styles.greenButton}
-              onClick={() =>
-                handleEdit(item, "tracing_end", currentDate.toISOString())
-              }
-            >
-              ✓
-            </button>
-            <button
-              className={styles.redButton}
-              onClick={() => handleEdit(item, "tracing_end", null)}
-            >
-              X
-            </button>
-          </div>
-        </td>
-        <td className={styles.tableCell}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleEdit(
-                item,
-                "tracing_by",
-                document.getElementById(`tracing_by_${item.sid}_${item.index}`)
-                  .value
-              );
-            }}
+      <td className={styles.tableCell}>{item.sid}</td>
+      {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
+      <td className={styles.tableCell}>{item.stencils.title}</td>
+      <td className={styles.tableCell}>
+        <input
+          type="datetime-local"
+          value={item.tracing_start || ""}
+          onChange={(e) => handleEdit(item, "tracing_start", e.target.value)}
+          style={{
+            backgroundColor: "#282828",
+            color: "#b0b0b0",
+            border: "1px solid #333",
+            borderRadius: "4px",
+            padding: "5px",
+            fontSize: "14px",
+          }}
+        ></input>
+        <div>
+          <button
+            className={styles.greenButton}
+            onClick={() =>
+              handleEdit(item, "tracing_start", currentDate.toISOString())
+            }
           >
-            <input
-              id={`tracing_by_${item.sid}_${item.index}`}
-              type="text"
-              style={{ backgroundColor: "#282828", color: "#b0b0b0", border: "1px solid #333", borderRadius: "4px", padding: "5px", fontSize: "14px"  }}
-              placeholder={"No Tracer"}
-              defaultValue={item.tracing_by}
-            />
-            <div>
-              <button type="submit" className={styles.greenButton}>
-                Save
-              </button>
-              <button
-                className={styles.redButton}
-                onClick={() => {
-                  handleEdit(item, "tracing_by", null);
-                  document.getElementById(
-                    `tracing_by_${item.sid}_${item.index}`
-                  ).value = null;
-                }}
-              >
-                Clear
-              </button>
-            </div>
-          </form>
-        </td>
-        <td className={styles.tableCell}>
-          {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+            ✓
+          </button>
+          <button
+            className={styles.redButton}
+            onClick={() => handleEdit(item, "tracing_start", null)}
+          >
+            X
+          </button>
+        </div>
+      </td>
+      <td className={styles.tableCell}>
+        <input
+          type="datetime-local"
+          value={item.tracing_end || ""}
+          style={{
+            backgroundColor: "#282828",
+            color: "#b0b0b0",
+            border: "1px solid #333",
+            borderRadius: "4px",
+            padding: "5px",
+            fontSize: "14px",
+          }}
+          onChange={(e) => handleEdit(item, "tracing_end", e.target.value)}
+        ></input>
+        <div>
+          <button
+            className={styles.greenButton}
+            onClick={() =>
+              handleEdit(item, "tracing_end", currentDate.toISOString())
+            }
+          >
+            ✓
+          </button>
+          <button
+            className={styles.redButton}
+            onClick={() => handleEdit(item, "tracing_end", null)}
+          >
+            X
+          </button>
+        </div>
+      </td>
+      <td className={styles.tableCell}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleEdit(
+              item,
+              "tracing_by",
+              document.getElementById(`tracing_by_${item.sid}_${item.index}`)
+                .value
+            );
+          }}
+        >
+          <input
+            id={`tracing_by_${item.sid}_${item.index}`}
+            type="text"
+            style={{
+              backgroundColor: "#282828",
+              color: "#b0b0b0",
+              border: "1px solid #333",
+              borderRadius: "4px",
+              padding: "5px",
+              fontSize: "14px",
+            }}
+            placeholder={"No Tracer"}
+            defaultValue={item.tracing_by}
+          />
           <div>
-            <button
-              className={styles.greenButton}
-              onClick={() =>
-                handleEdit(item, "tracing_confirmed", currentDate.toISOString())
-              }
-            >
-              Confirm
+            <button type="submit" className={styles.greenButton}>
+              Save
             </button>
             <button
               className={styles.redButton}
-              onClick={() => handleEdit(item, "tracing_confirmed", null)}
+              onClick={() => {
+                handleEdit(item, "tracing_by", null);
+                document.getElementById(
+                  `tracing_by_${item.sid}_${item.index}`
+                ).value = null;
+              }}
             >
               Clear
             </button>
           </div>
-        </td>
-      </>
-    );
-  }
+        </form>
+      </td>
+      <td className={styles.tableCell}>
+        {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+        <div>
+          <button
+            className={styles.greenButton}
+            onClick={() =>
+              handleEdit(item, "tracing_confirmed", currentDate.toISOString())
+            }
+          >
+            Confirm
+          </button>
+          <button
+            className={styles.redButton}
+            onClick={() => handleEdit(item, "tracing_confirmed", null)}
+          >
+            Clear
+          </button>
+        </div>
+      </td>
+    </>
+  );
+}
 
 export default TracingStatus;

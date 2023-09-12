@@ -75,63 +75,62 @@ const StatusData = ({
 
   const filteredData = useMemo(() => {
     setCurrentPage(1);
-    if(data)
-    return data.filter((item) => {
-      if (
-        (stage === 1 || stage === 2) &&
-        ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-          searchTerm !== "") ||
-          (item.week !== week && week !== "Both"))
-      ) {
-        return false;
-      }
-      if (
-        stage === 1 &&
-        ((item.printing && notStarted) || (!item.printing && completed))
-      ) {
-        return false;
-      }
+    if (data)
+      return data.filter((item) => {
+        if (
+          (stage === 1 || stage === 2) &&
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "") ||
+            (item.week !== week && week !== "Both"))
+        ) {
+          return false;
+        }
+        if (
+          stage === 1 &&
+          ((item.printing && notStarted) || (!item.printing && completed))
+        ) {
+          return false;
+        }
 
-      if (
-        stage === 2 &&
-        ((item.cutting && notStarted) || (!item.cutting && completed))
-      ) {
-        return false;
-      }
+        if (
+          stage === 2 &&
+          ((item.cutting && notStarted) || (!item.cutting && completed))
+        ) {
+          return false;
+        }
 
-      if (
-        stage === 3 &&
-        ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-          searchTerm !== "" &&
-          item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
-          (item.week !== week && week !== "Both") ||
-          (!item.tracing_start && !notStarted) ||
-          (item.tracing_end && !completed) ||
-          (!inProgress && item.tracing_start && !item.tracing_end) ||
-          (!isConfirmed && item.tracing_isConfirmed) ||
-          (!notConfirmed && !item.tracing_isConfirmed))
-      ) {
-        return false;
-      }
+        if (
+          stage === 3 &&
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "" &&
+            item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+            (item.week !== week && week !== "Both") ||
+            (!item.tracing_start && !notStarted) ||
+            (item.tracing_end && !completed) ||
+            (!inProgress && item.tracing_start && !item.tracing_end) ||
+            (!isConfirmed && item.tracing_isConfirmed) ||
+            (!notConfirmed && !item.tracing_isConfirmed))
+        ) {
+          return false;
+        }
 
-      if (
-        stage === 4 &&
-        ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-          searchTerm !== "" &&
-          item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
-          (item.week !== week && week !== "Both") ||
-          (!item.carving_start && !notStarted) ||
-          (item.carving_end && !completed) ||
-          (!inProgress && item.carving_start && !item.carving_end) ||
-          (!isConfirmed && item.carving_isConfirmed) ||
-          (!notConfirmed && !item.carving_isConfirmed))
-      ) {
-        return false;
-      }
-      console.log(item);
-      return true;
-    });
-    
+        if (
+          stage === 4 &&
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "" &&
+            item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+            (item.week !== week && week !== "Both") ||
+            (!item.carving_start && !notStarted) ||
+            (item.carving_end && !completed) ||
+            (!inProgress && item.carving_start && !item.carving_end) ||
+            (!isConfirmed && item.carving_isConfirmed) ||
+            (!notConfirmed && !item.carving_isConfirmed))
+        ) {
+          return false;
+        }
+        console.log(item);
+        return true;
+      });
   }, [
     data,
     stage,
