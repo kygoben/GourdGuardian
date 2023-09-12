@@ -77,41 +77,32 @@ const StatusData = ({
     setCurrentPage(1);
     if (data)
       return data.filter((item) => {
-        // if (
-        //   (stage === 1 || stage === 2) &&
-        //   ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-        //     searchTerm !== "" && item.stencils.category.toLowerCase() !== searchTerm.toLowerCase()) ||
-        //     (item.week !== week && week !== "Both"))
-        // ) {
-        //   return false;
-        // }
         if (
           stage === 1 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
-            item.stencils.cid != searchTerm &&(
+            item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 )||
+              .indexOf(searchTerm.toLowerCase()) < 0) ||
             (item.week !== week && week !== "Both") ||
             (!item.printing && !notStarted) ||
             (item.printing && !completed))
-        ) ){
-          // console.log(item.stencils.cid, searchTerm);
+        ) {
           return false;
         }
 
         if (
           stage === 2 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-          searchTerm !== "" &&
-          item.stencils.cid != searchTerm &&(
-          item.stencils.title
-            .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) < 0 )||
-          (item.week !== week && week !== "Both") ||
-          (!item.cutting && !notStarted) ||
-          (item.cutting && !completed)))
+            searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0) ||
+            (item.week !== week && week !== "Both") ||
+            (!item.cutting && !notStarted) ||
+            (item.cutting && !completed))
         ) {
           return false;
         }
@@ -123,7 +114,8 @@ const StatusData = ({
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase())) < 0 ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
@@ -142,7 +134,8 @@ const StatusData = ({
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase())) < 0 ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
@@ -152,8 +145,6 @@ const StatusData = ({
         ) {
           return false;
         }
-        // console.log(item);
-        // console.log(item.stencils.cid, searchTerm);
         return true;
       });
   }, [
