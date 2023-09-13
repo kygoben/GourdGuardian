@@ -1,13 +1,15 @@
 import React from "react";
 import styles from "@/styles/admin.module.css";
 import Navbar from "@/components/AdminNav";
+import QuickAdd from "@/components/QuickAdd";
 
 export default function Home() {
 
   return (
     <>
     <Navbar />
-    <div className={styles.container}>
+    <QuickAdd />
+    {/* <div className={styles.container}>
       <header className={styles.header}>
         <h1>Jack-O-Lantern Tracker</h1>
       </header>
@@ -41,7 +43,8 @@ export default function Home() {
         <button className={styles.quickActionButton}>Search</button>
         <button className={styles.quickActionButton}>Print</button>
         <button className={styles.quickActionButton}>Change Status</button>
-      </div>
-    </div></>
+      </div> */}
+    {/* </div> */}
+    </>
   );
 }

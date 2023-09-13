@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "@/components/AdminNav";
 import LeftPane from "@/components/LeftPane";
 import StatusData from "@/components/StatusData";
-import SearchBar from "@/components/SearchBar";
 import styles from "@/styles/status.module.css";
 import { useState } from "react";
 import AdminSignInPrompt from "@/components/AdminSignInPrompt";
+import QuickAdd from "@/components/QuickAdd";
 
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -16,7 +16,7 @@ export default function Status() {
   const [notStarted, setNotStarted] = useState(true);
   const [inProgress, setInProgress] = useState(true);
   const [completed, setCompleted] = useState(true);
-  //state for search bar
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const updateYear = (newValue) => {
@@ -65,6 +65,11 @@ export default function Status() {
     console.log(notConfirmed);
   };
 
+  const updateShowQuickAdd = (newValue) => {
+    setShowQuickAdd(newValue);
+  }
+
+
   return (
     <AdminSignInPrompt>
       <Navbar />
@@ -90,7 +95,7 @@ export default function Status() {
           updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
-          
+          {showQuickAdd && <QuickAdd stage={stage} week={week} year={year} updateShowQuickAdd={updateShowQuickAdd}/>}
           <StatusData
           // searchTerm={searchTerm}
           updateSearchTerm={updateSearchTerm}
@@ -104,6 +109,7 @@ export default function Status() {
             inProgress={inProgress}
             completed={completed}
             searchTerm={searchTerm}
+            updateShowQuickAdd={updateShowQuickAdd}
           />
         </div>
       </div>

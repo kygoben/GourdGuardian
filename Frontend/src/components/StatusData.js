@@ -20,6 +20,7 @@ const StatusData = ({
   completed,
   searchTerm,
   updateSearchTerm,
+  updateShowQuickAdd,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,7 +66,7 @@ const StatusData = ({
 
         return 0;
       });
-      console.log(sstatusData);
+      // console.log(sstatusData);
 
       setData(sstatusData);
     } catch (error) {
@@ -123,7 +124,7 @@ const StatusData = ({
             (!isConfirmed && item.tracing_confirmed) ||
             (!notConfirmed && !item.tracing_confirmed))
         ) {
-          console.log(!isConfirmed && item.tracing_confirmed);
+          // console.log(!isConfirmed && item.tracing_confirmed);
           return false;
         }
 
@@ -159,7 +160,7 @@ const StatusData = ({
     notConfirmed,
   ]);
 
-  console.log(filteredData);
+  // console.log(filteredData);
 
   const paginatedData = (filteredData || []).slice(
     (currentPage - 1) * itemsPerPage,
@@ -263,6 +264,12 @@ const StatusData = ({
           searchTerm={searchTerm}
           updateSearchTerm={updateSearchTerm}
         />
+        <button
+      onClick={() => updateShowQuickAdd((prev) => !prev)}
+      className="mr-2"
+    >
+      Toggle Quick Add
+    </button>
         <PaginationButtons
           updateCurrentPage={updateCurrentPage}
           itemsPerPage={itemsPerPage}
