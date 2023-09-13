@@ -67,8 +67,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ tracing_start: time, tracing_by: name })
             .eq("sid", sstatus.sid)
-            .eq("year", admin_data[0].year)
-            .eq("week", admin_data[0].week)
+            .eq("year", sstatus.year)
+            .eq("week", sstatus.week)
             .select();
 
           console.log(data, error);
@@ -77,8 +77,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ tracing_end: time, tracing_by: name })
             .eq("sid", sstatus.sid)
-            .eq("year", admin_data[0].year)
-            .eq("week", admin_data[0].week)
+            .eq("year", sstatus.year)
+            .eq("week", sstatus.week)
             .select();
           console.log(data, error);
         }
@@ -88,8 +88,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ carving_start: time, carving_by: name })
             .eq("sid", sstatus.sid)
-            .eq("year", admin_data[0].year)
-            .eq("week", admin_data[0].week)
+            .eq("year", sstatus.year)
+            .eq("week", sstatus.week)
             .select();
           console.log(data, error);
         } else if (!sstatus.carving_end) {
@@ -97,8 +97,8 @@ const pumpkinData = (props) => {
             .from("sstatus")
             .update({ carving_end: time, carving_by: name })
             .eq("sid", sstatus.sid)
-            .eq("year", admin_data[0].year)
-            .eq("week", admin_data[0].week)
+            .eq("year", sstatus.year)
+            .eq("week", sstatus.week)
             .select();
           console.log(data, error);
         }

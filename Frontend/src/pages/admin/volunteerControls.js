@@ -31,6 +31,7 @@ export default function Status() {
       .update({ year: year, week: week, stage: stage })
       .eq("uid", "admin")
       .select();
+      console.log(data, error);
   };
 
   return (
@@ -51,22 +52,23 @@ export default function Status() {
         />
         <div className="mb-3 text-gray-400">Week</div>
 <div className="mb-5 space-x-2">
-  {[1, 2].map((w) => (
+{[1, 2, "Both"].map((w) => (
     <button
       key={w}
       style={{
         padding: "5px 10px",
         borderRadius: "20px",
-        backgroundColor: week === w ? "#007bff" : "transparent",
-        color: week === w ? "#fff" : "#b0b0b0",
+        backgroundColor: week == w || (week == "3" && w === "Both") ? "#007bff" : "transparent",
+        color: week == w || (week == "3" && w === "Both") ? "#fff" : "#b0b0b0",
         border: "1px solid #333",
         cursor: "pointer",
       }}
-      onClick={() => setWeek(w)}
+      onClick={() => setWeek(w === "Both" ? "3" : String(w))}
     >
-      Week {w}
+      {w}
     </button>
   ))}
+
 </div>
 <div className="mb-3 text-gray-400">Stage</div>
 <div className="mb-5 space-x-2">
