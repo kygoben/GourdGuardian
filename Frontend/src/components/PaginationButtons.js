@@ -23,12 +23,6 @@ const PaginationButtons = ({ updateCurrentPage, itemsPerPage, length, updateItem
       <div style={{ display: "flex", gap: "10px" }}>
         <button
           style={buttonStyle}
-          onClick={() => updateCurrentPage(1)}
-        >
-          First
-        </button>
-        <button
-          style={buttonStyle}
           onClick={() => updateCurrentPage((prev) => Math.max(prev - 1, 1))}
         >
           Previous
@@ -42,12 +36,6 @@ const PaginationButtons = ({ updateCurrentPage, itemsPerPage, length, updateItem
           }
         >
           Next
-        </button>
-        <button
-          style={buttonStyle}
-          onClick={() => updateCurrentPage(Math.ceil(length / itemsPerPage))}
-        >
-          Last
         </button>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

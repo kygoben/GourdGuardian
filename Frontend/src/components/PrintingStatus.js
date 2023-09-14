@@ -9,12 +9,7 @@ function PrintingStatus({
   notStarted,
   completed,
 }) {
-  if (
-    (item.sid.toLowerCase() === searchTerm.toLowerCase() ||
-      searchTerm === "") &&
-    (item.week === week || week === "Both") &&
-    ((!item.printing && notStarted) || (item.printing && completed))
-  ) {
+  
     return (
       <>
         <td className={styles.tableCell}>{item.sid}</td>
@@ -40,7 +35,5 @@ function PrintingStatus({
       </>
     );
   }
-  return null;
-}
 
 export default PrintingStatus;

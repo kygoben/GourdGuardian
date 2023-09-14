@@ -36,10 +36,11 @@ export default function Home() {
       .from("sstatus")
       .select("*, stencils(title, category(cname))")
       .eq("sid", sid)
-      .eq("year", year)
-      .eq("week", week);
+      .eq("year", year);
 
-     
+      if(week < 3){
+        stencils = stencils.filter((stencil) => stencil.week == week);
+      }     
 
     if (stencils.length < 1) {
       router.push({
