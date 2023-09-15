@@ -20,6 +20,7 @@ const StatusData = ({
   completed,
   searchTerm,
   updateSearchTerm,
+  updateShowQuickAdd,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +46,7 @@ const StatusData = ({
     try {
       const { data: sstatusData, error } = await supabase
         .from("sstatus")
-        .select("*, stencils(title)")
+        .select("*, stencils(title, cid)")
         .eq("year", year);
 
       if (error) {
@@ -65,7 +66,7 @@ const StatusData = ({
 
         return 0;
       });
-      console.log(sstatusData);
+      // console.log(sstatusData);
 
       setData(sstatusData);
     } catch (error) {
@@ -78,23 +79,31 @@ const StatusData = ({
     if (data)
       return data.filter((item) => {
         if (
-          (stage === 1 || stage === 2) &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-            searchTerm !== "") ||
-            (item.week !== week && week !== "Both"))
-        ) {
-          return false;
-        }
-        if (
           stage === 1 &&
-          ((item.printing && notStarted) || (!item.printing && completed))
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0) ||
+            (item.week !== week && week !== "Both") ||
+            (!item.printing && !notStarted) ||
+            (item.printing && !completed))
         ) {
           return false;
         }
 
         if (
           stage === 2 &&
-          ((item.cutting && notStarted) || (!item.cutting && completed))
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+            searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0) ||
+            (item.week !== week && week !== "Both") ||
+            (!item.cutting && !notStarted) ||
+            (item.cutting && !completed))
         ) {
           return false;
         }
@@ -103,6 +112,10 @@ const StatusData = ({
           stage === 3 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
             item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
@@ -111,7 +124,7 @@ const StatusData = ({
             (!isConfirmed && item.tracing_confirmed) ||
             (!notConfirmed && !item.tracing_confirmed))
         ) {
-          console.log((!isConfirmed && item.tracing_confirmed));
+          // console.log(!isConfirmed && item.tracing_confirmed);
           return false;
         }
 
@@ -119,6 +132,10 @@ const StatusData = ({
           stage === 4 &&
           ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
+            item.stencils.cid != searchTerm &&
+            item.stencils.title
+              .toLowerCase()
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
             item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
@@ -129,7 +146,6 @@ const StatusData = ({
         ) {
           return false;
         }
-        console.log(item);
         return true;
       });
   }, [
@@ -144,7 +160,7 @@ const StatusData = ({
     notConfirmed,
   ]);
 
-  console.log(filteredData);
+  // console.log(filteredData);
 
   const paginatedData = (filteredData || []).slice(
     (currentPage - 1) * itemsPerPage,
@@ -248,6 +264,12 @@ const StatusData = ({
           searchTerm={searchTerm}
           updateSearchTerm={updateSearchTerm}
         />
+        <button
+      onClick={() => updateShowQuickAdd((prev) => !prev)}
+      className="mr-2"
+    >
+      Toggle Quick Add
+    </button>
         <PaginationButtons
           updateCurrentPage={updateCurrentPage}
           itemsPerPage={itemsPerPage}

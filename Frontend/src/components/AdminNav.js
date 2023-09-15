@@ -1,8 +1,10 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
 import { supabase } from "./../../supabaseConnection.js";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
+  const router = useRouter();
   const navbarStyle = {
     background: "#181818",  // Dark background color
     color: "#b0b0b0",  // Lighter text color for better contrast against the dark background
@@ -31,7 +33,7 @@ const Navbar = () => {
   const handleSignOut = async () => {
     const { data, error } = await supabase.auth.signOut();
     console.log(data);
-    router.refresh();
+    router.reload();
   };
 
   return (
