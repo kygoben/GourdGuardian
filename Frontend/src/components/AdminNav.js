@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <div style={navbarStyle}>
-      <div style={logoStyle}>MyLogo</div>
+      <div style={logoStyle}>GourdGuardian</div>
       <button onClick={handleSignOut}>Logout</button>
       <ProgressBar />
       <div>

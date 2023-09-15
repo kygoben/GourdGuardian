@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 
 export default function landingPage() {
   const router = useRouter();
-  const email = "volunteer@gmail.com";
   const [name, setName] = useState(null);
   console.log(name);
 
