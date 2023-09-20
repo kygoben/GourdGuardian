@@ -21,6 +21,7 @@ const StatusData = ({
   searchTerm,
   updateSearchTerm,
   updateShowQuickAdd,
+  showQuickAdd,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,10 +37,10 @@ const StatusData = ({
   };
 
   useEffect(() => {
-    if (year !== null) {
+    if (year !== null && !showQuickAdd) {
       getData();
     }
-  }, [year]);
+  }, [year, showQuickAdd]);
 
   const getData = async () => {
     console.log("Getting data");

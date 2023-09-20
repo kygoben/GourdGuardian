@@ -110,6 +110,7 @@ export default function Status() {
             completed={completed}
             searchTerm={searchTerm}
             updateShowQuickAdd={updateShowQuickAdd}
+            showQuickAdd={showQuickAdd}
           />
         </div>
       </div>
