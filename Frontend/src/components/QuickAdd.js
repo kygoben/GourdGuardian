@@ -98,6 +98,7 @@ function QuickAdd({stage, week, year, updateShowQuickAdd}) {
                     className="w-full px-2 py-1 border border-gray-300 rounded bg-gray-700 text-white"
                     placeholder="Enter SID"
                     onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+                    autoFocus
                   />
                   <button
                     onClick={handleAdd}

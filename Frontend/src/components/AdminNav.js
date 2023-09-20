@@ -42,9 +42,9 @@ const Navbar = () => {
       <button onClick={handleSignOut}>Logout</button>
       <ProgressBar />
       <div>
-        <a style={linkStyle} href="/admin/home" onMouseEnter={(e) => e.target.style.background = '#333'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+        {/* <a style={linkStyle} href="/admin/home" onMouseEnter={(e) => e.target.style.background = '#333'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
           Home
-        </a>
+        </a> */}
         <a style={linkStyle} href="/admin/volunteerControls" onMouseEnter={(e) => e.target.style.background = '#333'} onMouseLeave={(e) => e.target.style.background = 'transparent'}>
           VolunteerLocks
         </a>

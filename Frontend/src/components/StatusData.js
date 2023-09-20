@@ -261,18 +261,12 @@ const StatusData = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <SearchBar
-          searchTerm={searchTerm}
-          updateSearchTerm={updateSearchTerm}
-        />
-        <button
-      onClick={() => updateShowQuickAdd((prev) => !prev)}
-      className="mr-2"
-    >
-      Toggle Quick Add
-    </button>
+        
         <PaginationButtons
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
           updateCurrentPage={updateCurrentPage}
+          updateShowQuickAdd={updateShowQuickAdd}
           itemsPerPage={itemsPerPage}
           updateItemsPerPage={updateItemsPerPage}
           length={filteredData.length}

@@ -54,6 +54,33 @@ const LeftPane = ({
 
   return (
     <div style={{ padding: "5px", backgroundColor: "#181818", width: '15%'}}>
+      <div>
+      <label
+          htmlFor="stage"
+          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
+        >
+          Mode:
+        </label>
+        <div style={{ display: "flex", flexDirection: 'column', gap: "5px" }}>
+          {stages.map((s) => (
+            <button
+            key={s}
+            className={stage === s ? "selected" : ""}
+            onClick={() => updateStage(s)}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
+              color: stage === stageCalc(s) ? "#fff" : "#b0b0b0",
+              border: "1px solid #333",
+              cursor: "pointer",
+            }}
+          >
+            {s}
+          </button>
+          ))}
+        </div>
+      </div>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="year"
@@ -118,33 +145,7 @@ const LeftPane = ({
           ))}
         </div>
       </div>
-      <div>
-      <label
-          htmlFor="stage"
-          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
-        >
-          Stage:
-        </label>
-        <div style={{ display: "flex", flexDirection: 'column', gap: "5px" }}>
-          {stages.map((s) => (
-            <button
-            key={s}
-            className={stage === s ? "selected" : ""}
-            onClick={() => updateStage(s)}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
-              color: stage === stageCalc(s) ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            {s}
-          </button>
-          ))}
-        </div>
-      </div>
+      
       <div style={{display: 'flex', flexDirection: 'column', marginBottom: "20px" }}>
       <label
           htmlFor="year"

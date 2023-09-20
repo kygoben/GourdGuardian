@@ -125,7 +125,13 @@ function TracingStatus({
         </form>
       </td>
       <td className={styles.tableCell}>
-        {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+        <span
+          className={
+            item.tracing_confirmed ? styles.confirmed : styles.notConfirmed
+          }
+        >
+          {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
+        </span>
         <div>
           <button
             className={styles.greenButton}

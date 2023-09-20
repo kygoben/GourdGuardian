@@ -5,6 +5,14 @@
   background-color: #181818;
 }
 
+.confirmed {
+  color: green;
+}
+
+.notConfirmed {
+  color: red;
+}
+
 .greenButton {
   background-color: #28a745;
   color: #fff;

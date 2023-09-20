@@ -125,7 +125,13 @@ function CarvingStatus({
         </form>
       </td>
       <td className={styles.tableCell}>
-        {item.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+      <span
+          className={
+            item.carving_confirmed ? styles.confirmed : styles.notConfirmed
+          }
+        >
+          {item.carving_confirmed ? "Confirmed" : "Not Confirmed"}
+        </span>
         <div>
           <button
             className={styles.greenButton}
