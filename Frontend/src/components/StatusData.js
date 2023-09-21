@@ -6,7 +6,6 @@ import CuttingStatus from "./CuttingStatus";
 import TracingStatus from "./TracingStatus";
 import CarvingStatus from "./CarvingStatus";
 import PaginationButtons from "./PaginationButtons";
-import SearchBar from "./SearchBar";
 
 const StatusData = ({
   initialData,
@@ -261,10 +260,10 @@ const StatusData = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        
         <PaginationButtons
-        searchTerm={searchTerm}
-        updateSearchTerm={updateSearchTerm}
+        autoFocus={true}
+          searchTerm={searchTerm}
+          updateSearchTerm={updateSearchTerm}
           updateCurrentPage={updateCurrentPage}
           updateShowQuickAdd={updateShowQuickAdd}
           itemsPerPage={itemsPerPage}
@@ -302,11 +301,15 @@ const StatusData = ({
         </tbody>
       </table>
       <PaginationButtons
-        updateCurrentPage={updateCurrentPage}
-        itemsPerPage={itemsPerPage}
-        updateItemsPerPage={updateItemsPerPage}
-        length={filteredData.length}
-      />
+        autoFocus={false}
+          searchTerm={searchTerm}
+          updateSearchTerm={updateSearchTerm}
+          updateCurrentPage={updateCurrentPage}
+          updateShowQuickAdd={updateShowQuickAdd}
+          itemsPerPage={itemsPerPage}
+          updateItemsPerPage={updateItemsPerPage}
+          length={filteredData.length}
+        />
     </div>
   );
 };
