@@ -259,18 +259,17 @@ const StatusData = ({
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <PaginationButtons
+      <PaginationButtons
         autoFocus={true}
-          searchTerm={searchTerm}
-          updateSearchTerm={updateSearchTerm}
-          updateCurrentPage={updateCurrentPage}
-          updateShowQuickAdd={updateShowQuickAdd}
-          itemsPerPage={itemsPerPage}
-          updateItemsPerPage={updateItemsPerPage}
-          length={filteredData.length}
-        />
-      </div>
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
+        updateCurrentPage={updateCurrentPage}
+        updateShowQuickAdd={updateShowQuickAdd}
+        itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
+        length={filteredData.length}
+      />
+
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
           <tr>
@@ -302,14 +301,14 @@ const StatusData = ({
       </table>
       <PaginationButtons
         autoFocus={false}
-          searchTerm={searchTerm}
-          updateSearchTerm={updateSearchTerm}
-          updateCurrentPage={updateCurrentPage}
-          updateShowQuickAdd={updateShowQuickAdd}
-          itemsPerPage={itemsPerPage}
-          updateItemsPerPage={updateItemsPerPage}
-          length={filteredData.length}
-        />
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
+        updateCurrentPage={updateCurrentPage}
+        updateShowQuickAdd={updateShowQuickAdd}
+        itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
+        length={filteredData.length}
+      />
     </div>
   );
 };

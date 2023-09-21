@@ -11,8 +11,7 @@ const PaginationButtons = ({
   updateSearchTerm,
   autoFocus,
 }) => {
-  useEffect(() => {
-  }, [searchTerm]);
+  useEffect(() => {}, [searchTerm]);
   const buttonStyle = {
     backgroundColor: "#007bff",
     border: "none",
@@ -39,43 +38,57 @@ const PaginationButtons = ({
         color: "#b0b0b0",
       }}
     >
-        <input
-          id="search"
-          type="text"
-          placeholder="Search Here"
-          defaultValue={searchTerm}
-          style={{
-            width: "200px",
-            padding: "5px",
-            borderRadius: "5px",
-            backgroundColor: "#282828",
-            color: "#b0b0b0",
-            border: "1px solid #333",
-          }}
-          autoComplete="off"
-          autoFocus={autoFocus}
-          onChange={(e) => {
-            e.preventDefault();
-            updateSearchTerm(document.getElementById("search").value);
-          }}
-        />
-        <button
-          onClick={() => {
-            updateSearchTerm("");
-            document.getElementById("search").value = "";
-          }}
-          style={buttonStyle}
-        >
-          Clear X
-        </button>
-
-      <div style={{ display: "flex", gap: "10px" }}>
-        <button
-          onClick={() => updateShowQuickAdd((prev) => !prev)}
-          style={buttonStyle}
-        >
-          Quick Add
-        </button>
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ position: "relative", width: "200px" }}>
+          <input
+            id="search"
+            type="text"
+            placeholder="Search Here"
+            defaultValue={searchTerm}
+            autoComplete="off"
+            style={{
+              width: "100%",
+              padding: "5px",
+              paddingRight: "30px", // Make space for the "x"
+              borderRadius: "5px",
+              backgroundColor: "#282828",
+              color: "#b0b0b0",
+              border: "1px solid #333",
+            }}
+            autoFocus={autoFocus}
+            onChange={(e) => {
+              e.preventDefault();
+              updateSearchTerm(e.target.value);
+            }}
+          />
+          {searchTerm && (
+            <span
+              onClick={() => {
+                updateSearchTerm("");
+                document.getElementById("search").value = "";
+              }}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+              }}
+            >
+              x
+            </span>
+          )}
+        </div>
+      </div>
+  
+      <button
+        onClick={() => updateShowQuickAdd((prev) => !prev)}
+        style={buttonStyle}
+      >
+        Quick Add
+      </button>
+  
+      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <button
           style={buttonStyle}
           onClick={() => updateCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -92,31 +105,32 @@ const PaginationButtons = ({
         >
           Next
         </button>
-      </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <label htmlFor="itemsPerPage" style={{ fontSize: "16px" }}>
-          Items per page:
-        </label>
-        <select
-          id="itemsPerPage"
-          style={{
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "10px 20px",
-            backgroundColor: "#282828",
-            color: "#b0b0b0",
-          }}
-          value={itemsPerPage}
-          onChange={(e) => updateItemsPerPage(Number(e.target.value))}
-        >
-          <option value={100}>100</option>
-          <option value={400}>400</option>
-          <option value={800}>800</option>
-          <option value={1800}>1800</option>
-        </select>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <label htmlFor="itemsPerPage" style={{ fontSize: "16px" }}>
+            Items per page:
+          </label>
+          <select
+            id="itemsPerPage"
+            style={{
+              border: "1px solid #333",
+              borderRadius: "4px",
+              padding: "10px 20px",
+              backgroundColor: "#282828",
+              color: "#b0b0b0",
+            }}
+            value={itemsPerPage}
+            onChange={(e) => updateItemsPerPage(Number(e.target.value))}
+          >
+            <option value={100}>100</option>
+            <option value={400}>400</option>
+            <option value={800}>800</option>
+            <option value={1800}>1800</option>
+          </select>
+        </div>
       </div>
     </div>
   );
+  
 };
 
 export default PaginationButtons;
