@@ -16,17 +16,17 @@ function PrintingStatus({
         {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
         <td className={styles.tableCell}>{item.stencils.title}</td>
         <td className={styles.tableCell}>
-          {item.printing ? "Complete" : "Incomplete"}
+          {item.printing_confirmed ? "Complete" : "Incomplete"}
           <div>
             <button
               className={styles.greenButton}
-              onClick={() => handleEdit(item, "printing", 1)}
+              onClick={() => handleEdit(item, "printing_confirmed", 1)}
             >
               Complete
             </button>
             <button
               className={styles.redButton}
-              onClick={() => handleEdit(item, "printing", 0)}
+              onClick={() => handleEdit(item, "printing_confirmed", 0)}
             >
               Clear
             </button>
