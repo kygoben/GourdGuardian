@@ -15,7 +15,13 @@ function CuttingStatus({
       {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>
-        {item.cutting_confirmed ? "Complete" : "Incomplete"}
+      <span
+          className={
+            item.cutting_confirmed ? styles.confirmed : styles.notConfirmed
+          }
+        >
+          {item.cutting_confirmed ? "Confirmed" : "Not Confirmed"}
+        </span>
         <div>
           <button
             className={styles.greenButton}
