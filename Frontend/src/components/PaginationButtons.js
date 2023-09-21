@@ -1,5 +1,6 @@
 import React, { use } from "react";
 import { useEffect } from "react";
+import { debounce } from "lodash";
 
 const PaginationButtons = ({
   updateCurrentPage,
@@ -12,6 +13,7 @@ const PaginationButtons = ({
   autoFocus,
 }) => {
   useEffect(() => {}, [searchTerm]);
+  const updateSearchTermDebounced = debounce(updateSearchTerm, 300);
   const buttonStyle = {
     backgroundColor: "#007bff",
     border: "none",
@@ -58,7 +60,7 @@ const PaginationButtons = ({
             autoFocus={autoFocus}
             onChange={(e) => {
               e.preventDefault();
-              updateSearchTerm(e.target.value);
+              updateSearchTermDebounced(e.target.value);
             }}
           />
           {searchTerm && (
