@@ -73,13 +73,13 @@ const SignInPrompt = ({ children }) => {
   };
   return (
     <>
-      <div>
+      {/* <div>
         {isSignedIn && (
           <button className={styles.signOutButton} onClick={handleSignOut}>
             Sign Out
           </button>
         )}
-      </div>
+      </div> */}
       {!isSignedIn || !isName ? (
         <div>
         <div className={styles.container}>
