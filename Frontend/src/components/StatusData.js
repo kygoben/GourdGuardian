@@ -6,6 +6,7 @@ import CuttingStatus from "./CuttingStatus";
 import TracingStatus from "./TracingStatus";
 import CarvingStatus from "./CarvingStatus";
 import PaginationButtons from "./PaginationButtons";
+import SearchBar from "./SearchBar.js";
 
 const StatusData = ({
   initialData,
@@ -26,6 +27,12 @@ const StatusData = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
+  const [showPdf, setShowPdf] = useState(false);
+
+  const updateShowPdf = (newValue) => {
+    console.log(newValue);
+    setShowPdf(newValue);
+  };
 
   const updateItemsPerPage = (newValue) => {
     setItemsPerPage(newValue);
@@ -48,6 +55,7 @@ const StatusData = ({
         .from("sstatus")
         .select("*, stencils(title, cid)")
         .eq("year", year);
+        
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -259,16 +267,19 @@ const StatusData = ({
 
   return (
     <div>
-      <PaginationButtons
-        autoFocus={true}
-        searchTerm={searchTerm}
-        updateSearchTerm={updateSearchTerm}
-        updateCurrentPage={updateCurrentPage}
-        updateShowQuickAdd={updateShowQuickAdd}
-        itemsPerPage={itemsPerPage}
-        updateItemsPerPage={updateItemsPerPage}
-        length={filteredData.length}
-      />
+      <SearchBar
+      autoFocus={false}
+      searchTerm={searchTerm}
+      updateSearchTerm={updateSearchTerm}
+      updateCurrentPage={updateCurrentPage}
+      updateShowQuickAdd={updateShowQuickAdd}
+      itemsPerPage={itemsPerPage}
+      updateItemsPerPage={updateItemsPerPage}
+      length={filteredData.length}
+      showPdf={showPdf}
+      updateShowPdf={updateShowPdf}
+     />
+
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
@@ -294,6 +305,7 @@ const StatusData = ({
                 isConfirmed={isConfirmed}
                 notConfirmed={notConfirmed}
                 currentDate={currentDate}
+                showPdf={showPdf}
               />
             </tr>
           ))}

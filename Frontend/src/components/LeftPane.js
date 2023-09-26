@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 
 const LeftPane = ({
   year,
@@ -18,8 +19,7 @@ const LeftPane = ({
   updateInProgress,
   updateCompleted,
 }) => {
-  const weeks = [1, 2, 'Both']; // Update with your desired weeks
-  const stages = ["Printing", "Cutting", 'Tracing', "Carving"]; // Update with your desired stages
+  const weeks = [1, 2, "Both"]; // Update with your desired weeks
 
   const handleYearChange = (newYear) => {
     updateYear(newYear);
@@ -46,40 +46,39 @@ const LeftPane = ({
   };
 
   const stageCalc = (s) => {
-    if(s === "Printing") return 1;
-    else if(s === "Cutting") return 2;
-    else if(s === "Tracing") return 3;
-    else if(s === "Carving") return 4;
-  }
+    if (s === "Printing") return 1;
+    else if (s === "Cutting") return 2;
+    else if (s === "Tracing") return 3;
+    else if (s === "Carving") return 4;
+  };
+
+  const handleModeChange = (e) => {
+    updateStage(e.target.value);
+  };
 
   return (
-    <div style={{ padding: "5px", backgroundColor: "#181818", width: '15%'}}>
-      <div>
-      <label
-          htmlFor="stage"
-          style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
-        >
+    <div style={{ padding: "5px", backgroundColor: "#181818", width: "15%" }}>
+      <div className="mb-5">
+        <label htmlFor="stage" className="mr-2 font-bold text-gray-200">
           Mode:
         </label>
-        <div style={{ display: "flex", flexDirection: 'column', gap: "5px" }}>
-          {stages.map((s) => (
-            <button
-            key={s}
-            className={stage === s ? "selected" : ""}
-            onClick={() => updateStage(s)}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: stage === stageCalc(s) ? "#007bff" : "transparent",
-              color: stage === stageCalc(s) ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            {s}
-          </button>
-          ))}
-        </div>
+        <select
+          id="stage"
+          value={stageCalc(stage)}
+          onChange={handleModeChange}
+          style={{
+            padding: "5px",
+            borderRadius: "5px",
+            backgroundColor: "#282828",
+            color: "#b0b0b0",
+            border: "1px solid #333",
+          }}
+        >
+          <option value={"Printing"}>Printing</option>
+          <option value={"Cutting"}>Cutting</option>
+          <option value={"Tracing"}>Tracing</option>
+          <option value={"Carving"}>Carving</option>
+        </select>
       </div>
       <div style={{ marginBottom: "20px" }}>
         <label
@@ -88,30 +87,24 @@ const LeftPane = ({
         >
           Year:
         </label>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
           <button
             style={{ padding: "5px", borderRadius: "50%", color: "#b0b0b0" }}
             onClick={() => handleYearChange(year - 1)}
           >
             &#8592;
           </button>
-          <input
-          type="number"
-          id="year"
-          value={year}
-          onChange={(e) => handleYearChange(e.target.value)}
-          style={{
-            width: "60px",
-            padding: "5px",
-            borderRadius: "5px",
+          <div style={{
             textAlign: "center",
-            backgroundColor: "#282828",
             color: "#b0b0b0",
-            border: "1px solid #333",
-          }}
-        />
+          }}>{year}</div>
           <button
-            style={{ padding: "5px", borderRadius: "50%", marginLeft: "10px", color: "#b0b0b0"}}
+            style={{
+              padding: "5px",
+              borderRadius: "50%",
+              marginLeft: "10px",
+              color: "#b0b0b0",
+            }}
             onClick={() => handleYearChange(year + 1)}
           >
             &#8594;
@@ -128,61 +121,67 @@ const LeftPane = ({
         <div style={{ display: "flex", gap: "10px" }}>
           {weeks.map((w) => (
             <button
-            key={w}
-            className={week === w ? "selected" : ""}
-            onClick={() => updateWeek(w)}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: week === w ? "#007bff" : "transparent",
-              color: week === w ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            {w}
-          </button>
+              key={w}
+              className={week === w ? "selected" : ""}
+              onClick={() => updateWeek(w)}
+              style={{
+                padding: "5px 10px",
+                borderRadius: "20px",
+                backgroundColor: week === w ? "#007bff" : "transparent",
+                color: week === w ? "#fff" : "#b0b0b0",
+                border: "1px solid #333",
+                cursor: "pointer",
+              }}
+            >
+              {w}
+            </button>
           ))}
         </div>
       </div>
-      
-      <div style={{display: 'flex', flexDirection: 'column', marginBottom: "20px" }}>
-      <label
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: "20px",
+        }}
+      >
+        <label
           htmlFor="year"
           style={{ marginRight: "10px", fontWeight: "bold", color: "#b0b0b0" }}
         >
           Confirmed:
         </label>
-        <div style={{display: "flex", gap: "10px" }}>
-        <button
-          className={isConfirmed ? "selected" : ""}
-          onClick={handleNotConfirmedToggle}
-          style={{
-            padding: "5px 10px",
-            borderRadius: "20px",
-            backgroundColor: notConfirmed ? "#007bff" : "transparent",
-            color: notConfirmed ? "#fff" : "#b0b0b0",
-            border: "1px solid #333",
-            cursor: "pointer",
-          }}
-        >
-          Not Confirmed
-        </button>
-        <button
-          className={isConfirmed ? "selected" : ""}
-          onClick={handleIsConfirmedToggle}
-          style={{
-            padding: "5px 10px",
-            borderRadius: "20px",
-            backgroundColor: isConfirmed ? "#007bff" : "transparent",
-            color: isConfirmed ? "#fff" : "#b0b0b0",
-            border: "1px solid #333",
-            cursor: "pointer",
-          }}
-        >
-          Is Confirmed
-        </button>
-      </div>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            className={isConfirmed ? "selected" : ""}
+            onClick={handleNotConfirmedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: notConfirmed ? "#007bff" : "transparent",
+              color: notConfirmed ? "#fff" : "#b0b0b0",
+              border: "1px solid #333",
+              cursor: "pointer",
+            }}
+          >
+            Not Confirmed
+          </button>
+          <button
+            className={isConfirmed ? "selected" : ""}
+            onClick={handleIsConfirmedToggle}
+            style={{
+              padding: "5px 10px",
+              borderRadius: "20px",
+              backgroundColor: isConfirmed ? "#007bff" : "transparent",
+              color: isConfirmed ? "#fff" : "#b0b0b0",
+              border: "1px solid #333",
+              cursor: "pointer",
+            }}
+          >
+            Is Confirmed
+          </button>
+        </div>
       </div>
       <div style={{ marginBottom: "20px" }}>
         <label

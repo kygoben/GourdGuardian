@@ -10,7 +10,7 @@ import QuickAdd from "@/components/QuickAdd";
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
-  const [stage, setStage] = useState(3);
+  const [stage, setStage] = useState(1);
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [notConfirmed, setNotConfirmed] = useState(true);
   const [notStarted, setNotStarted] = useState(true);
@@ -48,10 +48,10 @@ export default function Status() {
   };
 
   const updateStage = (newValue) => {
-    if(newValue === "Printing") setStage(1);
-    else if(newValue === "Cutting") setStage(2);
-    else if(newValue === "Tracing") setStage(3);
-    else if(newValue === "Carving") setStage(4);
+    if (newValue === "Printing") setStage(1);
+    else if (newValue === "Cutting") setStage(2);
+    else if (newValue === "Tracing") setStage(3);
+    else if (newValue === "Carving") setStage(4);
     // setStage(newValue);
   };
 
@@ -67,8 +67,7 @@ export default function Status() {
 
   const updateShowQuickAdd = (newValue) => {
     setShowQuickAdd(newValue);
-  }
-
+  };
 
   return (
     <AdminSignInPrompt>
@@ -95,10 +94,16 @@ export default function Status() {
           updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
-          {showQuickAdd && <QuickAdd stage={stage} week={week} year={year} updateShowQuickAdd={updateShowQuickAdd}/>}
+          {showQuickAdd && (
+            <QuickAdd
+              stage={stage}
+              week={week}
+              year={year}
+              updateShowQuickAdd={updateShowQuickAdd}
+            />
+          )}
           <StatusData
-          // searchTerm={searchTerm}
-          updateSearchTerm={updateSearchTerm}
+            updateSearchTerm={updateSearchTerm}
             className={styles.dataRow}
             year={year}
             week={week}

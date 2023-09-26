@@ -7,13 +7,7 @@ const PaginationButtons = ({
   itemsPerPage,
   length,
   updateItemsPerPage,
-  updateShowQuickAdd,
-  searchTerm,
-  updateSearchTerm,
-  autoFocus,
 }) => {
-  useEffect(() => {}, [searchTerm]);
-  const updateSearchTermDebounced = debounce(updateSearchTerm, 300);
   const buttonStyle = {
     backgroundColor: "#007bff",
     border: "none",
@@ -26,10 +20,6 @@ const PaginationButtons = ({
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
   };
 
-  const activeButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#0056b3",
-  };
 
   return (
     <div
@@ -40,55 +30,7 @@ const PaginationButtons = ({
         color: "#b0b0b0",
       }}
     >
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <div style={{ position: "relative", width: "200px" }}>
-          <input
-            id="search"
-            type="text"
-            placeholder="Search Here"
-            defaultValue={searchTerm}
-            autoComplete="off"
-            style={{
-              width: "100%",
-              padding: "5px",
-              paddingRight: "30px", // Make space for the "x"
-              borderRadius: "5px",
-              backgroundColor: "#282828",
-              color: "#b0b0b0",
-              border: "1px solid #333",
-            }}
-            autoFocus={autoFocus}
-            onChange={(e) => {
-              e.preventDefault();
-              updateSearchTermDebounced(e.target.value);
-            }}
-          />
-          {searchTerm && (
-            <span
-              onClick={() => {
-                updateSearchTerm("");
-                document.getElementById("search").value = "";
-              }}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                cursor: "pointer",
-              }}
-            >
-              x
-            </span>
-          )}
-        </div>
-      </div>
-  
-      <button
-        onClick={() => updateShowQuickAdd((prev) => !prev)}
-        style={buttonStyle}
-      >
-        Quick Add
-      </button>
+
   
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <button
