@@ -29,6 +29,7 @@ const ProgressBar = () => {
             {percentage > 5 && <span className="text-xs">{percentage}%</span>}
           </div>
         </div>
+        
         {percentage <= 5 && <span className="ml-2.5">{percentage}%</span>}
       </div>
     </div>

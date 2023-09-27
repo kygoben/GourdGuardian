@@ -45,7 +45,7 @@ const SignInPrompt = ({ children }) => {
     }
 
     if (!password) {
-      setPasswordError("Please enter the password.");
+      setPasswordError("Please enter the event code.");
       return;
     }
 
@@ -57,7 +57,7 @@ const SignInPrompt = ({ children }) => {
     console.log(data, error);
 
     if (error) {
-      setPasswordError("Incorrect Password");
+      setPasswordError("Incorrect event code.");
       return;
     }
     setPassword(password);
@@ -73,51 +73,46 @@ const SignInPrompt = ({ children }) => {
   };
   return (
     <>
-      {/* <div>
-        {isSignedIn && (
-          <button className={styles.signOutButton} onClick={handleSignOut}>
-            Sign Out
-          </button>
-        )}
-      </div> */}
       {!isSignedIn || !isName ? (
-        <div>
-        <div className={styles.container}>
-          <h1 className={styles.title}>
-            Thank you for volunteering at Reiman Gardens!
-          </h1>
-          <div>Your Name:</div>
-          <input
-  className="border-2 border-black rounded-md w-72 p-2 mb-2 inputField"
-  type="text"
-  value={name}
-  onChange={(e) => setName(e.target.value)}
-  placeholder="Name"
-/>
-          {nameError && <p className="text-red-500">{nameError}</p>}{" "}
-          <div>Event Code:</div>
-          <input
-            className="border-2 border-black rounded-md w-72 p-2 mb-2"
-            type="text"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Event Code"
-          />
-          {passwordError && <p className="text-red-500">{passwordError}</p>}{" "}
-        </div>
-        <div className="flex flex-row justify-center items-center">
-        <button
-  className="border-2 border-black rounded-md w-32 p-2 m-2 submitButton"
-  onClick={handleSignIn}
->
-  Submit
-</button>
-        </div>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="bg-white p-8">
+            <h1 className="text-2xl font-semibold mb-6">
+              Thank you for volunteering at Reiman Gardens!
+            </h1>
+            <label className="block text-sm font-medium mb-2">Your Name:</label>
+            <input
+              className="w-full border-2 border-gray-300 rounded-md p-2 mb-2 focus:outline-none focus:border-blue-500"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name"
+            />
+            {nameError && <p className="text-red-500 text-sm">{nameError}</p>}
+            <label className="block text-sm font-medium mb-2">Event Code:</label>
+            <input
+              className="w-full border-2 border-gray-300 rounded-md p-2 mb-2 focus:outline-none focus:border-blue-500"
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Event Code"
+            />
+            {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
+            <div className="flex justify-center mt-4">
+              <button
+                className="w-1/2 sm:w-auto bg-blue-500 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                onClick={handleSignIn}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         children
       )}
     </>
   );
+  
+  
 };
 export default SignInPrompt;
