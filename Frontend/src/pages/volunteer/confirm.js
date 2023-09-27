@@ -7,7 +7,6 @@ export function confirm() {
   const router = useRouter();
 
   const callAPI = async () => {
-    console.log(router.query);
     router.push({
       pathname: "/volunteer/pumpkinData",
       query: router.query,
@@ -21,6 +20,7 @@ export function confirm() {
           title={router.query.title}
           sid={router.query.sid}
           category={router.query.category}
+          extras={router.query.extras}
         ></PumpkinData>
         <div className={styles.instructions}>Is this your stencil?</div>
         <button className={styles.button} onClick={callAPI}>

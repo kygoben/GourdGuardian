@@ -3,34 +3,41 @@ import { useRouter } from "next/router";
 import styles from "@/styles/data.module.css";
 import PumpkinData from "@/components/Pumpkin";
 import { supabase } from "supabaseConnection";
-import Link from "next/link";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
-import { NextPageContext } from "next";
+import { parse } from "cookie";
 
-const pumpkinData = (props) => {
+const pumpkinData = () => {
   const router = useRouter();
-  const [sstatus, setSStatus] = useState("Error"); //db values
-  const [sstage, setSStage] = useState("Error"); //db values
-  const [stage, setStage] = useState("Error"); //string of stage
-  const [status, setStatus] = useState("Error"); //string of status
-  const [nextStage, setNextStage] = useState("Error"); //button to show
-  const [name, setName] = useState(null);
+  const [nextStage, setNextStage] = useState(); //button to show
+  const [status, setStatus] = useState(); //status of pumpkin
+  // const stage = router.query.stage.charAt(0).toUpperCase() + router.query.stage.slice(1);
+  const [name, setName] = useState("");
+
+  const stage = router.query.stage;
 
   useEffect(() => {
-    const cookieValue = getCookieValue("name");
-    setName(cookieValue);
-  }, []);
 
-  const getCookieValue = (name) => {
-    const cookies = document.cookie.split(";");
-    for (let cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.trim().split("=");
-      if (cookieName === name) {
-        return decodeURIComponent(cookieValue);
-      }
+    if (typeof document !== 'undefined') {
+      const parsedName = parse(document.cookie).name?.toLowerCase();
+      setName(parsedName);
     }
-    return null;
-  };
+
+    const startKey = `${stage}_start`;
+    const endKey = `${stage}_end`;
+
+    if (!router.query[startKey]) {
+      console.log(router.query[startKey]);
+      setNextStage("Start");
+      setStatus("Not Started");
+    } else if (!router.query[endKey]) {
+      setNextStage("Finish");
+      setStatus("In Progress");
+    } else {
+      setNextStage("Completed");
+      setStatus("Completed");
+    }
+  }, [router.query]);
+
 
   const endScreen = async () => {
     router.push({
@@ -55,184 +62,43 @@ const pumpkinData = (props) => {
   }
 
   const updateStatus = async () => {
-    let{data: admin_data, error: adminError} = await supabase
-            .from("admin_data")
-            .select('*');
     const time = getCurrentFormattedTime();
-    if (sstatus != null) {
-      if (sstage == 3) {
-        if (status == "Not Started") {
-          //start time
+    const startKey = `${stage}_start`;
+    const endKey = `${stage}_end`;
+        if (!router.query[startKey]) {
           const { data, error } = await supabase
             .from("sstatus")
-            .update({ tracing_start: time, tracing_by: name })
-            .eq("sid", sstatus.sid)
-            .eq("year", sstatus.year)
-            .eq("week", sstatus.week)
+            .update({ tracing_start: time, tracing_by: router.query.name })
+            .eq("sid", router.query.sid)
+            .eq("year", router.query.year)
+            .eq("week", router.query.week)
             .select();
 
-          console.log(data, error);
-        } else if (!sstatus.tracing_end) {
+            setNextStage("Finish");
+            setStatus("In Progress");
+
+          // console.log(data, error);
+        } else if (!router.query[endKey]) {
           const { data, error } = await supabase
             .from("sstatus")
             .update({ tracing_end: time, tracing_by: name })
-            .eq("sid", sstatus.sid)
-            .eq("year", sstatus.year)
-            .eq("week", sstatus.week)
+            .eq("sid", router.query.sid)
+            .eq("year", router.query.year)
+            .eq("week", router.query.week)
             .select();
-          console.log(data, error);
-        }
-      } else if (sstage == 4) {
-        if (status == "Not Started") {
-          const { data, error } = await supabase
-            .from("sstatus")
-            .update({ carving_start: time, carving_by: name })
-            .eq("sid", sstatus.sid)
-            .eq("year", sstatus.year)
-            .eq("week", sstatus.week)
-            .select();
-          console.log(data, error);
-        } else if (!sstatus.carving_end) {
-          const { data, error } = await supabase
-            .from("sstatus")
-            .update({ carving_end: time, carving_by: name })
-            .eq("sid", sstatus.sid)
-            .eq("year", sstatus.year)
-            .eq("week", sstatus.week)
-            .select();
-          console.log(data, error);
-        }
-      }
-      router.push({
-        pathname: "/volunteer/end",
-        query: router.query,
-      });
+
+            router.push({
+              pathname: "/volunteer/end",
+              query: router.query,
+            });
+
+            setNextStage("Completed");
+            setStatus("Completed");
+          // console.log(data, error);
     }
   };
 
-
-  async function fetchSStatusData() {
-    setSStatus(router.query);
-    setSStage(router.query.stage);
-    if(router.query.stage == 1){
-      setStage("Printing");
-    } else if(router.query.stage == 2){
-      setStage("Cutting");
-    }
-    else if(router.query.stage == 3){
-
-      setStage("Tracing");
-    }
-    else if(router.query.stage == 4){
-      setStage("Carving");
-    }
-
-
-  }
-
-  useEffect(() => {
-    fetchSStatusData();
-  }, []);
-
-  useEffect(() => {
-    console.log(sstatus);
-    // This effect will run whenever sstatus gets updated
-
-    if (sstatus !== null) {
-      if (sstage == 1) {
-        setStage("Printing");
-        if (!sstatus.printing) {
-          setStatus("Not Started");
-        } else {
-          setStatus("Complete");
-        }
-      } else if (sstage == 2) {
-        setStage("Cutting");
-        if (!sstatus.cutting) {
-          setStatus("Not Started");
-        } else {
-          setStatus("Complete");
-        }
-      } else if (sstage == 3) {
-        setStage("Tracing");
-        if (!sstatus.tracing_start) {
-          setStatus("Not Started");
-          setNextStage("Start");
-        } else if (!sstatus.tracing_end) {
-          setStatus("In Progress...");
-          setNextStage("Finish");
-        } else if (!sstatus.tracing_confirmed) {
-          setStatus("To be Confirmed");
-        } else if (sstatus.tracing_confirmed) {
-          setStatus("Complete");
-        }
-      } else if (sstage == 4) {
-        setStage("Carving");
-        if (!sstatus.carving_start) {
-          setStatus("Not Started");
-          setNextStage("Start");
-        } else if (!sstatus.carving_end) {
-          setStatus("In Progress...");
-          setNextStage("Finish");
-        } else if (!sstatus.carving_confirmed) {
-          setStatus("To be Confirmed");
-        } else if (sstatus.carving_confirmed) {
-          setStatus("Complete");
-        }
-      }
-    }
-  }, [sstatus, sstage]);
-
-  let buttons;
-  if (sstage < 3) {
-    buttons = (
-      <div className={styles.section}>
-        <button
-          className={styles.button}
-          onClick={() => {
-            router.push("/volunteer/enterID");
-          }}
-        >
-          Back to Home Page
-        </button>
-      </div>
-    );
-  } else if (status == "Not Started") {
-    buttons = (
-      <div className={styles.section}>
-        <button className={styles.button} onClick={updateStatus}>
-          {nextStage} {stage}
-        </button>
-        <button className={styles.back} href="/volunteer/enterID">
-          Back to Home Page
-        </button>
-      </div>
-    );
-  } else if (status == "In Progress...") {
-    buttons = (
-      <div className={styles.section}>
-        <button className={styles.button} onClick={updateStatus}>
-          {nextStage} {stage}
-        </button>
-        <button className={styles.button} onClick={endScreen}>
-          I would like to stop early
-        </button>
-        <button className={styles.back} href="/volunteer/enterID">
-          Back to Home Page
-        </button>
-      </div>
-    );
-  } else {
-    buttons = (
-      <div className={styles.section}>
-        <button className={styles.button} onClick={endScreen}>
-          Finish
-        </button>
-      </div>
-    );
-  }
-
-  // console.log(router.query);
+  
 
   return (
     <SignInPrompt>
@@ -241,21 +107,22 @@ const pumpkinData = (props) => {
           sid={router.query.sid}
           title={router.query.title}
           category={router.query.category}
-        ></PumpkinData>
+          extras={router.query.extras}
+        />
       </div>
       <div className={styles.section}>
-        <text>Status</text>
-        <text className="font-bold text-4xl">{stage}</text>
-        <text className="font-grey">{status}</text>
+        <span>Status</span>
+        <span className="font-bold text-4xl">{stage ? stage.charAt(0).toUpperCase() + stage.slice(1) : ""}</span>
+        <span className="font-grey">{status}</span>
       </div>
-      {buttons}
+      <div>
+      <button onClick={updateStatus}>{nextStage}</button>
+      <button>Exit</button>
+      </div>
     </SignInPrompt>
   );
+  
 };
 
-export const getServerSideProps = async (context) => {
-  const { query } = context;
-  return { props: { query } };
-}
 
 export default pumpkinData;

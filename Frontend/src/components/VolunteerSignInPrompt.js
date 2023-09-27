@@ -54,7 +54,6 @@ const SignInPrompt = ({ children }) => {
       email,
       password,
     });
-    console.log(data, error);
 
     if (error) {
       setPasswordError("Incorrect event code.");
@@ -66,11 +65,7 @@ const SignInPrompt = ({ children }) => {
     });
     router.refresh();
   };
-  const handleSignOut = async () => {
-    const { data, error } = await supabase.auth.signOut();
-    console.log(data);
-    router.refresh();
-  };
+
   return (
     <>
       {!isSignedIn || !isName ? (
