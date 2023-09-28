@@ -17,7 +17,7 @@ const pumpkinData = () => {
 
   useEffect(() => {
     let intervalId;
-    console.log("testing");
+    // console.log("testing");
 
     if (status === "In Progress...") {
       const startTime = new Date(router.query[`${stage}_start`]).getTime();
@@ -41,7 +41,7 @@ const pumpkinData = () => {
     const endKey = `${stage}_end`;
 
     if (!router.query[startKey]) {
-      console.log(router.query[startKey]);
+      // console.log(router.query[startKey]);
       setNextStage(`Start ${stage}`);
       setStatus("Not Started");
     } else if (!router.query[endKey]) {
@@ -102,7 +102,7 @@ const pumpkinData = () => {
 
       // console.log(data, error);
     } else if (!router.query[endKey]) {
-      console.log("it worked");
+      // console.log("it worked");
 
       const stageEndKey = `${stage}_end`;
         const stageByKey = `${stage}_by`;

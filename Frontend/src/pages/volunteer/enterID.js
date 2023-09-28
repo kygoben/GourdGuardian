@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import styles from "@/styles/enterID.module.css";
 import { supabase } from "../../../supabaseConnection.js";
 import SignInPrompt from "@/components/VolunteerSignInPrompt.js";
 import { parse } from "cookie"; // Adjusted import
@@ -20,8 +19,8 @@ export default function Home() {
         .from("admin_data")
         .select("*");
 
-      console.log(admin_data);
-      console.log(adminError);
+      // console.log(admin_data);
+      // console.log(adminError);
       setYear(admin_data[0].year);
       setWeek(admin_data[0].week);
       let currentStage = admin_data[0].stage;
@@ -37,17 +36,17 @@ export default function Home() {
       }
     };
     fetchData();
-    console.log(year);
-    console.log(week);
-    console.log(stage);
+    // console.log(year);
+    // console.log(week);
+    // console.log(stage);
   }, []);
 
   const getStencil = async () => {
     const sid = document.getElementById("pid").value;
-    console.log(sid);
-    console.log(year);
-    console.log(week);
-    console.log(stage);
+    // console.log(sid);
+    // console.log(year);
+    // console.log(week);
+    // console.log(stage);
 
     let { data: stencils, error } = await supabase
       .from("sstatus")
@@ -62,7 +61,7 @@ export default function Home() {
     let i = 0;
 
     while (i < max) {
-      console.log(stencils[i]);
+      // console.log(stencils[i]);
       if (
         !stencils[i][`${stage}start`] ||
         stencils[i][`${stage}_by`]?.toLowerCase() ===
@@ -76,8 +75,8 @@ export default function Home() {
         stencils[i].stage = stage;
         stencils[i].name = parse(document.cookie).name;
         const query = stencils[i];
-        console.log(query);
-        console.log("test");
+        // console.log(query);
+        // console.log("test");
         router.push({
           pathname: "/volunteer/confirm",
           query: query,
@@ -112,7 +111,9 @@ export default function Home() {
               <div className="text-brown-700 text-center mt-4">
                 You can find the stencil ID in the box stencil paper
               </div>
-              <Image src="/ID_BOX.jpg" width={300} height={75}></Image>
+              <div className="flex justify-center mt-5">
+            <Image src="/ID_BOX.jpg" width={300} height={75}></Image>
+          </div>
             </>
           )}
           {stage === "carving" && (

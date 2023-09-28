@@ -21,7 +21,7 @@ export default function Status() {
       setYear(data[0].year);
       setWeek(data[0].week);
       setStage(data[0].stage);
-      console.log(data);
+      // console.log(data);
     }
   }
 
