@@ -9,7 +9,7 @@ export default function index() {
     >
       <div className="space-y-4">
         <Link
-          href="/volunteer/landingPage"
+          href="/volunteer/enterID"
           className="inline-block bg-white py-2 px-4 rounded-full shadow-md hover:bg-gray-100 transition duration-300"
         >
           Click here to go to volunteer page

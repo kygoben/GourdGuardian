@@ -1,10 +1,8 @@
 import React from "react";
-import Image from "next/image";
 import PumpkinData from "@/components/Pumpkin";
 import styles from "@/styles/end.module.css";
 import { useRouter } from "next/router";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
-import { supabase } from "./../../../supabaseConnection.js";
 
 function end() {
   const router = useRouter();
@@ -13,50 +11,57 @@ function end() {
     router.push("/volunteer/enterID");
   };
 
-  const callAPI2 = async () => {
-    let { data: stencils, error } = await supabase
-      .from("sstatus")
-      .select("*, stencils(title, category(cname))")
-      .eq("sid", router.query.sid)
-      .eq("year", router.query.year)
-      .eq("week", router.query.week);
-
-      stencils[0].category=stencils[0].stencils.category.cname;
-      stencils[0].title=stencils[0].stencils.title;
-      stencils[0].week=router.query.week;
-      stencils[0].year=router.query.year;
-      stencils[0].stage=router.query.stage;
-
-
-    router.push({
-      pathname: "/volunteer/pumpkinData",
-      query: stencils[0],
-    });
-  };
-
   return (
     <SignInPrompt>
-    <div className="flex flex-col justify-center">
-      <h1 className="text-center text-3xl">
-        Please make sure the stencil code is written on the back
-      </h1>
-      <div className={styles.container}>
-        <PumpkinData
-          sid={router.query.sid}
-          title={router.query.title}
-          category={router.query.cname}
-        ></PumpkinData>
+      <div className="bg-orange-400 w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
+        <div className="border-2 border-brown-700 rounded-lg shadow-md bg-white w-full max-w-md mb-5 p-4 md:p-10 text-center">
+          <h1 className="text-center text-3xl mb-5">
+            Please make sure the stencil code is written on the back
+          </h1>
+          <div
+            style={{
+              backgroundImage: `url(/pumpkin.jpg)`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              paddingBottom: `80%`,
+              position: "relative",
+            }}
+            className="text-center bg-no-repeat w-full mb-5"
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "60%",
+                left: 0,
+                right: 0,
+                transform: "translateY(-50%)",
+                width: "100%",
+              }}
+            >
+              <PumpkinData 
+                sid={router.query.sid}
+                title={router.query.title}
+                category={router.query.category}
+                extras={router.query.extras}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="border-2 border-brown-700 rounded-lg shadow-md bg-white w-full max-w-md mb-5 p-4 md:p-10 text-center">
+          <button
+            onClick={callAPI}
+            className="text-lg bg-orange-500 rounded-full cursor-pointer w-full max-w-xs py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+          >
+            Log another pumpkin
+          </button>
+          {router.query.stage == "tracing" && (
+            <div className="text-center text-brown-700">
+              Please Bring your stencil with you to an event staff member
+            </div>
+          )}
+        </div>
       </div>
-      <button className={styles.button} onClick={callAPI2}>
-        View Pumpkin Details Again
-      </button>
-      <button className={styles.buttonNo} conClick={callAPI}>
-        Log another pumpkin
-      </button>
-      <button className={styles.button} onClick={callAPI}>
-        Go back to home screen
-      </button>
-    </div>
     </SignInPrompt>
   );
 }
