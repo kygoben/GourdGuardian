@@ -61,9 +61,11 @@ export default function Home() {
     let i = 0;
 
     while (i < max) {
-      // console.log(stencils[i]);
+      // console.log(stencils[i].tracing_by);
+      // console.log(stencils[i].tracingstart);
+      
       if (
-        !stencils[i][`${stage}start`] ||
+        !stencils[i][`${stage}_start`] ||
         stencils[i][`${stage}_by`]?.toLowerCase() ===
           parse(document.cookie).name.toLowerCase()
       ) {
