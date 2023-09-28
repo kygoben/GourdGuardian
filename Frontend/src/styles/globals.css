@@ -2,3 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100vh;
+  }
+  
+  
+  /* Also, ensure that the root div created by Next.js is set to 100% height */
+  #__next {
+    height: 100%;
+  }
+  

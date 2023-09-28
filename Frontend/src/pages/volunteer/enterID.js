@@ -17,7 +17,9 @@ export default function Home() {
       let { data: admin_data, error: adminError } = await supabase
         .from("admin_data")
         .select("*");
-      console.log(admin_data[0]);
+
+        console.log(admin_data);
+      console.log(adminError);
       setYear(admin_data[0].year);
       setWeek(admin_data[0].week);
       let currentStage = admin_data[0].stage;
@@ -101,26 +103,33 @@ export default function Home() {
 
   return (
     <SignInPrompt>
-      <div className={styles.container}>
-        <h1 className={styles.title}>Enter Stencil ID</h1>
-        <input
-          type="text"
-          id="pid"
-          name="pid"
-          autoComplete="off"
-          className={styles.input}
-          onKeyDown={handleKeyPress}
-        />
-        <div>{message}</div>
-        <button onClick={getStencil} className={styles.button}>
-          Confirm
-        </button>
-        {stage == "tracing" && (
-          <div>You can find the stencil ID in the box on the page</div>
-        )}
-        {stage == "carving" && (
-          <div>You can find the stencil ID on the back of the pumpkin</div>
-        )}
+      <div className="flex items-center justify-center min-h-screen bg-orange-500 p-4">
+        <div className="bg-white p-8 items-center rounded-lg shadow-md w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3">
+          <h1 className="text-2xl text-center font-semibold mb-6 text-brown-900">Enter Stencil ID</h1>
+          <input
+            type="text"
+            id="pid"
+            name="pid"
+            autoComplete="off"
+            className="w-full border-2 border-gray-300 rounded-md p-2 mb-2 focus:outline-none focus:border-orange-400"
+            onKeyDown={handleKeyPress}
+          />
+          <div className="text-brown-700 mb-4">{message}</div>
+          <div className="flex justify-center"> 
+            <button 
+              onClick={getStencil} 
+              className="w-full sm:w-auto bg-orange-700 text-center text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+            >
+              Confirm
+            </button>
+          </div>
+          {stage === "tracing" && (
+            <div className="text-brown-700 text-center mt-4">You can find the stencil ID in the box on the page</div>
+          )}
+          {stage === "carving" && (
+            <div className="text-brown-700 text-center mt-4">You can find the stencil ID on the back of the pumpkin</div>
+          )}
+        </div>
       </div>
     </SignInPrompt>
   );
