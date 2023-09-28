@@ -51,7 +51,7 @@ function end() {
         <div className="border-2 border-brown-700 rounded-lg shadow-md bg-white w-full max-w-md mb-5 p-4 md:p-10 text-center">
           <button
             onClick={callAPI}
-            className="text-lg bg-orange-500 rounded-full cursor-pointer w-full max-w-xs py-2 mb-5 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+            className="text-lg bg-orange-500 rounded-full cursor-pointer w-full max-w-xs py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
           >
             Log another pumpkin
           </button>
