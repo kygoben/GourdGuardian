@@ -111,7 +111,7 @@ export default function Home() {
           {stage === "tracing" && (
             <>
               <div className="text-brown-700 text-center mt-4">
-                You can find the stencil ID in the box stencil paper
+                You can find the stencil ID in the box on the stencil paper
               </div>
               <div className="flex justify-center mt-5">
             <Image src="/ID_BOX.jpg" width={300} height={75}></Image>
