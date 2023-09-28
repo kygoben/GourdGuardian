@@ -4,6 +4,7 @@ import PumpkinData from "@/components/Pumpkin";
 import { supabase } from "supabaseConnection";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
 import { parse } from "cookie";
+import { el } from "date-fns/locale";
 
 const pumpkinData = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const pumpkinData = () => {
       setNextStage("Finish");
       setStatus("In Progress");
     } else {
-      setNextStage("Completed");
+      setNextStage("Continue");
       setStatus("Completed");
     }
   }, [router.query]);
@@ -70,14 +71,14 @@ const pumpkinData = () => {
         .eq("year", router.query.year)
         .eq("week", router.query.week)
         .select();
-        router.query[startKey] = time;
+      router.query[startKey] = time;
 
       setNextStage("Finish");
       setStatus("In Progress");
 
       // console.log(data, error);
     } else if (!router.query[endKey]) {
-      console.log("it worked");  
+      console.log("it worked");
       const { data, error } = await supabase
         .from("sstatus")
         .update({ tracing_end: time, tracing_by: name })
@@ -91,9 +92,14 @@ const pumpkinData = () => {
         query: router.query,
       });
 
-      setNextStage("Completed");
+      setNextStage("Continue");
       setStatus("Completed");
       // console.log(data, error);
+    } else {
+      router.push({
+        pathname: "/volunteer/end",
+        query: router.query,
+      });
     }
   };
 

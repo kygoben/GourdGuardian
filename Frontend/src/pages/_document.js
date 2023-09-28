@@ -5,8 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <title>Pumpkin Tracker</title>
-          {/* Any other head tags go here */}
+          <title>GourdGuardian</title>
         </Head>
         <body>
           <Main />
