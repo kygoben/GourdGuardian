@@ -80,13 +80,21 @@ const pumpkinData = () => {
     const startKey = `${stage}_start`;
     const endKey = `${stage}_end`;
     if (!router.query[startKey]) {
-      const { data, error } = await supabase
-        .from("sstatus")
-        .update({ tracing_start: time, tracing_by: router.query.name })
-        .eq("sid", router.query.sid)
-        .eq("year", router.query.year)
-        .eq("week", router.query.week)
-        .select();
+
+        const stageStartKey = `${stage}_start`;
+        const stageByKey = `${stage}_by`;
+      
+        const { data, error } = await supabase
+          .from("sstatus")
+          .update({ 
+            [stageStartKey]: time, 
+            [stageByKey]: router.query.name 
+          })
+          .eq("sid", router.query.sid)
+          .eq("year", router.query.year)
+          .eq("week", router.query.week)
+          .select();
+      
       router.query[startKey] = time;
 
       setNextStage("I'm Finished!");
@@ -95,9 +103,12 @@ const pumpkinData = () => {
       // console.log(data, error);
     } else if (!router.query[endKey]) {
       console.log("it worked");
+
+      const stageEndKey = `${stage}_end`;
+        const stageByKey = `${stage}_by`;
       const { data, error } = await supabase
         .from("sstatus")
-        .update({ tracing_end: time, tracing_by: name })
+        .update({ [stageEndKey]: time, [stageByKey]: name })
         .eq("sid", router.query.sid)
         .eq("year", router.query.year)
         .eq("week", router.query.week)
