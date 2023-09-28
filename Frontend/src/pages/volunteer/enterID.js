@@ -64,8 +64,8 @@ export default function Home() {
     while (i < max) {
       console.log(stencils[i]);
       if (
-        !stencils[i].tracing_start ||
-        stencils[i][`${stage}_by`].toLowerCase() ===
+        !stencils[i][`${stage}start`] ||
+        stencils[i][`${stage}_by`]?.toLowerCase() ===
           parse(document.cookie).name.toLowerCase()
       ) {
         stencils[i].category = stencils[i].stencils.category.cname;
