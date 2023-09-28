@@ -42,7 +42,7 @@ const pumpkinData = () => {
 
     if (!router.query[startKey]) {
       console.log(router.query[startKey]);
-      setNextStage("Start Tracing");
+      setNextStage(`Start ${stage}`);
       setStatus("Not Started");
     } else if (!router.query[endKey]) {
       setNextStage("I'm Finished!");
