@@ -67,8 +67,9 @@ const SignInPrompt = ({ children }) => {
 
   if(!isSignedIn || !isName) {
     return (
-    <div className="flex items-center justify-center min-h-screen bg-orange-400">
-          <div className="bg-white p-8 rounded-lg shadow-md">
+      <div className="bg-orange-400 w-full min-h-screen flex flex-col items-center justify-center p-4 md:p-10">
+        <div className="border-2 border-brown-700 rounded-lg shadow-md bg-white w-full max-w-md mb-5 p-4 md:p-10 text-center">
+
             <h1 className="text-2xl font-semibold mb-6 text-brown-900">
               Thank you for volunteering at Reiman Gardens!
             </h1>
