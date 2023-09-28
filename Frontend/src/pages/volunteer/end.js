@@ -19,28 +19,45 @@ function end() {
             Please make sure the stencil code is written on the back
           </h1>
           <div
-            style={{ backgroundImage: `url(/pumpkin.jpg)`, backgroundSize: 'contain' }}
-            className="text-center bg-no-repeat bg-center aspect-w-1 aspect-h-1 w-full h-46 mb-5"
+            style={{
+              backgroundImage: `url(/pumpkin.jpg)`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              paddingBottom: `80%`,
+              position: "relative",
+            }}
+            className="text-center bg-no-repeat w-full mb-5"
           >
-            <PumpkinData
-              sid={router.query.sid}
-              title={router.query.title}
-              category={router.query.category}
-              extras={router.query.extras}
-            />
+            <div
+              style={{
+                position: "absolute",
+                top: "60%",
+                left: 0,
+                right: 0,
+                transform: "translateY(-50%)",
+                width: "100%",
+              }}
+            >
+              <PumpkinData 
+                sid={router.query.sid}
+                title={router.query.title}
+                category={router.query.category}
+                extras={router.query.extras}
+              />
+            </div>
           </div>
         </div>
 
         <div className="border-2 border-brown-700 rounded-lg shadow-md bg-white w-full max-w-md mb-5 p-4 md:p-10 text-center">
           <button
             onClick={callAPI}
-            className="text-sm bg-orange-500 rounded-full cursor-pointer w-full max-w-xs py-2 mb-5 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+            className="text-lg bg-orange-500 rounded-full cursor-pointer w-full max-w-xs py-2 mb-5 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
           >
             Log another pumpkin
           </button>
           {router.query.stage == "tracing" && (
             <div className="text-center text-brown-700">
-              Please Bring this stencil with you back to an event staff member
+              Please Bring your stencil with you to an event staff member
             </div>
           )}
         </div>

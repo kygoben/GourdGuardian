@@ -4,7 +4,6 @@ import PumpkinData from "@/components/Pumpkin";
 import { supabase } from "supabaseConnection";
 import SignInPrompt from "@/components/VolunteerSignInPrompt";
 import { parse } from "cookie";
-import { el } from "date-fns/locale";
 
 const pumpkinData = () => {
   const router = useRouter();
@@ -12,8 +11,25 @@ const pumpkinData = () => {
   const [status, setStatus] = useState(); //status of pumpkin
   // const stage = router.query.stage.charAt(0).toUpperCase() + router.query.stage.slice(1);
   const [name, setName] = useState("");
+  const [stopwatchTime, setStopwatchTime] = useState(0);
 
   const stage = router.query.stage;
+
+  useEffect(() => {
+    let intervalId;
+    console.log("testing");
+
+    if (status === "In Progress...") {
+      const startTime = new Date(router.query[`${stage}_start`]).getTime();
+      intervalId = setInterval(() => {
+        setStopwatchTime(new Date().getTime() - startTime);
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [status, stage, router.query]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -26,11 +42,11 @@ const pumpkinData = () => {
 
     if (!router.query[startKey]) {
       console.log(router.query[startKey]);
-      setNextStage("Start");
+      setNextStage("Start Tracing");
       setStatus("Not Started");
     } else if (!router.query[endKey]) {
-      setNextStage("Finish");
-      setStatus("In Progress");
+      setNextStage("I'm Finished!");
+      setStatus("In Progress...");
     } else {
       setNextStage("Continue");
       setStatus("Completed");
@@ -73,8 +89,8 @@ const pumpkinData = () => {
         .select();
       router.query[startKey] = time;
 
-      setNextStage("Finish");
-      setStatus("In Progress");
+      setNextStage("I'm Finished!");
+      setStatus("In Progress...");
 
       // console.log(data, error);
     } else if (!router.query[endKey]) {
@@ -116,11 +132,19 @@ const pumpkinData = () => {
         </div>
         <div className="border-2 border-brown-700 rounded-lg p-5 md:p-10 shadow-md bg-white mb-5 w-full max-w-md">
           <div className="flex flex-col items-center justify-center text-brown-700">
-            <div className="text-2xl font-semibold text-black">Status</div>
+            {/* <div className="text-2xl font-semibold text-black">Status</div> */}
             <div className="text-xl text-black">
               {stage ? stage.charAt(0).toUpperCase() + stage.slice(1) : ""}
             </div>
             <div className="text-lg text-black">{status}</div>
+            <div className="text-lg text-black">
+              {status === "In Progress..." && (
+                <div className="text-sm text-gray-600">
+                  Time elapsed:{" "}
+                  {new Date(stopwatchTime).toISOString().substr(11, 8)}
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="border-2 border-brown-700 rounded-lg p-5 md:p-10 shadow-md bg-white w-full max-w-md">
@@ -128,7 +152,7 @@ const pumpkinData = () => {
             <div className="w-full mb-2 max-w-xs">
               <button
                 onClick={updateStatus}
-                className="text-sm bg-orange-500 rounded-full cursor-pointer w-full py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+                className="text-lg bg-orange-500 rounded-full cursor-pointer w-full py-2 "
               >
                 {nextStage}
               </button>
@@ -136,7 +160,7 @@ const pumpkinData = () => {
             <div className="w-full max-w-xs">
               <button
                 onClick={endScreen}
-                className="text-sm border-2 border-brown-700 bg-white rounded-full cursor-pointer w-full py-2 focus:outline-none focus:ring-2 focus:ring-brown-700 focus:ring-opacity-50"
+                className="text-lg border-2 border-brown-700 bg-white rounded-full cursor-pointer w-full py-2 "
               >
                 Exit
               </button>

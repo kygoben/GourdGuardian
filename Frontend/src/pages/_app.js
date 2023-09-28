@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 export default function App({ Component, pageProps }) {
     return (
         <>
+        <title>GourdGuardian</title>
             <Component {...pageProps} />
             <Analytics />
         </>

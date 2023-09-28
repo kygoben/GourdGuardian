@@ -4,6 +4,8 @@ import styles from "@/styles/enterID.module.css";
 import { supabase } from "../../../supabaseConnection.js";
 import SignInPrompt from "@/components/VolunteerSignInPrompt.js";
 import { parse } from "cookie"; // Adjusted import
+import Image from "next/image";
+import PumpkinData from "@/components/Pumpkin";
 
 export default function Home() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function Home() {
         .from("admin_data")
         .select("*");
 
-        console.log(admin_data);
+      console.log(admin_data);
       console.log(adminError);
       setYear(admin_data[0].year);
       setWeek(admin_data[0].week);
@@ -103,9 +105,55 @@ export default function Home() {
 
   return (
     <SignInPrompt>
-      <div className="flex items-center justify-center min-h-screen bg-orange-500 p-4">
+      <div className="flex items-center flex-col justify-center min-h-screen bg-orange-500 p-4">
+        <div className="bg-white p-8 items-center rounded-lg shadow-md w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3 mb-5">
+          {stage === "tracing" && (
+            <>
+              <div className="text-brown-700 text-center mt-4">
+                You can find the stencil ID in the box stencil paper
+              </div>
+              <Image src="/ID_BOX.jpg" width={300} height={75}></Image>
+            </>
+          )}
+          {stage === "carving" && (
+            <div className="text-brown-700 text-center mt-4">
+              You can find the stencil ID on the back of the pumpkin
+              <div
+            style={{
+              backgroundImage: `url(/pumpkin.jpg)`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              paddingBottom: `80%`,
+              position: "relative",
+            }}
+            className="text-center bg-no-repeat w-full mb-5"
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "60%",
+                left: 0,
+                right: 0,
+                transform: "translateY(-50%)",
+                width: "100%",
+              }}
+            >
+              <PumpkinData 
+                sid={"11-19-B"}
+                title={"Frank"}
+                category={"Movies"}
+                extras={"Donnie Darko"}
+                instruction={true}
+              />
+            </div>
+          </div>
+            </div>
+          )}
+        </div>
         <div className="bg-white p-8 items-center rounded-lg shadow-md w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3">
-          <h1 className="text-2xl text-center font-semibold mb-6 text-brown-900">Enter Stencil ID</h1>
+          <h1 className="text-2xl text-center font-semibold mb-6 text-brown-900">
+            Enter Stencil ID
+          </h1>
           <input
             type="text"
             id="pid"
@@ -115,20 +163,14 @@ export default function Home() {
             onKeyDown={handleKeyPress}
           />
           <div className="text-brown-700 mb-4">{message}</div>
-          <div className="flex justify-center"> 
-            <button 
-              onClick={getStencil} 
+          <div className="flex justify-center">
+            <button
+              onClick={getStencil}
               className="w-full sm:w-auto bg-orange-700 text-center text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
             >
               Confirm
             </button>
           </div>
-          {stage === "tracing" && (
-            <div className="text-brown-700 text-center mt-4">You can find the stencil ID in the box on the page</div>
-          )}
-          {stage === "carving" && (
-            <div className="text-brown-700 text-center mt-4">You can find the stencil ID on the back of the pumpkin</div>
-          )}
         </div>
       </div>
     </SignInPrompt>
