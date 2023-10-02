@@ -3,6 +3,7 @@ import styles from "@/styles/statusData.module.css";
 import { useState } from "react";
 import { debounce, set } from "lodash";
 import Viewer from "./Viewer";
+import { it } from "date-fns/locale";
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
   const [tracing_by, updateTracing_by] = useState(item.tracing_by);
@@ -15,6 +16,9 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
   useEffect(() => {
     updateTracing_by(item.tracing_by);
   }, [item.tracing_by]);
+
+  useEffect(() => {
+  }, [item.tracing_confirmed]);
 
   const formatTracingDate = (date) => {
     if (!date) return "";
@@ -33,15 +37,26 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
   const formattedTracingEnd = item.tracing_end
     ? formatTracingDate(item.tracing_end)
     : "";
+
   return (
     <>
       <td className={styles.tableCell}>
-        <Viewer
-          stencilId={item.sid}
-          showPdf={showPdf}
-        />
+        <Viewer stencilId={item.sid} showPdf={showPdf} />
       </td>
-      {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
+      {week === "Both" && (
+        <td
+          className={`${
+            item.week < 2
+              ? "text-orange-500"
+              : item.week > 1
+              ? "text-black"
+              : ""
+          }`}
+        >
+          {item.week}
+        </td>
+      )}
+
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>
         <div className="flex items-center justify-between">

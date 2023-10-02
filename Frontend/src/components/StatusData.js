@@ -43,10 +43,74 @@ const StatusData = ({
   };
 
   useEffect(() => {
-    if (year !== null && !showQuickAdd) {
-      getData();
-    }
-  }, [year, showQuickAdd]);
+    getData();
+    let subscription;
+    (async () => {
+        subscription = await subscribe();
+    })();
+
+    return () => {
+        if (subscription) {
+            subscription.unsubscribe();
+        }
+    };
+}, [year]);
+
+
+const subscribe = async () => {
+  const subscription = supabase
+    .channel('schema-db-changes')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'sstatus',
+      },
+      (payload) => {
+        if (payload.new) {
+          console.log(payload.new);
+          // Handle the updated data here:
+          setData((prevData) => {
+            const newData = [...prevData];
+            const updatedItem = payload.new;
+            const itemIndex = newData.findIndex(
+              (el) => el.sid === updatedItem.sid &&
+                      el.year === updatedItem.year &&
+                      el.week === updatedItem.week
+            );
+            if (itemIndex !== -1) {
+              const oldItem = newData[itemIndex];
+              newData[itemIndex] = updatedItem;
+              newData[itemIndex].stencils = oldItem.stencils;
+            } else {
+              // This is a new item, so we push it to the array:
+              newData.push(updatedItem);
+              newData.sort((a, b) => {
+                const sidA = a.sid.split("-").map(Number);
+                const sidB = b.sid.split("-").map(Number);
+        
+                for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+                  const diff = (sidA[i] || 0) - (sidB[i] || 0);
+                  if (diff !== 0) {
+                    return diff;
+                  }
+                }
+        
+                return 0;
+              });
+            }
+            return newData;
+          });
+        }
+      }
+    )
+    .subscribe();
+
+  return subscription;
+};
+
+
 
   const getData = async () => {
     console.log("Getting data");
@@ -55,7 +119,6 @@ const StatusData = ({
         .from("sstatus")
         .select("*, stencils(title, cid)")
         .eq("year", year);
-        
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -268,18 +331,17 @@ const StatusData = ({
   return (
     <div>
       <SearchBar
-      autoFocus={false}
-      searchTerm={searchTerm}
-      updateSearchTerm={updateSearchTerm}
-      updateCurrentPage={updateCurrentPage}
-      updateShowQuickAdd={updateShowQuickAdd}
-      itemsPerPage={itemsPerPage}
-      updateItemsPerPage={updateItemsPerPage}
-      length={filteredData.length}
-      showPdf={showPdf}
-      updateShowPdf={updateShowPdf}
-     />
-
+        autoFocus={false}
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
+        updateCurrentPage={updateCurrentPage}
+        updateShowQuickAdd={updateShowQuickAdd}
+        itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
+        length={filteredData.length}
+        showPdf={showPdf}
+        updateShowPdf={updateShowPdf}
+      />
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>
