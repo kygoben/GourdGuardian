@@ -235,6 +235,9 @@ INSERT INTO stencils VALUES ('3-7-F','Snoopy Flying','3','Charlie Brown','Jball/
 INSERT INTO stencils VALUES ('3-7-G','Charlie Brown and Snoopy','3','Charlie Brown','StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('3-7-H','Charlie Brown','3','A Charlie Brown Christmas','O&B','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('3-8','Coraline','3','Coraline','O&B','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('3-8-A','Batman','3','Batman: The Animated Series','ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('3-8-B','The Joker','3','Batman: The Animated Series','ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('3-8-C','Harley Quinn','3','Batman: The Animated Series','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('3-9-A','Despicable Me Minion','3','Despicable Me','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('3-9-B','Gru (s)','3','Despicable Me','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('3-9-C','Minion 1','3','Despicable Me','O&B','abcdef.stencil','admin','',0,0);
@@ -627,7 +630,7 @@ INSERT INTO stencils VALUES ('6-34-G',"Kermit the Frog (body)",'6',"The Muppet S
 INSERT INTO stencils VALUES ('6-34-H',"Kermit the Frog (head)",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('6-34-I',"Sweetums",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('6-34-J',"Sam Eagle",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('6-34-K',"Animal",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('6-34-K',"Animal (2023)",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('6-34-L',"Dr. Teeth",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('6-34-M',"Floyd Pepper",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('6-34-N',"Janice",'6',"The Muppet Show",'ZP','abcdef.stencil','admin','',0,0);
@@ -728,8 +731,11 @@ INSERT INTO stencils VALUES ('7-49','Colonel Sanders','7','','StoneyKins','abcde
 INSERT INTO stencils VALUES ('7-50','Martin Luther King Jr.','7','','StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-51','Barack Obama','7','','StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-52','Barbie','7','','StoneyKins','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('7-52-B','Bride of Barbie','7','','Famous People','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('7-52-C','Barbie Symbol','7','','Famous People','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-53','Alfred Hitchcock','7','','ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('7-54','Colonel Sanders','7','','StoneyKins','abcdef.stencil','admin','',0,0);
+-- INSERT INTO stencils VALUES ('7-54','Colonel Sanders','7','','StoneyKins','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('7-54','Pee-wee Herman','7','','Famous People','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-55','Banksy Balloon Girl ','7','','StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-56-A','Bob Ross','7','','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('7-56-B','Happy Little Trees','7','','K. Buchholz','abcdef.stencil','admin','',0,0);
@@ -985,7 +991,7 @@ INSERT INTO stencils VALUES ('11-37-C',"Pennywise (2017)",'11',"It",'ZP','abcdef
 INSERT INTO stencils VALUES ('11-38',"Jaws",'11',"Jaws",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-39',"Jigsaw Puppet",'11',"Jigsaw Series",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-40-A',"Tyrannosaurus Rex",'11',"Jurassic Park",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('11-40-B',"Velociraptor",'11',"Jurassic Park",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('11-40-B',"Velociraptor",'11',"Jurassic Park",'Movies','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-41',"Killer Klown",'11',"Killer Klowns from Outer Space",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-42',"King Kong 1933",'11',"King Kong",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-43-A',"Krampus",'11',"Krampus",'ZP','abcdef.stencil','admin','',0,0);
@@ -1312,6 +1318,7 @@ INSERT INTO stencils VALUES ('16-20',"Marilyn Manson",'16','','ZP','abcdef.stenc
 INSERT INTO stencils VALUES ('16-21-A',"Michael Jackson",'16','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('16-21-B',"Michael Jackson Thriller",'16','','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('16-21-C',"Thriller Werewolf",'16','','O&B','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('16-21-E',"Thriller Werecat",'16','Thriller Music Video','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('16-22',"Ozzy Osbourne",'16','','ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('16-23',"Prince Symbol",'16','','FreeStencilGallery','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('16-24',"Rolling Stones Hot Lips",'16','','ZP','abcdef.stencil','admin','',0,0);
