@@ -4,6 +4,8 @@ import { useState } from "react";
 import { debounce, set } from "lodash";
 import Viewer from "./Viewer";
 import { da, it } from "date-fns/locale";
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
   const [tracing_by, updateTracing_by] = useState(item.tracing_by);
