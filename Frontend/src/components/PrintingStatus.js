@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "@/styles/statusData.module.css";
+import { useState, useEffect } from "react";
 
 function PrintingStatus({
   item,
@@ -9,6 +10,10 @@ function PrintingStatus({
   notStarted,
   completed,
 }) {
+
+  useEffect(() => {
+    console.log("item", item);
+  }, [item]);
   
     return (
       <>

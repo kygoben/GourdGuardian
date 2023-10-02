@@ -3,22 +3,24 @@ import styles from "@/styles/statusData.module.css";
 import { useState } from "react";
 import { debounce, set } from "lodash";
 import Viewer from "./Viewer";
-import { it } from "date-fns/locale";
+import { da, it } from "date-fns/locale";
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
   const [tracing_by, updateTracing_by] = useState(item.tracing_by);
+  // console.log(item);
   // const [showPdf, setShowPdf] = useState(false);
 
-  useEffect(() => {
-    handleEdit(item, "tracing_by", tracing_by);
-  }, [tracing_by]);
+  // useEffect(() => {
+  //   handleEdit(item, "tracing_by", tracing_by);
+  // }, [tracing_by]);
+
+  // useEffect(() => {
+  //   updateTracing_by(item.tracing_by);
+  // }, [item.tracing_by]);
 
   useEffect(() => {
-    updateTracing_by(item.tracing_by);
-  }, [item.tracing_by]);
-
-  useEffect(() => {
-  }, [item.tracing_confirmed]);
+    // console.log("item", item);
+  }, [item]);
 
   const formatTracingDate = (date) => {
     if (!date) return "";
@@ -102,71 +104,30 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       </td>
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
-          <input
-            id={`${item.sid}_${item.week}_tracing_by`}
-            type="text"
-            placeholder="No Tracer"
-            defaultValue={tracing_by}
-            autoComplete="off"
-            style={{
-              width: "100%",
-              padding: "5px",
-              paddingRight: "30px", // Make space for the "x"
-              borderRadius: "5px",
-              backgroundColor: "#282828",
-              color: "#b0b0b0",
-              border: "1px solid #333",
-            }}
-            onChange={(e) => {
-              e.preventDefault();
-              updateSearchTermDebounced(e.target.value);
-            }}
-          />
-          {tracing_by && (
-            <span
-              onClick={() => {
-                updateTracing_by("");
-                document.getElementById(
-                  `${item.sid}_${item.week}_tracing_by`
-                ).value = "";
-              }}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                cursor: "pointer",
-              }}
-            >
-              x
-            </span>
-          )}
+          {item.tracing_by}
         </div>
       </td>
       <td className={styles.tableCell}>
         <div className="flex items-center space-x-2">
-          <input
-            id={`${item.sid}_${item.week}_${item.year}_confirmed`}
-            type="checkbox"
-            checked={item.tracing_confirmed}
-            onChange={() => {
+          <div
+            className="flex-shrink-0"
+            onClick={() =>
               handleEdit(
                 item,
                 "tracing_confirmed",
                 item.tracing_confirmed ? null : new Date().toISOString()
-              );
-            }}
-            className={`form-checkbox h-5 w-5 
-      `}
-          />
-          <div className="flex-shrink-0">
-            <span
-              className={`${
-                item.tracing_confirmed ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
-            </span>
+              )
+            }
+          >
+            {item.tracing_confirmed ? (
+              <span className="text-green-500">
+                <i className="fas fa-check-square"></i> Confirmed
+              </span>
+            ) : (
+              <span className="text-red-500">
+                <i className="far fa-square"></i> Not Confirmed
+              </span>
+            )}
           </div>
         </div>
       </td>
