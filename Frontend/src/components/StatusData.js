@@ -69,9 +69,7 @@ const subscribe = async (data) => {
         table: 'sstatus',
       },
       (payload) => {
-        // console.log("this");
-        // console.log(payload);
-        // console.log(data);
+
 
         if (payload.new) {
           setData((currentData) => {

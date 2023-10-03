@@ -23,7 +23,7 @@ const SearchBar = ({
           placeholder="Search Here"
           defaultValue={searchTerm}
           autoComplete="off"
-          className="w-full px-5 py-1 pr-8 rounded bg-gray-800 text-gray-200 border border-gray-600"
+          className="w-full px-5 py-1 pr-8 rounded border border-gray-600"
           autoFocus={autoFocus}
           onChange={(e) => {
             e.preventDefault();

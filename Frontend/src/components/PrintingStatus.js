@@ -5,10 +5,7 @@ import { useState, useEffect } from "react";
 function PrintingStatus({
   item,
   handleEdit,
-  week,
-  searchTerm,
-  notStarted,
-  completed,
+  week
 }) {
 
   useEffect(() => {
