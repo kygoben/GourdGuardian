@@ -13,15 +13,17 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-gray-200 p-2 flex justify-between items-center border-b border-gray-700">
-      <div className="flex items-center">
-        <div className="text-blue-500 font-bold text-2xl">GourdGuardian</div>
-        <ProgressBar />
-      </div>
-      <div className="flex">
-        <a href="/admin/volunteerControls" className="ml-2 p-1 rounded transition-colors hover:bg-gray-700">VolunteerLocks</a>
-        <a href="/admin/status" className="ml-2 p-1 rounded transition-colors hover:bg-gray-700">Status</a>
-        <a onClick={handleSignOut} href="/" className="ml-2 p-1 rounded transition-colors hover:bg-gray-700">Logout</a>
+    <div className="bg-white p-4 shadow-md">
+      <div className="flex justify-between ">
+        <div className="flex items-center space-x-4">
+          <div className="text-orange-500 font-bold text-3xl tracking-wider">GourdGuardian</div>
+          <ProgressBar className="bg-yellow-800 h-2 rounded-full" />
+        </div>
+        <div className="flex space-x-2">
+          <a href="/admin/volunteerControls" className="px-3 py-1 rounded-md bg-orange-500 text-white transition-colors hover:bg-brown-700 font-semibold">VolunteerLocks</a>
+          <a href="/admin/status" className="px-3 py-1 rounded-md bg-orange-500 text-white transition-colors hover:bg-brown-700 font-semibold">Status</a>
+          <a onClick={handleSignOut} href="/" className="px-3 py-1 rounded-md bg-orange-500 text-white transition-colors hover:bg-brown-700 font-semibold">Logout</a>
+        </div>
       </div>
     </div>
   );
