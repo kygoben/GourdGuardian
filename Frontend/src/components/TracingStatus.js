@@ -57,13 +57,7 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       </td>
       {week === "Both" && (
         <td
-          className={`${
-            item.week < 2
-              ? "text-orange-500"
-              : item.week > 1
-              ? "text-black"
-              : ""
-          }`}
+          className={styles.tableCell}
         >
           {item.week}
         </td>
