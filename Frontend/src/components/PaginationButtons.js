@@ -9,7 +9,7 @@ const PaginationButtons = ({
   updateItemsPerPage,
 }) => {
   const buttonStyle = {
-    backgroundColor: "#007bff",
+    backgroundColor: "#f97316",
     border: "none",
     borderRadius: "4px",
     color: "#fff",
@@ -56,11 +56,10 @@ const PaginationButtons = ({
           <select
             id="itemsPerPage"
             style={{
-              border: "1px solid #333",
               borderRadius: "4px",
               padding: "10px 20px",
-              backgroundColor: "#282828",
-              color: "#b0b0b0",
+              backgroundColor: "#f97316",
+              color: "#fff",
             }}
             value={itemsPerPage}
             onChange={(e) => updateItemsPerPage(Number(e.target.value))}
