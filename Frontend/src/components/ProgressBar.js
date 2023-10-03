@@ -21,15 +21,14 @@ const ProgressBar = () => {
   }, []);
 
   return (
-    <div className="bg-gray-900 text-gray-200 p-2 flex items-center">
+    <div className="text-gray-900 p-2 flex items-center">
       <div className="flex gap-2.5 items-center">
         <div>Progress:</div>
-        <div className="w-32 h-2.5 bg-gray-700 rounded-full relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-full bg-blue-500 rounded-full flex items-center justify-center" style={{ width: `${percentage}%` }}>
+        <div className="w-32 h-2 bg-orange-500 rounded-full relative overflow-hidden">
+          <div className="absolute top-0 left-0 h-full bg-yellow-800 rounded-full flex items-center justify-center" style={{ width: `${percentage}%` }}>
             {percentage > 5 && <span className="text-xs">{percentage}%</span>}
           </div>
         </div>
-        
         {percentage <= 5 && <span className="ml-2.5">{percentage}%</span>}
       </div>
     </div>

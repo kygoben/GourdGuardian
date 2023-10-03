@@ -3,18 +3,35 @@ import styles from "@/styles/statusData.module.css";
 import { useState } from "react";
 import { debounce, set } from "lodash";
 import Viewer from "./Viewer";
+import { da, it } from "date-fns/locale";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
-  const [tracing_by, updateTracing_by] = useState(item.tracing_by);
-  // const [showPdf, setShowPdf] = useState(false);
+  const [isEditingTracingBy, setIsEditingTracingBy] = useState(false);
+  const [tracingByValue, setTracingByValue] = useState(item.tracing_by || "");
+  const [tracingTemp, setTracingTemp] = useState(item.tracing_by || "");
 
   useEffect(() => {
-    handleEdit(item, "tracing_by", tracing_by);
-  }, [tracing_by]);
+    // console.log("item", item);
+  }, [item]);
 
-  useEffect(() => {
-    updateTracing_by(item.tracing_by);
-  }, [item.tracing_by]);
+  const handleTracingByChange = (e) => {
+    setTracingTemp(e.target.value);
+    // setTracingByValue(e.target.value);
+  };
+
+  const submitTracingBy = (e) => {
+    if (e.key === "Enter") {
+      handleEdit(item, "tracing_by", tracingTemp);
+      setTracingByValue(tracingTemp);
+      setIsEditingTracingBy(false);
+    }
+  };
+
+  const handleUnfocus = (e) => {
+    setTracingTemp(tracingByValue);
+    setIsEditingTracingBy(false);
+  };
 
   const formatTracingDate = (date) => {
     if (!date) return "";
@@ -27,21 +44,25 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       minute: "2-digit",
     });
   };
-  const updateSearchTermDebounced = debounce(updateTracing_by, 300);
 
   const formattedTracingStart = formatTracingDate(item.tracing_start);
   const formattedTracingEnd = item.tracing_end
     ? formatTracingDate(item.tracing_end)
     : "";
+
   return (
     <>
       <td className={styles.tableCell}>
-        <Viewer
-          stencilId={item.sid}
-          showPdf={showPdf}
-        />
+        <Viewer stencilId={item.sid} showPdf={showPdf} />
       </td>
-      {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
+      {week === "Both" && (
+        <td
+          className={styles.tableCell}
+        >
+          {item.week}
+        </td>
+      )}
+
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>
         <div className="flex items-center justify-between">
@@ -87,71 +108,43 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       </td>
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
-          <input
-            id={`${item.sid}_${item.week}_tracing_by`}
-            type="text"
-            placeholder="No Tracer"
-            defaultValue={tracing_by}
-            autoComplete="off"
-            style={{
-              width: "100%",
-              padding: "5px",
-              paddingRight: "30px", // Make space for the "x"
-              borderRadius: "5px",
-              backgroundColor: "#282828",
-              color: "#b0b0b0",
-              border: "1px solid #333",
-            }}
-            onChange={(e) => {
-              e.preventDefault();
-              updateSearchTermDebounced(e.target.value);
-            }}
-          />
-          {tracing_by && (
-            <span
-              onClick={() => {
-                updateTracing_by("");
-                document.getElementById(
-                  `${item.sid}_${item.week}_tracing_by`
-                ).value = "";
-              }}
-              style={{
-                position: "absolute",
-                right: "10px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                cursor: "pointer",
-              }}
-            >
-              x
+          {isEditingTracingBy ? (
+            <input
+              style={{ width: "100%", boxSizing: "border-box" }}
+              value={tracingTemp}
+              onChange={handleTracingByChange}
+              onKeyDown={submitTracingBy}
+              onBlur={handleUnfocus}
+              autoFocus
+            />
+          ) : (
+            <span onClick={() => setIsEditingTracingBy(true)}>
+              {item.tracing_by || "No Tracer"}
             </span>
           )}
         </div>
       </td>
       <td className={styles.tableCell}>
         <div className="flex items-center space-x-2">
-          <input
-            id={`${item.sid}_${item.week}_${item.year}_confirmed`}
-            type="checkbox"
-            checked={item.tracing_confirmed}
-            onChange={() => {
+          <div
+            className="flex-shrink-0 cursor-pointer"
+            onClick={() =>
               handleEdit(
                 item,
                 "tracing_confirmed",
                 item.tracing_confirmed ? null : new Date().toISOString()
-              );
-            }}
-            className={`form-checkbox h-5 w-5 
-      `}
-          />
-          <div className="flex-shrink-0">
-            <span
-              className={`${
-                item.tracing_confirmed ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {item.tracing_confirmed ? "Confirmed" : "Not Confirmed"}
-            </span>
+              )
+            }
+          >
+            {item.tracing_confirmed ? (
+              <span className="text-green-500">
+                <i className="fas fa-check-square"></i> Confirmed
+              </span>
+            ) : (
+              <span className="text-red-500">
+                <i className="far fa-square"></i> Not Confirmed
+              </span>
+            )}
           </div>
         </div>
       </td>

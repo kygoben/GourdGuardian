@@ -43,10 +43,78 @@ const StatusData = ({
   };
 
   useEffect(() => {
-    if (year !== null && !showQuickAdd) {
-      getData();
-    }
-  }, [year, showQuickAdd]);
+    getData();
+    let subscription;
+    (async () => {
+        subscription = await subscribe(data);
+    })();
+
+    return () => {
+        if (subscription) {
+            subscription.unsubscribe();
+        }
+    };
+}, [year]);
+
+
+const subscribe = async (data) => {
+  // console.log(data);
+  const subscription = supabase
+    .channel('schema-db-changes')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'sstatus',
+      },
+      (payload) => {
+
+
+        if (payload.new) {
+          setData((currentData) => {
+              // Copy the current data to avoid direct mutations
+              const newData = [...currentData];
+              const updatedItem = payload.new;
+              
+              const itemIndex = newData.findIndex(
+                  (el) => el.sid === updatedItem.sid &&
+                          el.year === updatedItem.year &&
+                          el.week === updatedItem.week
+              );
+      
+              if (itemIndex !== -1) {
+                  const oldItem = newData[itemIndex];
+                  newData[itemIndex] = updatedItem;
+                  newData[itemIndex].stencils = oldItem.stencils;
+              } else {
+                  // This is a new item, so we push it to the array:
+                  newData.push(updatedItem);
+                  newData.sort((a, b) => {
+                      const sidA = a.sid.split("-").map(Number);
+                      const sidB = b.sid.split("-").map(Number);
+      
+                      for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+                          const diff = (sidA[i] || 0) - (sidB[i] || 0);
+                          if (diff !== 0) {
+                              return diff;
+                          }
+                      }
+      
+                      return 0;
+                  });
+              }
+              return newData;
+          });
+      }
+      }
+    )
+    .subscribe();
+
+  return subscription;
+};
+
+
 
   const getData = async () => {
     console.log("Getting data");
@@ -55,7 +123,6 @@ const StatusData = ({
         .from("sstatus")
         .select("*, stencils(title, cid)")
         .eq("year", year);
-        
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -74,7 +141,7 @@ const StatusData = ({
 
         return 0;
       });
-      // console.log(sstatusData);
+      console.log(sstatusData);
 
       setData(sstatusData);
     } catch (error) {
@@ -176,7 +243,6 @@ const StatusData = ({
   );
 
   const handleEdit = async (item, field, value) => {
-    try {
       const updateObject = { [field]: value };
       const { data: updatedData, error } = await supabase
         .from("sstatus")
@@ -186,22 +252,7 @@ const StatusData = ({
         .eq("week", item.week)
         .select("*, stencils(title)");
 
-      if (!error) {
-        setData((prevData) => {
-          const newData = [...prevData];
-          const itemIndex = newData.findIndex(
-            (el) =>
-              el.sid === item.sid &&
-              el.year === item.year &&
-              el.week === item.week
-          );
-          if (itemIndex !== -1) {
-            newData[itemIndex] = updatedData[0];
-          }
-          return newData;
-        });
-      }
-    } catch (error) {
+      if (error) {
       console.error("Error updating data:", error);
     }
   };
@@ -268,18 +319,17 @@ const StatusData = ({
   return (
     <div>
       <SearchBar
-      autoFocus={false}
-      searchTerm={searchTerm}
-      updateSearchTerm={updateSearchTerm}
-      updateCurrentPage={updateCurrentPage}
-      updateShowQuickAdd={updateShowQuickAdd}
-      itemsPerPage={itemsPerPage}
-      updateItemsPerPage={updateItemsPerPage}
-      length={filteredData.length}
-      showPdf={showPdf}
-      updateShowPdf={updateShowPdf}
-     />
-
+        autoFocus={false}
+        searchTerm={searchTerm}
+        updateSearchTerm={updateSearchTerm}
+        updateCurrentPage={updateCurrentPage}
+        updateShowQuickAdd={updateShowQuickAdd}
+        itemsPerPage={itemsPerPage}
+        updateItemsPerPage={updateItemsPerPage}
+        length={filteredData.length}
+        showPdf={showPdf}
+        updateShowPdf={updateShowPdf}
+      />
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
         <thead>

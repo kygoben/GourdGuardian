@@ -23,7 +23,7 @@ const SearchBar = ({
           placeholder="Search Here"
           defaultValue={searchTerm}
           autoComplete="off"
-          className="w-full px-5 py-1 pr-8 rounded bg-gray-800 text-gray-200 border border-gray-600"
+          className="w-full px-5 py-1 pr-8 rounded border border-gray-600"
           autoFocus={autoFocus}
           onChange={(e) => {
             e.preventDefault();
@@ -46,18 +46,18 @@ const SearchBar = ({
       <div className="flex items-center space-x-4">
         <button
           onClick={() => updateShowQuickAdd((prev) => !prev)}
-          className="px-5 py-2 text-white bg-blue-600 rounded shadow-md cursor-pointer hover:bg-blue-500"
+          className="px-5 py-2 text-white bg-orange-500 rounded shadow-md cursor-pointer"
         >
           Quick Add
         </button>
 
         <div className="flex items-center">
-          <span className="text-gray-200">Show PDF</span>
+          <span >Show PDF</span>
           <Switch
             checked={showPdf}
             onChange={() => updateShowPdf(!showPdf)}
-            onColor="#86d3ff"
-            onHandleColor="#2693e6"
+            onColor="#f97316"
+            onHandleColor="#f97316"
             handleDiameter={30}
             uncheckedIcon={false}
             checkedIcon={false}
