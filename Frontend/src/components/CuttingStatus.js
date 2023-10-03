@@ -21,7 +21,7 @@ function CuttingStatus({
       <td className={styles.tableCell}>
         <div className="flex items-center space-x-2">
           <div
-            className="flex-shrink-0"
+            className="flex-shrink-0 cursor-pointer"
             onClick={() =>
               handleEdit(
                 item,
