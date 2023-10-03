@@ -1,17 +1,21 @@
 import React from "react";
 import styles from "@/styles/statusData.module.css";
+import { useState, useEffect } from "react";
+import Viewer from "./Viewer";
 
 function CuttingStatus({
   item,
   handleEdit,
-  week,
+  week, showPdf, 
   searchTerm,
   notStarted,
   completed,
 }) {
   return (
     <>
-      <td className={styles.tableCell}>{item.sid}</td>
+      <td className={styles.tableCell}>
+        <Viewer stencilId={item.sid} showPdf={showPdf} />
+      </td>
       {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>

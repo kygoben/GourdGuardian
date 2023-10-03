@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "@/styles/statusData.module.css";
 import { useState } from "react";
+import Viewer from "./Viewer";
 
 function CarvingStatus({
   item,
@@ -12,7 +13,7 @@ function CarvingStatus({
   completed,
   isConfirmed,
   notConfirmed,
-  currentDate,
+  currentDate, showPdf 
 }) {
 
   const [isEditingCarvingBy, setIsEditingCarvingBy] = useState(false);
@@ -55,7 +56,9 @@ function CarvingStatus({
     : "";
   return (
     <>
-      <td className={styles.tableCell}>{item.sid}</td>
+      <td className={styles.tableCell}>
+        <Viewer stencilId={item.sid} showPdf={showPdf} />
+      </td>
       {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>
