@@ -8,17 +8,6 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
-  const [tracing_by, updateTracing_by] = useState(item.tracing_by);
-  // console.log(item);
-  // const [showPdf, setShowPdf] = useState(false);
-
-  // useEffect(() => {
-  //   handleEdit(item, "tracing_by", tracing_by);
-  // }, [tracing_by]);
-
-  // useEffect(() => {
-  //   updateTracing_by(item.tracing_by);
-  // }, [item.tracing_by]);
 
   useEffect(() => {
     // console.log("item", item);
@@ -35,7 +24,6 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       minute: "2-digit",
     });
   };
-  const updateSearchTermDebounced = debounce(updateTracing_by, 300);
 
   const formattedTracingStart = formatTracingDate(item.tracing_start);
   const formattedTracingEnd = item.tracing_end

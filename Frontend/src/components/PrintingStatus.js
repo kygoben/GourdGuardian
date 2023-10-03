@@ -21,28 +21,29 @@ function PrintingStatus({
         {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
         <td className={styles.tableCell}>{item.stencils.title}</td>
         <td className={styles.tableCell}>
-        <span
-          className={
-            item.printing_confirmed ? styles.confirmed : styles.notConfirmed
-          }
-        >
-          {item.printing_confirmed ? "Confirmed" : "Not Confirmed"}
-        </span>
-          <div>
-            <button
-              className={styles.greenButton}
-              onClick={() => handleEdit(item, "printing_confirmed", 1)}
-            >
-              Complete
-            </button>
-            <button
-              className={styles.redButton}
-              onClick={() => handleEdit(item, "printing_confirmed", 0)}
-            >
-              Clear
-            </button>
-            </div>
-        </td>
+        <div className="flex items-center space-x-2">
+          <div
+            className="flex-shrink-0"
+            onClick={() =>
+              handleEdit(
+                item,
+                "printing_confirmed",
+                item.printing_confirmed ? 0 : 1
+              )
+            }
+          >
+            {item.printing_confirmed ? (
+              <span className="text-green-500">
+                <i className="fas fa-check-square"></i> Confirmed
+              </span>
+            ) : (
+              <span className="text-red-500">
+                <i className="far fa-square"></i> Not Confirmed
+              </span>
+            )}
+          </div>
+        </div>
+      </td>
       </>
     );
   }

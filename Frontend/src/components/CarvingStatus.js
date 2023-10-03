@@ -13,140 +13,97 @@ function CarvingStatus({
   notConfirmed,
   currentDate,
 }) {
+
+  const formatCarvingDate = (date) => {
+    if (!date) return "";
+    const tracingDate = new Date(date);
+    return tracingDate.toLocaleString("en-US", {
+      timeZone: "America/Chicago",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const formattedCarvingStart = formatCarvingDate(item.carving_start);
+  const formattedCarvingEnd = item.carving_end
+    ? formatCarvingDate(item.carving_end)
+    : "";
   return (
     <>
       <td className={styles.tableCell}>{item.sid}</td>
       {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
       <td className={styles.tableCell}>{item.stencils.title}</td>
       <td className={styles.tableCell}>
-        <input
-          type="datetime-local"
-          value={item.carving_start || ""}
-          style={{
-            backgroundColor: "#282828",
-            color: "#b0b0b0",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "5px",
-            fontSize: "14px",
-          }}
-          onChange={(e) => handleEdit(item, "carving_start", e.target.value)}
-        ></input>
-        <div>
-          <button
-            className={styles.greenButton}
-            onClick={() =>
-              handleEdit(item, "carving_start", currentDate.toISOString())
-            }
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "carving_start", null)}
-          >
-            X
-          </button>
-        </div>
-      </td>
-      <td className={styles.tableCell}>
-        <input
-          type="datetime-local"
-          value={item.carving_end || ""}
-          style={{
-            backgroundColor: "#282828",
-            color: "#b0b0b0",
-            border: "1px solid #333",
-            borderRadius: "4px",
-            padding: "5px",
-            fontSize: "14px",
-          }}
-          onChange={(e) => handleEdit(item, "carving_end", e.target.value)}
-        ></input>
-        <div>
-          <button
-            className={styles.greenButton}
-            onClick={() =>
-              handleEdit(item, "carving_end", currentDate.toISOString())
-            }
-          >
-            ✓
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "carving_end", null)}
-          >
-            X
-          </button>
-        </div>
-      </td>
-      <td className={styles.tableCell}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleEdit(
-              item,
-              "carving_by",
-              document.getElementById(`carving_by_${item.sid}_${item.index}`)
-                .value
-            );
-          }}
-        >
-          <input
-            id={`carving_by_${item.sid}_${item.index}`}
-            type="text"
-            placeholder={"No Carver Assigned"}
-            style={{
-              backgroundColor: "#282828",
-              color: "#b0b0b0",
-              border: "1px solid #333",
-              borderRadius: "4px",
-              padding: "5px",
-              fontSize: "14px",
-            }}
-            defaultValue={item.carving_by}
-          />
-          <div>
-            <button type="submit" className={styles.greenButton}>
-              Save
+        <div className="flex items-center justify-between">
+          <div>{formattedCarvingStart}</div>
+          <div className="flex space-x-2">
+            <button
+              className={styles.greenButton}
+              onClick={() =>
+                handleEdit(item, "carving_start", currentDate.toISOString())
+              }
+            >
+              ✓
             </button>
             <button
               className={styles.redButton}
-              onClick={() => {
-                handleEdit(item, "carving_by", null);
-                document.getElementById(
-                  `carving_by_${item.sid}_${item.index}`
-                ).value = null;
-              }}
+              onClick={() => handleEdit(item, "carving_start", null)}
             >
-              Clear
+              X
             </button>
           </div>
-        </form>
+        </div>
       </td>
       <td className={styles.tableCell}>
-      <span
-          className={
-            item.carving_confirmed ? styles.confirmed : styles.notConfirmed
-          }
-        >
-          {item.carving_confirmed ? "Confirmed" : "Not Confirmed"}
-        </span>
-        <div>
-          <button
-            className={styles.greenButton}
+        <div className="flex items-center justify-between">
+          <div>{formattedCarvingEnd}</div>
+          <div className="flex space-x-2">
+            <button
+              className={styles.greenButton}
+              onClick={() =>
+                handleEdit(item, "carving_end", currentDate.toISOString())
+              }
+            >
+              ✓
+            </button>
+            <button
+              className={styles.redButton}
+              onClick={() => handleEdit(item, "carving_end", null)}
+            >
+              X
+            </button>
+          </div>
+        </div>
+      </td>
+      <td className={styles.tableCell}>
+        <div style={{ position: "relative", width: "200px" }}>
+          {item.carving_by}
+        </div>
+      </td>
+      <td className={styles.tableCell}>
+        <div className="flex items-center space-x-2">
+          <div
+            className="flex-shrink-0"
             onClick={() =>
-              handleEdit(item, "carving_confirmed", currentDate.toISOString())
+              handleEdit(
+                item,
+                "carving_confirmed",
+                item.carving_confirmed ? null : new Date().toISOString()
+              )
             }
           >
-            Confirm
-          </button>
-          <button
-            className={styles.redButton}
-            onClick={() => handleEdit(item, "carving_confirmed", null)}
-          >
-            Clear
-          </button>
+            {item.carving_confirmed ? (
+              <span className="text-green-500">
+                <i className="fas fa-check-square"></i> Confirmed
+              </span>
+            ) : (
+              <span className="text-red-500">
+                <i className="far fa-square"></i> Not Confirmed
+              </span>
+            )}
+          </div>
         </div>
       </td>
     </>

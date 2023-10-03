@@ -10,7 +10,7 @@ import QuickAdd from "@/components/QuickAdd";
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
-  const [stage, setStage] = useState(3);
+  const [stage, setStage] = useState(1);
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [notConfirmed, setNotConfirmed] = useState(true);
   const [notStarted, setNotStarted] = useState(true);
