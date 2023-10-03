@@ -38,6 +38,10 @@ const SignInPrompt = ({ children }) => {
     setNameError(""); // Reset error messages
     setPasswordError("");
 
+    const toLowerCase = password.toLowerCase();
+
+    setPassword(toLowerCase);
+
     if (!name) {
       setNameError("Please enter your name.");
       return;
