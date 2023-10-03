@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
     <Navbar />
-    <QuickAdd />
+    {/* <QuickAdd /> */}
     {/* <div className={styles.container}>
       <header className={styles.header}>
         <h1>Jack-O-Lantern Tracker</h1>
