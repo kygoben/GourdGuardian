@@ -4,14 +4,34 @@ import { useState } from "react";
 import { debounce, set } from "lodash";
 import Viewer from "./Viewer";
 import { da, it } from "date-fns/locale";
-import '@fortawesome/fontawesome-free/css/all.css';
-
+import "@fortawesome/fontawesome-free/css/all.css";
 
 function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
+  const [isEditingTracingBy, setIsEditingTracingBy] = useState(false);
+  const [tracingByValue, setTracingByValue] = useState(item.tracing_by || "");
+  const [tracingTemp, setTracingTemp] = useState(item.tracing_by || "");
 
   useEffect(() => {
     // console.log("item", item);
   }, [item]);
+
+  const handleTracingByChange = (e) => {
+    setTracingTemp(e.target.value);
+    // setTracingByValue(e.target.value);
+  };
+
+  const submitTracingBy = (e) => {
+    if (e.key === "Enter") {
+      handleEdit(item, "tracing_by", tracingTemp);
+      setTracingByValue(tracingTemp);
+      setIsEditingTracingBy(false);
+    }
+  };
+
+  const handleUnfocus = (e) => {
+    setTracingTemp(tracingByValue);
+    setIsEditingTracingBy(false);
+  };
 
   const formatTracingDate = (date) => {
     if (!date) return "";
@@ -94,7 +114,20 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
       </td>
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
-          {item.tracing_by}
+          {isEditingTracingBy ? (
+            <input
+              style={{ width: "100%", boxSizing: "border-box" }}
+              value={tracingTemp}
+              onChange={handleTracingByChange}
+              onKeyDown={submitTracingBy}
+              onBlur={handleUnfocus}
+              autoFocus
+            />
+          ) : (
+            <span onClick={() => setIsEditingTracingBy(true)}>
+              {item.tracing_by || "No Tracer"}
+            </span>
+          )}
         </div>
       </td>
       <td className={styles.tableCell}>

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "@/styles/statusData.module.css";
+import { useState } from "react";
 
 function CarvingStatus({
   item,
@@ -14,10 +15,32 @@ function CarvingStatus({
   currentDate,
 }) {
 
+  const [isEditingCarvingBy, setIsEditingCarvingBy] = useState(false);
+  const [carvingByValue, setCarvingByValue] = useState(item.carving_by || "");
+  const [carvingTemp, setCarvingTemp] = useState(item.carving_by || "");
+
+  const handleCarvingByChange = (e) => {
+    setCarvingTemp(e.target.value);
+    // setCarvingByValue(e.target.value);
+  };
+
+  const submitCarvingBy = (e) => {
+    if (e.key === "Enter") {
+      handleEdit(item, "carving_by", carvingTemp);
+      setCarvingByValue(carvingTemp);
+      setIsEditingCarvingBy(false);
+    }
+  };
+
+  const handleUnfocus = (e) => {
+    setCarvingTemp(carvingByValue);
+    setIsEditingCarvingBy(false);
+  };
+
   const formatCarvingDate = (date) => {
     if (!date) return "";
-    const tracingDate = new Date(date);
-    return tracingDate.toLocaleString("en-US", {
+    const carvingDate = new Date(date);
+    return carvingDate.toLocaleString("en-US", {
       timeZone: "America/Chicago",
       month: "2-digit",
       day: "2-digit",
@@ -79,7 +102,20 @@ function CarvingStatus({
       </td>
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
-          {item.carving_by}
+          {isEditingCarvingBy ? (
+            <input
+              style={{ width: "100%", boxSizing: "border-box" }}
+              value={carvingTemp}
+              onChange={handleCarvingByChange}
+              onKeyDown={submitCarvingBy}
+              onBlur={handleUnfocus}
+              autoFocus
+            />
+          ) : (
+            <span onClick={() => setIsEditingCarvingBy(true)}>
+              {item.carving_by || "No Tracer"}
+            </span>
+          )}
         </div>
       </td>
       <td className={styles.tableCell}>

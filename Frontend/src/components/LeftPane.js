@@ -122,7 +122,7 @@ const LeftPane = ({
               style={{
                 padding: "5px 10px",
                 borderRadius: "20px",
-                backgroundColor: week === w ? "#007bff" : "transparent",
+                backgroundColor: week === w ? "#f97316" : "transparent",
                 color: week === w ? "#fff" : "#b0b0b0",
                 border: "1px solid #333",
                 cursor: "pointer",
@@ -154,7 +154,7 @@ const LeftPane = ({
             style={{
               padding: "5px 10px",
               borderRadius: "20px",
-              backgroundColor: notConfirmed ? "#007bff" : "transparent",
+              backgroundColor: notConfirmed ? "#f97316" : "transparent",
               color: notConfirmed ? "#fff" : "#b0b0b0",
               border: "1px solid #333",
               cursor: "pointer",
@@ -168,7 +168,7 @@ const LeftPane = ({
             style={{
               padding: "5px 10px",
               borderRadius: "20px",
-              backgroundColor: isConfirmed ? "#007bff" : "transparent",
+              backgroundColor: isConfirmed ? "#f97316" : "transparent",
               color: isConfirmed ? "#fff" : "#b0b0b0",
               border: "1px solid #333",
               cursor: "pointer",
@@ -192,7 +192,7 @@ const LeftPane = ({
             style={{
               padding: "5px 10px",
               borderRadius: "20px",
-              backgroundColor: notStarted ? "#007bff" : "transparent",
+              backgroundColor: notStarted ? "#f97316" : "transparent",
               color: notStarted ? "#fff" : "#b0b0b0",
               border: "1px solid #333",
               cursor: "pointer",
@@ -206,7 +206,7 @@ const LeftPane = ({
             style={{
               padding: "5px 10px",
               borderRadius: "20px",
-              backgroundColor: inProgress ? "#007bff" : "transparent",
+              backgroundColor: inProgress ? "#f97316" : "transparent",
               color: inProgress ? "#fff" : "#b0b0b0",
               border: "1px solid #333",
               cursor: "pointer",
@@ -220,7 +220,7 @@ const LeftPane = ({
             style={{
               padding: "5px 10px",
               borderRadius: "20px",
-              backgroundColor: completed ? "#007bff" : "transparent",
+              backgroundColor: completed ? "#f97316" : "transparent",
               color: completed ? "#fff" : "#b0b0b0",
               border: "1px solid #333",
               cursor: "pointer",
