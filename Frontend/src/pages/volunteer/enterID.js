@@ -73,7 +73,7 @@ export default function Home() {
   const getStencil = async () => {
     // fetchData();
     
-    const sid = document.getElementById("pid").value;
+    const sid = document.getElementById("pid").value.trim().toUpperCase();
     // console.log(sid);
     // console.log(year);
     // console.log(week);
@@ -82,7 +82,7 @@ export default function Home() {
     let { data: stencils, error } = await supabase
       .from("sstatus")
       .select("*, stencils(title, extras, category(cname))")
-      .eq("sid", sid.toUpperCase())
+      .eq("sid", sid)
       .eq("year", year);
     if (week < 3) {
       stencils = stencils.filter((stencil) => stencil.week == week);
