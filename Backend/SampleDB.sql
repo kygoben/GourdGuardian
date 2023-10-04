@@ -1126,7 +1126,7 @@ INSERT INTO stencils VALUES ('11-78-G',"Dorothy Gale",'11',"Wizard of Oz",'ZP','
 INSERT INTO stencils VALUES ('11-78-H',"Scarecrow",'11',"Wizard of Oz",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-78-I',"Tin Man",'11',"Wizard of Oz",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-78-J',"Winged Monkey",'11',"Wizard of Oz",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('11-79',"Willy Wonka",'11',"Willy Wonka & the Chocolate Factory",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('11-79-B',"Willy Wonka",'11',"Willy Wonka & the Chocolate Factory",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-80-A',"The Wolf Man",'11',"The Wolf Man",'O&B','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-80-B',"The Wolf Man",'11',"The Wolf Man",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('11-80-C',"The Wolf Man 2",'11',"The Wolf Man",'ZP','abcdef.stencil','admin','',0,0);
@@ -1473,8 +1473,7 @@ INSERT INTO stencils VALUES ('19-21-A',"Bill Compton",'19',"The Twilight Zone",'
 INSERT INTO stencils VALUES ('19-21-B',"Eric Northman",'19',"The Twilight Zone",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-21-C',"Doctor Bernardi",'19',"The Twilight Zone",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-22-A',"Arrow Walker",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('19-22-B1',"Bicycle Girl Walker (1 of 2 pages)",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('19-22-B2',"Bicycle Girl Walker (2 of 2 pages)",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-22-B',"Bicycle Girl Walker",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-22-C',"Brainless Walker",'19',"The Walking Dead",'O&B','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-22-D',"Burnt Walker",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-22-E',"Carol Peletier",'19',"The Walking Dead",'ZP','abcdef.stencil','admin','',0,0);
@@ -1542,8 +1541,7 @@ INSERT INTO stencils VALUES ('20-6-E',"Victor",'20',"The Corpse Bride",'ZP','abc
 INSERT INTO stencils VALUES ('20-7-A',"Edward Scissorhands",'20',"Edward Scissorhands",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('20-7-B',"Edward Scissorhands",'20',"Edward Scissorhands",'O&B','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('20-8',"Sparky",'20',"Frankenweenie",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('20-9-A1',"Jack (with hands) 1 of2 pages",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('20-9-A2',"Jack (with hands) 2 of 2 pages",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('20-9-A',"Jack (with hands)",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('20-9-B',"Jack Skellington 1",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('20-9-C',"Jack Skellington 2",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('20-9-D',"Jack Skellington 3",'20',"The Nightmare Before Christmas",'ZP','abcdef.stencil','admin','',0,0);
