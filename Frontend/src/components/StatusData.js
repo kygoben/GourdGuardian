@@ -155,7 +155,7 @@ const subscribe = async (data) => {
       return data.filter((item) => {
         if (
           stage === 1 &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
@@ -170,7 +170,7 @@ const subscribe = async (data) => {
 
         if (
           stage === 2 &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
@@ -185,7 +185,7 @@ const subscribe = async (data) => {
 
         if (
           stage === 3 &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
@@ -205,7 +205,7 @@ const subscribe = async (data) => {
 
         if (
           stage === 4 &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
+          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
