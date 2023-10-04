@@ -1277,17 +1277,17 @@ INSERT INTO stencils VALUES ('14-36',"Incognito-Linux Logo",'14','','?','abcdef.
 
 -- category #15
 INSERT INTO stencils VALUES ('15-1',"Robin Williams",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('15-2',"Alan Parrish (Jumanji)",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('15-2',"Alan Parrish",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-3',"Bicentennial Man",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-4',"Mrs. Doubtfire",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-5',"Good Will Hunting",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-6',"Patch Adams",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-7',"Absent Minded Prof",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('15-8',"Popeye (s)",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('15-8',"Popeye",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('15-9',"Teddy Roosevelt",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('15-10',"Peter Pan (s)",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('15-11',"Mork & Mindy (s)",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('15-12',"Good Morning Vietnam (s)",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('15-10',"Peter Pan",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('15-11',"Mork & Mindy",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('15-12',"Good Morning Vietnam",'15','','Jball/PG','abcdef.stencil','admin','',0,0);
 
 -- category #16
 INSERT INTO stencils VALUES ('16-1-A',"Alice Cooper",'16','','ZP','abcdef.stencil','admin','',0,0);
@@ -1508,10 +1508,12 @@ INSERT INTO stencils VALUES ('19-36-A',"Ferb Head",'19',"Phineas and Ferb",'Ston
 INSERT INTO stencils VALUES ('19-36-B',"Phineas Head",'19',"Phineas and Ferb",'StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-36-C',"Agent Perry",'19',"Phineas and Ferb",'StoneyKins','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-37-A',"Dwight Schrute",'19',"The Office",'StoneyKins','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('19-38-A',"Greg",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('19-38-B',"The Beast",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
-INSERT INTO stencils VALUES ('19-38-C',"The Beast",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-38',"Skeletor",'19',"He-Man",'ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-39-A',"Greg",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-39-B',"The Beast",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-39-C',"The Beast",'19',"Over the Garden Wall",'Reddit','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('19-40',"Locke and Key",'19',"Locke and Key",'IDW Pub','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('19-41',"Wednesday Addams",'19',"Wednesday",'ZP','abcdef.stencil','admin','',0,0);
 
 -- category #20 extras = movies
 INSERT INTO stencils VALUES ('20-1-A',"Cheshire Cat",'20',"Alice in Wonderland",'ZP','abcdef.stencil','admin','',0,0);
@@ -1758,6 +1760,10 @@ INSERT INTO stencils VALUES ('21-164',"Creepy!",'21','','?','abcdef.stencil','ad
 INSERT INTO stencils VALUES ('21-165',"Vampire's Tomb",'21','','?','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('21-166',"Ballet Shoes",'21','','?','abcdef.stencil','admin','',0,0);
 INSERT INTO stencils VALUES ('21-167',"Eyes",'21','','?','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('21-168',"Fenwick",'21','','ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('21-169',"Orville",'21','','ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('21-170',"Lorraine",'21','','ZP','abcdef.stencil','admin','',0,0);
+INSERT INTO stencils VALUES ('21-171',"Archibald",'21','','ZP','abcdef.stencil','admin','',0,0);
 
 -- category #22 extras = game
 INSERT INTO stencils VALUES ('22-1-A',"Bad Piggies",'22',"Angry Birds",'PumpkinPile','abcdef.stencil','admin','',0,0);
