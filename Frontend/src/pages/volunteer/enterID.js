@@ -14,6 +14,7 @@ export default function Home() {
   const [stage, setStage] = useState(null);
 
   useEffect(() => {
+
     const fetchData = async () => {
       let { data: admin_data, error: adminError } = await supabase
         .from("admin_data")
@@ -21,6 +22,7 @@ export default function Home() {
 
       // console.log(admin_data);
       // console.log(adminError);
+      if(admin_data.length > 0){
       setYear(admin_data[0].year);
       setWeek(admin_data[0].week);
       let currentStage = admin_data[0].stage;
@@ -34,14 +36,43 @@ export default function Home() {
       } else if (currentStage == 4) {
         setStage("carving");
       }
+    }
     };
+
+    
+      // console.log(parse(document.cookie).name);
     fetchData();
+    
     // console.log(year);
     // console.log(week);
     // console.log(stage);
   }, []);
 
+  // const fetchData = async () => {
+  //   let { data: admin_data, error: adminError } = await supabase
+  //     .from("admin_data")
+  //     .select("*");
+
+  //   // console.log(admin_data);
+  //   // console.log(adminError);
+  //   setYear(admin_data[0].year);
+  //   setWeek(admin_data[0].week);
+  //   let currentStage = admin_data[0].stage;
+
+  //   if (currentStage == 1) {
+  //     setStage("printing");
+  //   } else if (currentStage == 2) {
+  //     setStage("cutting");
+  //   } else if (currentStage == 3) {
+  //     setStage("tracing");
+  //   } else if (currentStage == 4) {
+  //     setStage("carving");
+  //   }
+  // };
+
   const getStencil = async () => {
+    // fetchData();
+    
     const sid = document.getElementById("pid").value;
     // console.log(sid);
     // console.log(year);

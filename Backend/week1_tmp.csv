@@ -1,4 +1,4 @@
-﻿sid,year,week,cutting,printing
+﻿sid,year,week,cutting_confirmed,printing_confirmed
 6-10-J,2023,1,1,0
 8-10-B,2023,1,1,1
 11-102-B,2023,1,0,1
