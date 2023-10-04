@@ -15,20 +15,25 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
   };
 
   const handleAdd = async () => {
+    // console.log(sid);
     setError(null); // Reset error on each new submission
-    if (week === 1 || week === 2) {
-      // Check if the sid is already in the stencils list
-      if (stencils.some((stencil) => stencil.sid === sid)) {
-        setError("This SID has already been added.");
-        return;
-      }
 
+    if (stencils.some((stencil) => stencil.sid === sid)) {
+      setError("This SID has already been added.");
+      return;
+    }
+
+    // Check if the sid is already in the stencils list
+
+
+    
+    if (week === 1 || week === 2) {
       const { data, error } = await supabase
-        .from("sstatus") // update with your table name
-        .select("*, stencils(title, category(cname))")
-        .eq("sid", sid)
-        .eq("week", week)
-        .eq("year", year);
+      .from("sstatus") // update with your table name
+      .select("*, stencils(title, category(cname))")
+      .eq("sid", sid)
+      .eq("week", week)
+      .eq("year", year);
       // console.log(data);
       if (data.length === 0) {
         setError(`This SID is not in week ${week}.`);
@@ -36,7 +41,9 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
       }
 
       if (data[0][`${stageString[stage]}_confirmed`] !== null) {
-        setError(`This SID has already been confirmed for ${stageString[stage]}.`);
+        setError(
+          `This SID has already been confirmed for ${stageString[stage]}.`
+        );
         return;
       }
 
@@ -45,6 +52,61 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
       }
 
       setSid("");
+      return;
+    } else {
+      // console.log("week 3");
+      const { data, error } = await supabase
+      .from("sstatus") // update with your table name
+      .select("*, stencils(title, category(cname))")
+      .eq("sid", sid)
+      .eq("year", year);
+      if (data.length === 0) {
+        setError(`This SID is not in either week.`);
+        return;
+      }
+
+      if (data.length === 1) {
+        if (data[0][`${stageString[stage]}_confirmed`] !== null) {
+          setError(
+            `This SID has already been confirmed for ${data[0].week} and does not exist in the other week.`
+          );
+          return;
+        } else {
+          if (data) {
+            setStencils([...stencils, ...data]);
+          }
+          console.log(stencils);
+
+          setSid("");
+          return;
+        }
+      } else if (data.length === 2) {
+        if (
+          data[0][`${stageString[stage]}_confirmed`] == null
+        ) {
+          if (data) {
+            setStencils([data[0], ...stencils]);
+            // console.log(stencils);
+          }
+
+          setSid("");
+          console.log(stencils);
+          return;
+        } else if (data[1][`${stageString[stage]}_confirmed`] == null) {
+          if (data) {
+            setStencils([data[1], ...stencils]);
+            // console.log(stencils);
+          }
+
+          setSid("");
+          return;
+        } else {
+          setError(
+            `This SID has already been confirmed for both weeks.`
+          );
+          return;
+        }
+      }
     }
   };
 
@@ -59,7 +121,7 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
           "sid",
           stencils.map((stencil) => stencil.sid)
         )
-        .eq("week", week)
+        .eq("week", stencils.map((stencil) => stencil.week))
         .eq("year", year)
         .select();
       console.log(data);
@@ -103,71 +165,103 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
           &#8203;
         </span>
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-md transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-        <div className=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div className="sm:flex sm:items-start">
-            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-              <h3 className="text-lg leading-6 font-bold text-white" id="modal-title">
-                Add Stencil by SID
-              </h3>
-              <div className="mt-2 flex justify-between">
-                <input type="text" value={sid} onChange={(e) => setSid(e.target.value)}
-                       className="w-full px-2 py-1 border border-brown-700 rounded bg-white"
-                       placeholder="Enter SID"
-                       onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-                       autoFocus />
-                <button onClick={handleAdd}
-                        className="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-brown-700">
-                  Add
-                </button>
+          <div className=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="sm:flex sm:items-start">
+              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3
+                  className="text-lg leading-6 font-bold text-white"
+                  id="modal-title"
+                >
+                  Add Stencil by SID
+                </h3>
+                <div className="mt-2 flex justify-between">
+                  <input
+                    type="text"
+                    value={sid}
+                    onChange={(e) => setSid(e.target.value)}
+                    className="w-full px-2 py-1 border border-brown-700 rounded bg-white"
+                    placeholder="Enter SID"
+                    onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleAdd}
+                    className="ml-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-brown-700"
+                  >
+                    Add
+                  </button>
+                </div>
+                {error && <div className="mt-2 text-red-600">{error}</div>}
+
+                <div className="mt-4">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead>
+                      <tr>
+                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                          SID
+                        </th>
+                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                          Title
+                        </th>
+                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                          Category
+                        </th>
+                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                          Week
+                        </th>
+                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                          Action
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-300">
+                      {stencils.map((stencil, index) => (
+                        <tr
+                          key={index}
+                          className={index % 2 === 0 ? "bg-gray-100" : ""}
+                        >
+                          <td className="py-2 px-4">{stencil.sid}</td>
+                          <td className="py-2 px-4">
+                            {stencil.stencils.title}
+                          </td>
+                          <td className="py-2 px-4">
+                            {stencil.stencils.category.cname}
+                          </td>
+                          <td className="py-2 px-4">
+                            {stencil.stencils.week}
+                          </td>
+                          <td className="py-2 px-4">
+                            <button
+                              onClick={() => handleRemove(index)}
+                              className="text-red-600 hover:text-red-800 transition duration-150"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              {error && <div className="mt-2 text-red-600">{error}</div>}
-              
-<div className="mt-4">
-  <table className="min-w-full divide-y divide-gray-200">
-    <thead>
-      <tr>
-        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">SID</th>
-        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">Title</th>
-        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">Category</th>
-        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">Action</th>
-      </tr>
-    </thead>
-    <tbody className="bg-white divide-y divide-gray-300">
-      {stencils.map((stencil, index) => (
-        <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-          <td className="py-2 px-4">{stencil.sid}</td>
-          <td className="py-2 px-4">{stencil.stencils.title}</td>
-          <td className="py-2 px-4">{stencil.stencils.category.cname}</td>
-          <td className="py-2 px-4">
-            <button
-              onClick={() => handleRemove(index)}
-              className="text-red-600 hover:text-red-800 transition duration-150"
-            >
-              Remove
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
-
             </div>
           </div>
-        </div>
-        <div className="bg-white px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-          <button onClick={handleSubmit}
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-white hover:bg-brown-700 sm:ml-3 sm:w-auto sm:text-sm">
-            Submit
-          </button>
-          <button onClick={() => updateShowQuickAdd((prev) => !prev)}
-                  className="mt-3 w-full inline-flex justify-center rounded-md border border-orange-500 shadow-sm px-4 py-2 bg-white text-orange-500 hover:bg-orange-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-            Cancel
-          </button>
+          <div className="bg-white px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button
+              onClick={handleSubmit}
+              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-white hover:bg-brown-700 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => updateShowQuickAdd((prev) => !prev)}
+              className="mt-3 w-full inline-flex justify-center rounded-md border border-orange-500 shadow-sm px-4 py-2 bg-white text-orange-500 hover:bg-orange-200 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

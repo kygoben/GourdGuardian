@@ -10,7 +10,7 @@ function PrintingStatus({
 }) {
 
   useEffect(() => {
-    console.log("item", item);
+    // console.log("item", item);
   }, [item]);
   
     return (
