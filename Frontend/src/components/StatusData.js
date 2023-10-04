@@ -210,8 +210,8 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&
-            item.carving_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&(
+                item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.carving_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
