@@ -48,7 +48,7 @@ const SearchBar = ({
           onClick={() => updateShowQuickAdd((prev) => !prev)}
           className="px-5 py-2 text-white bg-orange-500 rounded shadow-md cursor-pointer"
         >
-          Quick Add
+          Quick Confirm
         </button>
 
         <div className="flex items-center">
