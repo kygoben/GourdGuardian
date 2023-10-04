@@ -190,8 +190,8 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&
-            item.tracing_by?.toLowerCase() !== searchTerm.toLowerCase()) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 && (
+            item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.tracing_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
@@ -205,7 +205,7 @@ const subscribe = async (data) => {
 
         if (
           stage === 4 &&
-          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
+          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
