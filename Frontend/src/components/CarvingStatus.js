@@ -135,11 +135,11 @@ function CarvingStatus({
           >
             {item.carving_confirmed ? (
               <span className="text-green-500">
-                <i className="fas fa-check-square"></i> Confirmed
+                <i className="fas fa-check-square"></i> Carving Confirmed
               </span>
             ) : (
               <span className="text-red-500">
-                <i className="far fa-square"></i> Not Confirmed
+                <i className="far fa-square"></i> Carving Unconfirmed
               </span>
             )}
           </div>

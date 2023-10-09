@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/AdminNav";
 import LeftPane from "@/components/LeftPane";
 import StatusData from "@/components/StatusData";
@@ -6,6 +6,7 @@ import styles from "@/styles/status.module.css";
 import { useState } from "react";
 import AdminSignInPrompt from "@/components/AdminSignInPrompt";
 import QuickAdd from "@/components/QuickAdd";
+import { supabase } from "../../../supabaseConnection.js";
 
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -25,6 +26,25 @@ export default function Status() {
     console.log(newValue);
     setTotal(newValue);
   };
+
+  // useEffect(() => {
+  //   getAdminData();
+  // }, []);
+
+  // async function getAdminData() {
+  //   console.log("getAdminData");
+  //   console.log(year, week, stage);
+  //   let { data, error } = await supabase.from("admin_data").select("*");
+
+  //   console.log(data);
+
+  //   if (data.length > 0) {
+  //     updateYear(data[0].year);
+  //     updateWeek(data[0].week);
+  //     updateStage(data[0].stage);
+  //     // console.log(data);
+  //   }
+  // }
 
   const updateFinished = (newValue) => {
     console.log(newValue);

@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect } from "react";
+import { supabase } from "../../supabaseConnection.js";
 
 const LeftPane = ({
   year,
@@ -19,6 +21,15 @@ const LeftPane = ({
   updateCompleted,
 }) => {
   const weeks = [1, 2, "Both"]; // Update with your desired weeks
+
+  // useEffect(() => {
+  //   console.log("year", year);
+  //   console.log("week", week);
+  //   console.log("stage", stage);
+  //   console.log("isConfirmed", isConfirmed);
+  //   console.log("notConfirmed", notConfirmed);
+
+  // }, [year, week, stage]);
 
   const handleYearChange = (newYear) => {
     updateYear(newYear);
