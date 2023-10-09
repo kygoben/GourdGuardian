@@ -85,7 +85,7 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
           data[0][`${stageString[stage]}_confirmed`] == null
         ) {
           if (data) {
-            setStencils([data[0], ...stencils]);
+            setStencils([...stencils, data[0]]);
             // console.log(stencils);
           }
 
@@ -111,30 +111,36 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
   };
 
   const handleSubmit = async () => {
+    console.log(stencils);
+
     try {
-      const { data, error } = await supabase
-        .from("sstatus") // update with your table name
-        .update({
-          [`${stageString[stage]}_confirmed`]: `${currentDate.toISOString()}`,
-        })
-        .in(
-          "sid",
-          stencils.map((stencil) => stencil.sid)
-        )
-        .eq("week", stencils.map((stencil) => stencil.week))
-        .eq("year", year)
-        .select();
-      console.log(data);
-      if (error) throw error;
-      //   onSubmit();
+        for (const stencil of stencils) {
+            const { data, error } = await supabase
+                .from("sstatus")
+                .update({
+                    [`${stageString[stage]}_confirmed`]: `${currentDate.toISOString()}`,
+                })
+                .eq("sid", stencil.sid)
+                .eq("week", stencil.week)
+                .eq("year", year)
+                .select();
+
+            console.log(data);
+
+            if (error) throw error;
+        }
+        
+        // If you have any other operations after the loop like onSubmit
+        // onSubmit();
     } catch (error) {
-      console.error("Error updating data:", error);
+        console.error("Error updating data:", error);
     } finally {
-      setStencils([]);
-      setSid("");
-      updateShowQuickAdd(false);
+        setStencils([]);
+        setSid("");
+        updateShowQuickAdd(false);
     }
-  };
+};
+
   const handleRemove = (index) => {
     setStencils((prevStencils) => prevStencils.filter((_, i) => i !== index));
   };
