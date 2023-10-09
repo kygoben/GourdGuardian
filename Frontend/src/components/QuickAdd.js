@@ -164,20 +164,11 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
         >
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        >
-          &#8203;
-        </span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-md transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div className="inline-block align-bottom bg-white rounded-lg text-left shadow-md transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-y-auto" style={{ maxHeight: '500px' }}>
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3
-                  className="text-lg leading-6 font-bold text-white"
-                  id="modal-title"
-                >
+                <h3 className="text-lg leading-6 font-bold text-white" id="modal-title">
                   Add Stencil by SID
                 </h3>
                 <div className="mt-2 flex justify-between">
@@ -198,49 +189,26 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
                   </button>
                 </div>
                 {error && <div className="mt-2 text-red-600">{error}</div>}
-
                 <div className="mt-4">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead>
                       <tr>
-                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
-                          SID
-                        </th>
-                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
-                          Title
-                        </th>
-                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
-                          Category
-                        </th>
-                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
-                          Week
-                        </th>
-                        <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
-                          Action
-                        </th>
+                        {['SID', 'Title', 'Category', 'Week', 'Action'].map((header) => (
+                          <th className="py-2 px-4 bg-gray-200 text-left text-xs font-bold uppercase tracking-wider">
+                            {header}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-300">
-                      {stencils.map((stencil, index) => (
-                        <tr
-                          key={index}
-                          className={index % 2 === 0 ? "bg-gray-100" : ""}
-                        >
+                      {stencils.slice().reverse().map((stencil, index) => (
+                        <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
                           <td className="py-2 px-4">{stencil.sid}</td>
+                          <td className="py-2 px-4">{stencil.stencils.title}</td>
+                          <td className="py-2 px-4">{stencil.stencils.category.cname}</td>
+                          <td className="py-2 px-4">{stencil.stencils.week}</td>
                           <td className="py-2 px-4">
-                            {stencil.stencils.title}
-                          </td>
-                          <td className="py-2 px-4">
-                            {stencil.stencils.category.cname}
-                          </td>
-                          <td className="py-2 px-4">
-                            {stencil.stencils.week}
-                          </td>
-                          <td className="py-2 px-4">
-                            <button
-                              onClick={() => handleRemove(index)}
-                              className="text-red-600 hover:text-red-800 transition duration-150"
-                            >
+                            <button onClick={() => handleRemove(index)} className="text-red-600 hover:text-red-800 transition duration-150">
                               Remove
                             </button>
                           </td>
@@ -270,6 +238,7 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
       </div>
     </div>
   );
+  
 }
 
 export default QuickAdd;
