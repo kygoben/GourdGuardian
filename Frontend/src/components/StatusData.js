@@ -59,24 +59,22 @@ const StatusData = ({
   }, [year]);
 
   useEffect(() => {
-    if(stage === 1) {
-    updateTotal(data.length);
-    updateFinished(data.filter((item) => item.printing_confirmed).length);
-    }
-    if(stage === 2) {
-    updateTotal(data.length);
-    updateFinished(data.filter((item) => item.cutting_confirmed).length);
-    }
-    if(stage === 3) {
-    updateTotal(data.length);
-    updateFinished(data.filter((item) => item.tracing_confirmed).length);
-    }
-    if(stage === 4) {
-    updateTotal(data.length);
-    updateFinished(data.filter((item) => item.carving_confirmed).length);
-    }
-
+    const stageMap = {
+      1: "printing_confirmed",
+      2: "cutting_confirmed",
+      3: "tracing_confirmed",
+      4: "carving_confirmed",
+    };
+  
+    const filteredData = week === "Both" 
+        ? data 
+        : data.filter(item => item.week === week);  // assuming week is a property in your data items
+    
+    updateTotal(filteredData.length);
+    updateFinished(filteredData.filter(item => item[stageMap[stage]]).length);
+    
   }, [year, week, stage, data]);
+  
 
   const subscribe = async (data) => {
     // console.log(data);
