@@ -142,7 +142,10 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
 };
 
   const handleRemove = (index) => {
-    setStencils((prevStencils) => prevStencils.filter((_, i) => i !== index));
+    console.log(index);
+    const position = stencils.length - index - 1;
+    console.log(position);
+    setStencils((prevStencils) => prevStencils.filter((_, i) => i !== position));
   };
 
   const onClose = () => {
