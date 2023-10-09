@@ -22,6 +22,8 @@ const StatusData = ({
   updateSearchTerm,
   updateShowQuickAdd,
   showQuickAdd,
+  updateTotal,
+  updateFinished,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,75 +48,91 @@ const StatusData = ({
     getData();
     let subscription;
     (async () => {
-        subscription = await subscribe(data);
+      subscription = await subscribe(data);
     })();
 
     return () => {
-        if (subscription) {
-            subscription.unsubscribe();
-        }
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
-}, [year]);
+  }, [year]);
 
+  useEffect(() => {
+    if(stage === 1) {
+    updateTotal(data.length);
+    updateFinished(data.filter((item) => item.printing_confirmed).length);
+    }
+    if(stage === 2) {
+    updateTotal(data.length);
+    updateFinished(data.filter((item) => item.cutting_confirmed).length);
+    }
+    if(stage === 3) {
+    updateTotal(data.length);
+    updateFinished(data.filter((item) => item.tracing_confirmed).length);
+    }
+    if(stage === 4) {
+    updateTotal(data.length);
+    updateFinished(data.filter((item) => item.carving_confirmed).length);
+    }
 
-const subscribe = async (data) => {
-  // console.log(data);
-  const subscription = supabase
-    .channel('schema-db-changes')
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'sstatus',
-      },
-      (payload) => {
+  }, [year, week, stage, data]);
 
-
-        if (payload.new) {
-          setData((currentData) => {
+  const subscribe = async (data) => {
+    // console.log(data);
+    const subscription = supabase
+      .channel("schema-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sstatus",
+        },
+        (payload) => {
+          if (payload.new) {
+            setData((currentData) => {
               // Copy the current data to avoid direct mutations
               const newData = [...currentData];
               const updatedItem = payload.new;
-              
+
               const itemIndex = newData.findIndex(
-                  (el) => el.sid === updatedItem.sid &&
-                          el.year === updatedItem.year &&
-                          el.week === updatedItem.week
+                (el) =>
+                  el.sid === updatedItem.sid &&
+                  el.year === updatedItem.year &&
+                  el.week === updatedItem.week
               );
-      
+
               if (itemIndex !== -1) {
-                  const oldItem = newData[itemIndex];
-                  newData[itemIndex] = updatedItem;
-                  newData[itemIndex].stencils = oldItem.stencils;
+                const oldItem = newData[itemIndex];
+                newData[itemIndex] = updatedItem;
+                newData[itemIndex].stencils = oldItem.stencils;
               } else {
-                  // This is a new item, so we push it to the array:
-                  newData.push(updatedItem);
-                  newData.sort((a, b) => {
-                      const sidA = a.sid.split("-").map(Number);
-                      const sidB = b.sid.split("-").map(Number);
-      
-                      for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
-                          const diff = (sidA[i] || 0) - (sidB[i] || 0);
-                          if (diff !== 0) {
-                              return diff;
-                          }
-                      }
-      
-                      return 0;
-                  });
+                // This is a new item, so we push it to the array:
+                newData.push(updatedItem);
+                newData.sort((a, b) => {
+                  const sidA = a.sid.split("-").map(Number);
+                  const sidB = b.sid.split("-").map(Number);
+
+                  for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+                    const diff = (sidA[i] || 0) - (sidB[i] || 0);
+                    if (diff !== 0) {
+                      return diff;
+                    }
+                  }
+
+                  return 0;
+                });
               }
               return newData;
-          });
-      }
-      }
-    )
-    .subscribe();
+            });
+          }
+        }
+      )
+      .subscribe();
 
-  return subscription;
-};
-
-
+    return subscription;
+  };
 
   const getData = async () => {
     console.log("Getting data");
@@ -190,8 +208,10 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 && (
-            item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.tracing_by)) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            (item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
+              0 ||
+              !item.tracing_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
@@ -210,8 +230,10 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&(
-                item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.carving_by)) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            (item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
+              0 ||
+              !item.carving_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
@@ -243,16 +265,16 @@ const subscribe = async (data) => {
   );
 
   const handleEdit = async (item, field, value) => {
-      const updateObject = { [field]: value };
-      const { data: updatedData, error } = await supabase
-        .from("sstatus")
-        .update(updateObject)
-        .eq("sid", item.sid)
-        .eq("year", item.year)
-        .eq("week", item.week)
-        .select("*, stencils(title)");
+    const updateObject = { [field]: value };
+    const { data: updatedData, error } = await supabase
+      .from("sstatus")
+      .update(updateObject)
+      .eq("sid", item.sid)
+      .eq("year", item.year)
+      .eq("week", item.week)
+      .select("*, stencils(title)");
 
-      if (error) {
+    if (error) {
       console.error("Error updating data:", error);
     }
   };

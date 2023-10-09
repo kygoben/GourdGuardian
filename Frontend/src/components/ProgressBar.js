@@ -1,38 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "./../../supabaseConnection.js";
 
-const ProgressBar = () => {
-  const [percentage, setPercentage] = useState(0);
+const ProgressBar = ({ total, finished }) => {
+  const percentage = total !== 0 ? (finished / total) * 100 : 0;
 
   useEffect(() => {
-    const getPercentage = async () => {
-      const { data: totalData, error: totalError } = await supabase.from('sstatus').select('sid');
-      const { data: completeData, error: completeError } = await supabase.from('sstatus').select('sid').not('carving_confirmed', 'is', null);
-  
-      if (!totalError && !completeError) {
-        const totalCount = totalData.length;
-        const completeCount = completeData.length;
-        const temp = Math.round((completeCount / totalCount) * 100 * 2) / 2;
-        setPercentage(temp);
-      }
-    };
-
-    getPercentage();
-  }, []);
+    console.log("total", total);
+    console.log("finished", finished);
+    console.log("percentage", percentage);
+  }, [total, finished]);
 
   return (
-    <div className="text-gray-900 p-2 flex items-center">
-      <div className="flex gap-2.5 items-center">
-        <div>Progress:</div>
-        <div className="w-32 h-2 bg-orange-500 rounded-full relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-full bg-yellow-800 rounded-full flex items-center justify-center" style={{ width: `${percentage}%` }}>
-            {percentage > 5 && <span className="text-xs">{percentage}%</span>}
-          </div>
-        </div>
-        {percentage <= 5 && <span className="ml-2.5">{percentage}%</span>}
+    <div style={styles.container}>
+      <div style={{ ...styles.progressBar, width: `${percentage}%` }}></div>
+      <div style={styles.label}>
+        {finished} / {total}
       </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    width: "100%",
+    backgroundColor: "#e0e0e0",
+    borderRadius: 4,
+    position: "relative",
+    height: 20,
+    overflow: "hidden",
+  },
+  progressBar: {
+    height: "100%",
+    backgroundColor: "#3f51b5", // Color can be changed as per your choice
+    transition: "width 0.3s ease-out",
+  },
+  label: {
+    position: "absolute",
+    top: 0,
+    left: "50%",
+    transform: "translateX(-50%)",
+    fontSize: 12,
+    color: "#333",
+  },
 };
 
 export default ProgressBar;

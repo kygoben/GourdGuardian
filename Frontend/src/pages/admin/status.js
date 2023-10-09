@@ -18,6 +18,18 @@ export default function Status() {
   const [completed, setCompleted] = useState(true);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [finished, setFinished] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const updateTotal = (newValue) => {
+    console.log(newValue);
+    setTotal(newValue);
+  };
+
+  const updateFinished = (newValue) => {
+    console.log(newValue);
+    setFinished(newValue);
+  };
 
   const updateYear = (newValue) => {
     setYear(newValue);
@@ -71,7 +83,7 @@ export default function Status() {
 
   return (
     <AdminSignInPrompt>
-      <Navbar />
+      <Navbar total={total} finished={finished}/>
       <div style={{ display: "flex" }}>
         <LeftPane
           className={styles.leftPane}
@@ -116,6 +128,8 @@ export default function Status() {
             searchTerm={searchTerm}
             updateShowQuickAdd={updateShowQuickAdd}
             showQuickAdd={showQuickAdd}
+            updateFinished={updateFinished}
+            updateTotal={updateTotal}
           />
         </div>
       </div>
