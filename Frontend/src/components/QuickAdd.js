@@ -206,7 +206,7 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
                           <td className="py-2 px-4">{stencil.sid}</td>
                           <td className="py-2 px-4">{stencil.stencils.title}</td>
                           <td className="py-2 px-4">{stencil.stencils.category.cname}</td>
-                          <td className="py-2 px-4">{stencil.stencils.week}</td>
+                          <td className="py-2 px-4">{stencil.week}</td>
                           <td className="py-2 px-4">
                             <button onClick={() => handleRemove(index)} className="text-red-600 hover:text-red-800 transition duration-150">
                               Remove
