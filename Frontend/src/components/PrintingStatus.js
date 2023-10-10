@@ -34,11 +34,11 @@ function PrintingStatus({
           >
             {item.printing_confirmed ? (
               <span className="text-green-500">
-                <i className="fas fa-check-square"></i> Confirmed
+                <i className="fas fa-check-square"></i> Printing Confirmed
               </span>
             ) : (
               <span className="text-red-500">
-                <i className="far fa-square"></i> Not Confirmed
+                <i className="far fa-square"></i> Printing Unconfirmed
               </span>
             )}
           </div>

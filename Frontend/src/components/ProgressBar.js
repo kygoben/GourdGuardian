@@ -1,37 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "./../../supabaseConnection.js";
 
-const ProgressBar = () => {
-  const [percentage, setPercentage] = useState(0);
+const ProgressBar = ({ total, finished }) => {
+  const percentage = total !== 0 ? (finished / total) * 100 : 0;
 
   useEffect(() => {
-    const getPercentage = async () => {
-      const { data: totalData, error: totalError } = await supabase.from('sstatus').select('sid');
-      const { data: completeData, error: completeError } = await supabase.from('sstatus').select('sid').not('carving_confirmed', 'is', null);
-  
-      if (!totalError && !completeError) {
-        const totalCount = totalData.length;
-        const completeCount = completeData.length;
-        const temp = Math.round((completeCount / totalCount) * 100 * 2) / 2;
-        setPercentage(temp);
-      }
-    };
-
-    getPercentage();
-  }, []);
+    // console.log("total", total);
+    // console.log("finished", finished);
+    // console.log("percentage", percentage);
+  }, [total, finished]);
 
   return (
-    <div className="text-gray-900 p-2 flex items-center">
-      <div className="flex gap-2.5 items-center">
-        <div>Progress:</div>
-        <div className="w-32 h-2 bg-orange-500 rounded-full relative overflow-hidden">
-          <div className="absolute top-0 left-0 h-full bg-yellow-800 rounded-full flex items-center justify-center" style={{ width: `${percentage}%` }}>
-            {percentage > 5 && <span className="text-xs">{percentage}%</span>}
+    <>
+      {finished && total && (
+        <div className="w-1/3 mx-auto bg-e0e0e0 rounded h-5 relative overflow-hidden border border-gray-400">
+          <div className={`bg-orange-500 transition-width ease-out duration-300 h-full`} style={{ width: `${percentage}%` }}></div>
+          <div className="absolute inset-0 flex justify-center items-center text-sm text-black font-medium">
+            {finished} / {total}
           </div>
         </div>
-        {percentage <= 5 && <span className="ml-2.5">{percentage}%</span>}
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 

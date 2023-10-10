@@ -32,11 +32,11 @@ function CuttingStatus({
           >
             {item.cutting_confirmed ? (
               <span className="text-green-500">
-                <i className="fas fa-check-square"></i> Confirmed
+                <i className="fas fa-check-square"></i> Cutting Confirmed
               </span>
             ) : (
               <span className="text-red-500">
-                <i className="far fa-square"></i> Not Confirmed
+                <i className="far fa-square"></i> Cutting Unconfirmed
               </span>
             )}
           </div>

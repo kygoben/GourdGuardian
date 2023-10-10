@@ -7,6 +7,7 @@ import TracingStatus from "./TracingStatus";
 import CarvingStatus from "./CarvingStatus";
 import PaginationButtons from "./PaginationButtons";
 import SearchBar from "./SearchBar.js";
+import { get } from "lodash";
 
 const StatusData = ({
   initialData,
@@ -22,6 +23,10 @@ const StatusData = ({
   updateSearchTerm,
   updateShowQuickAdd,
   showQuickAdd,
+  updateTotal,
+  updateFinished,
+  updateShowStatusAdd,
+  showStatusAdd
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,79 +50,102 @@ const StatusData = ({
   useEffect(() => {
     getData();
     let subscription;
+    console.log("subscribing");
     (async () => {
-        subscription = await subscribe(data);
+      subscription = await subscribe(data);
     })();
 
     return () => {
-        if (subscription) {
-            subscription.unsubscribe();
-        }
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
-}, [year]);
+  }, [year, showStatusAdd]);
+
+  // useEffect(() => {
+  //   getData();
+  // }, [showStatusAdd]);
 
 
-const subscribe = async (data) => {
-  // console.log(data);
-  const subscription = supabase
-    .channel('schema-db-changes')
-    .on(
-      'postgres_changes',
-      {
-        event: '*',
-        schema: 'public',
-        table: 'sstatus',
-      },
-      (payload) => {
+  useEffect(() => {
+    const stageMap = {
+      1: "printing_confirmed",
+      2: "cutting_confirmed",
+      3: "tracing_confirmed",
+      4: "carving_confirmed",
+    };
+  
+    const filteredData = week === "Both" 
+        ? data 
+        : data.filter(item => item.week === week);  // assuming week is a property in your data items
+    
+    updateTotal(filteredData.length);
+    updateFinished(filteredData.filter(item => item[stageMap[stage]]).length);
+    
+  }, [year, week, stage, data]);
+  
 
-
-        if (payload.new) {
-          setData((currentData) => {
-              // Copy the current data to avoid direct mutations
-              const newData = [...currentData];
-              const updatedItem = payload.new;
-              
-              const itemIndex = newData.findIndex(
-                  (el) => el.sid === updatedItem.sid &&
-                          el.year === updatedItem.year &&
-                          el.week === updatedItem.week
-              );
-      
-              if (itemIndex !== -1) {
-                  const oldItem = newData[itemIndex];
-                  newData[itemIndex] = updatedItem;
-                  newData[itemIndex].stencils = oldItem.stencils;
-              } else {
-                  // This is a new item, so we push it to the array:
-                  newData.push(updatedItem);
-                  newData.sort((a, b) => {
-                      const sidA = a.sid.split("-").map(Number);
-                      const sidB = b.sid.split("-").map(Number);
-      
-                      for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
-                          const diff = (sidA[i] || 0) - (sidB[i] || 0);
-                          if (diff !== 0) {
-                              return diff;
-                          }
-                      }
-      
-                      return 0;
-                  });
-              }
-              return newData;
-          });
-      }
-      }
-    )
-    .subscribe();
-
-  return subscription;
-};
-
-
+  const subscribe = async (data) => {
+    // console.log(data);
+    const subscription = supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'update',
+          schema: 'public',
+          table: 'sstatus',
+        },
+        (payload) => {
+          if (payload.new) {
+            setData((currentData) => {
+              console.log(payload.new);
+                // Copy the current data to avoid direct mutations
+                const newData = [...currentData];
+                const updatedItem = payload.new;
+                
+                const itemIndex = newData.findIndex(
+                    (el) => el.sid === updatedItem.sid &&
+                            el.year === updatedItem.year &&
+                            el.week === updatedItem.week
+                );
+        
+                if (itemIndex !== -1) {
+                    const oldItem = newData[itemIndex];
+                    newData[itemIndex] = updatedItem;
+                    newData[itemIndex].stencils = oldItem.stencils;
+                    if(!newData[itemIndex].stencils.title){
+                      
+                    }
+                } else {
+                    // This is a new item, so we push it to the array:
+                    newData.push(updatedItem);
+                    newData.sort((a, b) => {
+                        const sidA = a.sid.split("-").map(Number);
+                        const sidB = b.sid.split("-").map(Number);
+        
+                        for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+                            const diff = (sidA[i] || 0) - (sidB[i] || 0);
+                            if (diff !== 0) {
+                                return diff;
+                            }
+                        }
+        
+                        return 0;
+                    });
+                }
+                return newData;
+            });
+        } 
+        }
+      )
+      .subscribe();
+  
+    return subscription;
+  };
 
   const getData = async () => {
-    console.log("Getting data");
+    // console.log("Getting data");
     try {
       const { data: sstatusData, error } = await supabase
         .from("sstatus")
@@ -141,7 +169,7 @@ const subscribe = async (data) => {
 
         return 0;
       });
-      console.log(sstatusData);
+      // console.log(sstatusData);
 
       setData(sstatusData);
     } catch (error) {
@@ -190,8 +218,10 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 && (
-            item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.tracing_by)) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            (item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
+              0 ||
+              !item.tracing_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.tracing_start && !notStarted) ||
             (item.tracing_end && !completed) ||
@@ -210,8 +240,10 @@ const subscribe = async (data) => {
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&(
-                item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 || !item.carving_by)) ||
+              .indexOf(searchTerm.toLowerCase()) < 0 &&
+            (item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
+              0 ||
+              !item.carving_by)) ||
             (item.week !== week && week !== "Both") ||
             (!item.carving_start && !notStarted) ||
             (item.carving_end && !completed) ||
@@ -243,16 +275,16 @@ const subscribe = async (data) => {
   );
 
   const handleEdit = async (item, field, value) => {
-      const updateObject = { [field]: value };
-      const { data: updatedData, error } = await supabase
-        .from("sstatus")
-        .update(updateObject)
-        .eq("sid", item.sid)
-        .eq("year", item.year)
-        .eq("week", item.week)
-        .select("*, stencils(title)");
+    const updateObject = { [field]: value };
+    const { data: updatedData, error } = await supabase
+      .from("sstatus")
+      .update(updateObject)
+      .eq("sid", item.sid)
+      .eq("year", item.year)
+      .eq("week", item.week)
+      .select("*, stencils(title)");
 
-      if (error) {
+    if (error) {
       console.error("Error updating data:", error);
     }
   };
@@ -329,6 +361,7 @@ const subscribe = async (data) => {
         length={filteredData.length}
         showPdf={showPdf}
         updateShowPdf={updateShowPdf}
+        updateShowStatusAdd={updateShowStatusAdd}
       />
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -356,6 +389,7 @@ const subscribe = async (data) => {
                 notConfirmed={notConfirmed}
                 currentDate={currentDate}
                 showPdf={showPdf}
+                updateShowStatusAdd={updateShowStatusAdd}
               />
             </tr>
           ))}

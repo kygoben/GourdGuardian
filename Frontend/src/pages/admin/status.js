@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/AdminNav";
 import LeftPane from "@/components/LeftPane";
 import StatusData from "@/components/StatusData";
@@ -6,6 +6,8 @@ import styles from "@/styles/status.module.css";
 import { useState } from "react";
 import AdminSignInPrompt from "@/components/AdminSignInPrompt";
 import QuickAdd from "@/components/QuickAdd";
+import { supabase } from "../../../supabaseConnection.js";
+import StatusAdd from "@/components/StatusAdd";
 
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -17,7 +19,39 @@ export default function Status() {
   const [inProgress, setInProgress] = useState(true);
   const [completed, setCompleted] = useState(true);
   const [showQuickAdd, setShowQuickAdd] = useState(false);
+  const [showStatusAdd, setShowStatusAdd] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [finished, setFinished] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const updateTotal = (newValue) => {
+    // console.log(newValue);
+    setTotal(newValue);
+  };
+
+  // useEffect(() => {
+  //   getAdminData();
+  // }, []);
+
+  // async function getAdminData() {
+  //   console.log("getAdminData");
+  //   console.log(year, week, stage);
+  //   let { data, error } = await supabase.from("admin_data").select("*");
+
+  //   console.log(data);
+
+  //   if (data.length > 0) {
+  //     updateYear(data[0].year);
+  //     updateWeek(data[0].week);
+  //     updateStage(data[0].stage);
+  //     // console.log(data);
+  //   }
+  // }
+
+  const updateFinished = (newValue) => {
+    // console.log(newValue);
+    setFinished(newValue);
+  };
 
   const updateYear = (newValue) => {
     setYear(newValue);
@@ -69,9 +103,14 @@ export default function Status() {
     setShowQuickAdd(newValue);
   };
 
+  const updateShowStatusAdd = (newValue) => {
+    setShowStatusAdd(newValue);
+  }
+
+
   return (
     <AdminSignInPrompt>
-      <Navbar />
+      <Navbar total={total} finished={finished}/>
       <div style={{ display: "flex" }}>
         <LeftPane
           className={styles.leftPane}
@@ -94,6 +133,10 @@ export default function Status() {
           updateCompleted={updateCompleted}
         />
         <div className={styles.data}>
+          {showStatusAdd && <StatusAdd
+          year={year}
+          updateShowStatusAdd={updateShowStatusAdd}
+          ></StatusAdd>}
           {showQuickAdd && (
             <QuickAdd
               stage={stage}
@@ -115,7 +158,11 @@ export default function Status() {
             completed={completed}
             searchTerm={searchTerm}
             updateShowQuickAdd={updateShowQuickAdd}
+            updateShowStatusAdd={updateShowStatusAdd}
             showQuickAdd={showQuickAdd}
+            updateFinished={updateFinished}
+            updateTotal={updateTotal}
+            showStatusAdd={showStatusAdd}
           />
         </div>
       </div>
