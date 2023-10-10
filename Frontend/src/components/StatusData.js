@@ -24,6 +24,8 @@ const StatusData = ({
   showQuickAdd,
   updateTotal,
   updateFinished,
+  updateShowStatusAdd,
+  showStatusAdd
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +58,7 @@ const StatusData = ({
         subscription.unsubscribe();
       }
     };
-  }, [year]);
+  }, [year, showStatusAdd]);
 
   useEffect(() => {
     const stageMap = {
@@ -133,7 +135,7 @@ const StatusData = ({
   };
 
   const getData = async () => {
-    console.log("Getting data");
+    // console.log("Getting data");
     try {
       const { data: sstatusData, error } = await supabase
         .from("sstatus")
@@ -157,7 +159,7 @@ const StatusData = ({
 
         return 0;
       });
-      console.log(sstatusData);
+      // console.log(sstatusData);
 
       setData(sstatusData);
     } catch (error) {
@@ -349,6 +351,7 @@ const StatusData = ({
         length={filteredData.length}
         showPdf={showPdf}
         updateShowPdf={updateShowPdf}
+        updateShowStatusAdd={updateShowStatusAdd}
       />
 
       <table style={{ borderCollapse: "collapse", width: "100%" }}>
@@ -376,6 +379,7 @@ const StatusData = ({
                 notConfirmed={notConfirmed}
                 currentDate={currentDate}
                 showPdf={showPdf}
+                updateShowStatusAdd={updateShowStatusAdd}
               />
             </tr>
           ))}

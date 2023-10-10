@@ -9,6 +9,7 @@ const SearchBar = ({
   autoFocus,
   showPdf,
   updateShowPdf,
+  updateShowStatusAdd,
 }) => {
   useEffect(() => {}, [searchTerm]);
 
@@ -49,6 +50,13 @@ const SearchBar = ({
           className="px-5 py-2 text-white bg-orange-500 rounded shadow-md cursor-pointer"
         >
           Quick Confirm
+        </button>
+
+        <button
+          onClick={() => updateShowStatusAdd((prev) => !prev)}
+          className="px-5 py-2 text-white bg-orange-500 rounded shadow-md cursor-pointer"
+        >
+          Add Week to Stencil
         </button>
 
         <div className="flex items-center">
