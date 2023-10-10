@@ -7,6 +7,7 @@ import TracingStatus from "./TracingStatus";
 import CarvingStatus from "./CarvingStatus";
 import PaginationButtons from "./PaginationButtons";
 import SearchBar from "./SearchBar.js";
+import { get } from "lodash";
 
 const StatusData = ({
   initialData,
@@ -49,6 +50,7 @@ const StatusData = ({
   useEffect(() => {
     getData();
     let subscription;
+    console.log("subscribing");
     (async () => {
       subscription = await subscribe(data);
     })();
@@ -59,6 +61,11 @@ const StatusData = ({
       }
     };
   }, [year, showStatusAdd]);
+
+  // useEffect(() => {
+  //   getData();
+  // }, [showStatusAdd]);
+
 
   useEffect(() => {
     const stageMap = {
@@ -81,56 +88,59 @@ const StatusData = ({
   const subscribe = async (data) => {
     // console.log(data);
     const subscription = supabase
-      .channel("schema-db-changes")
+      .channel('schema-db-changes')
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "*",
-          schema: "public",
-          table: "sstatus",
+          event: 'update',
+          schema: 'public',
+          table: 'sstatus',
         },
         (payload) => {
           if (payload.new) {
             setData((currentData) => {
-              // Copy the current data to avoid direct mutations
-              const newData = [...currentData];
-              const updatedItem = payload.new;
-
-              const itemIndex = newData.findIndex(
-                (el) =>
-                  el.sid === updatedItem.sid &&
-                  el.year === updatedItem.year &&
-                  el.week === updatedItem.week
-              );
-
-              if (itemIndex !== -1) {
-                const oldItem = newData[itemIndex];
-                newData[itemIndex] = updatedItem;
-                newData[itemIndex].stencils = oldItem.stencils;
-              } else {
-                // This is a new item, so we push it to the array:
-                newData.push(updatedItem);
-                newData.sort((a, b) => {
-                  const sidA = a.sid.split("-").map(Number);
-                  const sidB = b.sid.split("-").map(Number);
-
-                  for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
-                    const diff = (sidA[i] || 0) - (sidB[i] || 0);
-                    if (diff !== 0) {
-                      return diff;
+              console.log(payload.new);
+                // Copy the current data to avoid direct mutations
+                const newData = [...currentData];
+                const updatedItem = payload.new;
+                
+                const itemIndex = newData.findIndex(
+                    (el) => el.sid === updatedItem.sid &&
+                            el.year === updatedItem.year &&
+                            el.week === updatedItem.week
+                );
+        
+                if (itemIndex !== -1) {
+                    const oldItem = newData[itemIndex];
+                    newData[itemIndex] = updatedItem;
+                    newData[itemIndex].stencils = oldItem.stencils;
+                    if(!newData[itemIndex].stencils.title){
+                      
                     }
-                  }
-
-                  return 0;
-                });
-              }
-              return newData;
+                } else {
+                    // This is a new item, so we push it to the array:
+                    newData.push(updatedItem);
+                    newData.sort((a, b) => {
+                        const sidA = a.sid.split("-").map(Number);
+                        const sidB = b.sid.split("-").map(Number);
+        
+                        for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
+                            const diff = (sidA[i] || 0) - (sidB[i] || 0);
+                            if (diff !== 0) {
+                                return diff;
+                            }
+                        }
+        
+                        return 0;
+                    });
+                }
+                return newData;
             });
-          }
+        } 
         }
       )
       .subscribe();
-
+  
     return subscription;
   };
 
