@@ -112,7 +112,7 @@ function StatusAdd({ year, updateShowStatusAdd }) {
                     </button>
                 </div>
                 {error && <p className="text-red-600 mb-2">{error}</p>}
-                {stencils.length >= 0 && (
+                {stencils.length>0 && (
                     <div className="mb-4">
                         {stencils.length >= 0 && (
                   <div className="mt-2">
