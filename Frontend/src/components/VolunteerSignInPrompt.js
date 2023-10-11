@@ -53,14 +53,18 @@ const SignInPrompt = ({ children }) => {
 
     document.cookie = `name=${name}`;
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const newPassword = password.toLowerCase().trim();
+
+    const credentials ={
+      email: 'volunteer@gmail.com',
+      password: newPassword,
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword(credentials);
 
     if (error) {
       setPasswordError(
-        "Incorrect event code. Be sure to use all lowercase letters"
+        "Incorrect event code."
       );
       return;
     }

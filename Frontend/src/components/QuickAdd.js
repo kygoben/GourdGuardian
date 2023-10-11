@@ -167,7 +167,7 @@ function QuickAdd({ stage, week, year, updateShowQuickAdd }) {
         >
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left shadow-md transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div className="inline-block align-bottom bg-white rounded-lg text-left shadow-md transform transition-all sm:my-8 sm:align-middle">
           <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 overflow-y-auto" style={{ maxHeight: '500px' }}>
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
