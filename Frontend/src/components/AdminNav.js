@@ -3,7 +3,7 @@ import ProgressBar from "./ProgressBar";
 import { supabase } from "./../../supabaseConnection.js";
 import { useRouter } from "next/router";
 
-const Navbar = ({ total, finished }) => {
+const Navbar = ({ total, finished, stage }) => {
   const router = useRouter();
 
   const handleSignOut = async () => {
@@ -12,8 +12,26 @@ const Navbar = ({ total, finished }) => {
     else router.reload();
   };
 
+  let bgColor = "";
+  switch (stage) {
+    case 1:
+      bgColor = "bg-teal-500";
+      break;
+    case 2:
+      bgColor = "bg-purple-500";
+      break;
+    case 3:
+      bgColor = "bg-gray-500";
+      break;
+    case 4:
+      bgColor = "bg-indigo-500";
+      break;
+    default:
+      bgColor = "bg-white";
+  }
+
   return (
-    <div className="bg-white p-4 shadow-md">
+    <div className={`p-4 shadow-md ${bgColor}`}>
       <div className="flex justify-between items-center">
           <div className="text-orange-500 font-bold text-3xl tracking-wider">GourdGuardian</div>
           <ProgressBar total={total} finished={finished} className="bg-orange-500 h-5 rounded" />

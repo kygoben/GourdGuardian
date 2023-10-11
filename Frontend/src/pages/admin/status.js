@@ -110,7 +110,7 @@ export default function Status() {
 
   return (
     <AdminSignInPrompt>
-      <Navbar total={total} finished={finished}/>
+      <Navbar total={total} finished={finished} stage={stage}/>
       <div style={{ display: "flex" }}>
         <LeftPane
           className={styles.leftPane}
