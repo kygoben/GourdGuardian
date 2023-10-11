@@ -12,7 +12,7 @@ import StatusAdd from "@/components/StatusAdd";
 export default function Status() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(4);
   const [isConfirmed, setIsConfirmed] = useState(true);
   const [notConfirmed, setNotConfirmed] = useState(true);
   const [notStarted, setNotStarted] = useState(true);
@@ -28,10 +28,6 @@ export default function Status() {
     // console.log(newValue);
     setTotal(newValue);
   };
-
-  // useEffect(() => {
-  //   getAdminData();
-  // }, []);
 
   // async function getAdminData() {
   //   console.log("getAdminData");
