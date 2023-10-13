@@ -1,7 +1,0 @@
-The backend api can (temporarily) be accessed with http://3.15.211.45:5000/
-
-Right now, there are 2 handlers:
-http://3.15.211.45:5000/stencils
-http://3.15.211.45:5000/stencils/<id>
-
-(where <id> is the sid of the stencil like 1-1 or 22-1-A)
