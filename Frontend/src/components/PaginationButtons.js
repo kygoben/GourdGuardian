@@ -29,6 +29,8 @@ const PaginationButtons = ({
         alignItems: "center",
         color: "#b0b0b0",
         padding: "10px",
+        bottom: "10px",
+        position: "sticky",
       }}
     >
 
@@ -51,7 +53,7 @@ const PaginationButtons = ({
           Next
         </button>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <label htmlFor="itemsPerPage" style={{ fontSize: "16px" }}>
+          <label htmlFor="itemsPerPage" style={{ fontSize: "16px", color: "black" }}>
             Items per page:
           </label>
           <select
