@@ -67,7 +67,7 @@ const LeftPane = ({
   };
 
   return (
-    <div style={{ padding: "5px", width: "15%" }}>
+    <div style={{ padding: "5px", width: "15%", top: "10px", position: "sticky" }}>
       <div className="mb-5">
         <label htmlFor="stage" className="mr-2 font-bold text-black">
           Mode:

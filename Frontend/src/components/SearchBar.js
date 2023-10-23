@@ -16,7 +16,7 @@ const SearchBar = ({
   const updateSearchTermDebounced = debounce(updateSearchTerm, 300);
 
   return (
-    <div className="flex items-center justify-between space-x-4 w-full">
+    <div className="flex items-center justify-between space-x-4 w-full" style={{top: "10px", position: "sticky"}}>
       <div className="relative w-48">
         <input
           id="search"
