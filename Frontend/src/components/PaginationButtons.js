@@ -28,6 +28,7 @@ const PaginationButtons = ({
         justifyContent: "space-between",
         alignItems: "center",
         color: "#b0b0b0",
+        padding: "10px",
       }}
     >
 
