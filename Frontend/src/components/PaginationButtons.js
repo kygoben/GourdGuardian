@@ -29,7 +29,7 @@ const PaginationButtons = ({
         alignItems: "center",
         color: "#b0b0b0",
         padding: "10px",
-        bottom: "10px",
+        bottom: "2px",
         position: "sticky",
       }}
     >
