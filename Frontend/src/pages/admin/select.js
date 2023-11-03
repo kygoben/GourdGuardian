@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Navbar from "@/components/AdminNav";
-import LeftPane from "@/components/LeftPane";
-import StatusData from "@/components/StatusData";
+import LeftPaneSelect from "@/components/LeftPaneSelect";
+import SelectData from "@/components/SelectData";
 import styles from "@/styles/status.module.css";
 import { useState } from "react";
 import AdminSignInPrompt from "@/components/AdminSignInPrompt";
@@ -9,7 +9,7 @@ import QuickAdd from "@/components/QuickAdd";
 import { supabase } from "../../../supabaseConnection.js";
 import StatusAdd from "@/components/StatusAdd";
 
-export default function Status() {
+export default function Select() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [week, setWeek] = useState(1);
   const [stage, setStage] = useState(1);
@@ -108,7 +108,7 @@ export default function Status() {
     <AdminSignInPrompt>
       <Navbar total={total} finished={finished} stage={stage}/>
       <div style={{ display: "flex", height: "92%", overflow: "auto" }}>
-        <LeftPane
+        <LeftPaneSelect
           className={styles.leftPane}
           year={year}
           week={week}
@@ -141,7 +141,7 @@ export default function Status() {
               updateShowQuickAdd={updateShowQuickAdd}
             />
           )}
-          <StatusData
+          <SelectData
             updateSearchTerm={updateSearchTerm}
             className={styles.dataRow}
             year={year}
