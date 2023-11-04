@@ -1,13 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "./../../supabaseConnection.js";
-import styles from "@/styles/select.module.css";
-import PrintingStatus from "./PrintingStatus";
-import CuttingStatus from "./CuttingStatus";
-import TracingStatus from "./TracingStatus";
-import CarvingStatus from "./CarvingStatus";
+import styles from "@/styles/selectData.module.css";
 import PaginationButtons from "./PaginationButtons";
 import SearchBarSelect from "./SearchBarSelect.js";
-import { get } from "lodash";
 
 const SelectData = ({
   initialData,
@@ -32,8 +27,6 @@ const SelectData = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
-  const [showPdf, setShowPdf] = useState(true);
-  const [pdfUrl, setPdfUrl] = useState(null);
 
   const updateItemsPerPage = (newValue) => {
     setItemsPerPage(newValue);
@@ -150,6 +143,23 @@ const SelectData = ({
     }
   };
 
+  function fetchPdf(currentStencilId) {
+    console.log("Fetching PDF for stencilId:", currentStencilId);
+    try {
+      const { data, error } = supabase.storage
+        .from("stencils")
+        .getPublicUrl(`${currentStencilId}.pdf`);
+
+      if (error) {
+        throw error;
+      }
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const filteredData = useMemo(() => {
     setCurrentPage(1);
     if (data)
@@ -175,8 +185,8 @@ const SelectData = ({
   // console.log(filteredData);
 
   const paginatedData = (filteredData || []).slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentPage - 1) * 5,
+    currentPage * 5
   );
 
   const handleEdit = async (item, field, value) => {
@@ -206,13 +216,13 @@ const SelectData = ({
         length={filteredData.length}
       />
 
-      <div class="stencil-grid">
+      <div className="stencil-grid">
         {paginatedData.map((item, rowIndex) => (
-        <div class="stencil-card">
+        <div className="stencil-card" key={rowIndex}>
             <iframe
-                src={`${item.sid}.pdf`}
-                width="250vw"
-                height="250vh"
+                src={fetchPdf(item.sid)}
+                width="200px"
+                height="250px"
                 style={{ border: "none" }}
             ></iframe>
             <h3>{item.stencils.title}</h3>
