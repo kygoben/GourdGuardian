@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "./../../supabaseConnection.js";
-import styles from "@/styles/statusData.module.css";
+import styles from "@/styles/select.module.css";
 import PrintingStatus from "./PrintingStatus";
 import CuttingStatus from "./CuttingStatus";
 import TracingStatus from "./TracingStatus";
@@ -32,12 +32,8 @@ const SelectData = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
-  const [showPdf, setShowPdf] = useState(false);
-
-  const updateShowPdf = (newValue) => {
-    console.log(newValue);
-    setShowPdf(newValue);
-  };
+  const [showPdf, setShowPdf] = useState(true);
+  const [pdfUrl, setPdfUrl] = useState(null);
 
   const updateItemsPerPage = (newValue) => {
     setItemsPerPage(newValue);
@@ -61,29 +57,6 @@ const SelectData = ({
       }
     };
   }, [year, showStatusAdd]);
-
-  // useEffect(() => {
-  //   getData();
-  // }, [showStatusAdd]);
-
-
-  useEffect(() => {
-    const stageMap = {
-      1: "printing_confirmed",
-      2: "cutting_confirmed",
-      3: "tracing_confirmed",
-      4: "carving_confirmed",
-    };
-  
-    const filteredData = week === "Both" 
-        ? data 
-        : data.filter(item => item.week === week);  // assuming week is a property in your data items
-    
-    updateTotal(filteredData.length);
-    updateFinished(filteredData.filter(item => item[stageMap[stage]]).length);
-    
-  }, [year, week, stage, data]);
-  
 
   const subscribe = async (data) => {
     // console.log(data);
@@ -181,75 +154,13 @@ const SelectData = ({
     setCurrentPage(1);
     if (data)
       return data.filter((item) => {
-        if (
-          stage === 1 &&
-          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
+        if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
             item.stencils.cid != searchTerm &&
             item.stencils.title
               .toLowerCase()
               .indexOf(searchTerm.toLowerCase()) < 0) ||
-            (item.week !== week && week !== "Both") ||
-            (!item.printing && !notStarted) ||
-            (item.printing && !completed))
-        ) {
-          return false;
-        }
-
-        if (
-          stage === 2 &&
-          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
-            searchTerm !== "" &&
-            item.stencils.cid != searchTerm &&
-            item.stencils.title
-              .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0) ||
-            (item.week !== week && week !== "Both") ||
-            (!item.cutting && !notStarted) ||
-            (item.cutting && !completed))
-        ) {
-          return false;
-        }
-
-        if (
-          stage === 3 &&
-          ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
-            searchTerm !== "" &&
-            item.stencils.cid != searchTerm &&
-            item.stencils.title
-              .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&
-            (item.tracing_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
-              0 ||
-              !item.tracing_by)) ||
-            (item.week !== week && week !== "Both") ||
-            (!item.tracing_start && !notStarted) ||
-            (item.tracing_end && !completed) ||
-            (!inProgress && item.tracing_start && !item.tracing_end) ||
-            (!isConfirmed && item.tracing_confirmed) ||
-            (!notConfirmed && !item.tracing_confirmed))
-        ) {
-          // console.log(!isConfirmed && item.tracing_confirmed);
-          return false;
-        }
-
-        if (
-          stage === 4 &&
-          ((item.sid.toLowerCase() !== searchTerm.toLowerCase() &&
-            searchTerm !== "" &&
-            item.stencils.cid != searchTerm &&
-            item.stencils.title
-              .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0 &&
-            (item.carving_by?.toLowerCase().indexOf(searchTerm.toLowerCase()) <
-              0 ||
-              !item.carving_by)) ||
-            (item.week !== week && week !== "Both") ||
-            (!item.carving_start && !notStarted) ||
-            (item.carving_end && !completed) ||
-            (!inProgress && item.carving_start && !item.carving_end) ||
-            (!isConfirmed && item.carving_confirmed) ||
-            (!notConfirmed && !item.carving_confirmed))
+            (item.week !== week && week !== "Both")
         ) {
           return false;
         }
@@ -257,14 +168,8 @@ const SelectData = ({
       });
   }, [
     data,
-    stage,
     week,
-    searchTerm,
-    notStarted,
-    completed,
-    inProgress,
-    isConfirmed,
-    notConfirmed,
+    searchTerm
   ]);
 
   // console.log(filteredData);
@@ -289,65 +194,6 @@ const SelectData = ({
     }
   };
 
-  const stageComponents = {
-    1: PrintingStatus,
-    2: CuttingStatus,
-    3: TracingStatus,
-    4: CarvingStatus,
-  };
-
-  const StageComponent = stageComponents[stage];
-
-  const headers = {
-    1:
-      week === "Both"
-        ? ["SID", "Week", "Title", "Printing"]
-        : ["SID", "Title", "Printing"],
-    2:
-      week === "Both"
-        ? ["SID", "Week", "Title", "Cutting"]
-        : ["SID", "Title", "Cutting"],
-    3:
-      week === "Both"
-        ? [
-            "SID",
-            "Week",
-            "Title",
-            "Tracing Start",
-            "Tracing End",
-            "Tracer",
-            "Confirm?",
-          ]
-        : [
-            "SID",
-            "Title",
-            "Tracing Start",
-            "Tracing End",
-            "Tracer",
-            "Confirm?",
-          ],
-    4:
-      week === "Both"
-        ? [
-            "SID",
-            "Week",
-            "Title",
-            "Carving Start",
-            "Carving End",
-            "Carver",
-            "Confirm?",
-          ]
-        : [
-            "SID",
-            "Title",
-            "Carving Start",
-            "Carving End",
-            "Carver",
-            "Confirm?",
-          ],
-  };
-  //if data lenth is 0 return There is no Data to show
-
   return (
     <div>
       <SearchBarSelect
@@ -360,39 +206,20 @@ const SelectData = ({
         length={filteredData.length}
       />
 
-      <div>
-        <table style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
-            <tr>
-              {headers[stage].map((headerText, index) => (
-                <th key={index} className={styles.tableHeader}>
-                  {headerText}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((item, rowIndex) => (
-              <tr key={`stencil_${item.sid}_${item.week}_${item.year}`}>
-                <StageComponent
-                  item={item}
-                  handleEdit={handleEdit}
-                  week={week}
-                  searchTerm={searchTerm}
-                  notStarted={notStarted}
-                  inProgress={inProgress}
-                  completed={completed}
-                  isConfirmed={isConfirmed}
-                  notConfirmed={notConfirmed}
-                  currentDate={currentDate}
-                  showPdf={showPdf}
-                  updateShowStatusAdd={updateShowStatusAdd}
-                />
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <div class="stencil-grid">
+        {paginatedData.map((item, rowIndex) => (
+        <div class="stencil-card">
+            <iframe
+                src={`${item.sid}.pdf`}
+                width="250vw"
+                height="250vh"
+                style={{ border: "none" }}
+            ></iframe>
+            <h3>{item.stencils.title}</h3>
+            <p>{item.sid}</p>
+        </div>
+        ))}
+    </div>
 
 
       <PaginationButtons
