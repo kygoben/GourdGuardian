@@ -8,19 +8,9 @@ const SelectData = ({
   initialData,
   year,
   week,
-  stage,
-  isConfirmed,
-  notConfirmed,
-  notStarted,
-  inProgress,
-  completed,
   searchTerm,
   updateSearchTerm,
   updateShowQuickAdd,
-  showQuickAdd,
-  updateTotal,
-  updateFinished,
-  updateShowStatusAdd,
   showStatusAdd
 }) => {
   const [data, setData] = useState(initialData || []);
@@ -180,8 +170,8 @@ const SelectData = ({
   ]);
 
   const paginatedData = (filteredData || []).slice(
-    (currentPage - 1) * 5,
-    currentPage * 5
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   const handleEdit = async (item, field, value) => {
