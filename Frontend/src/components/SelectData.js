@@ -113,16 +113,15 @@ const SelectData = ({
   const getData = async () => {
     // console.log("Getting data");
     try {
-      const { data: sstatusData, error } = await supabase
-        .from("sstatus")
-        .select("*, stencils(title, cid)")
-        .eq("year", year);
+      const { data: stencilData, error } = await supabase
+        .from("stencils")
+        .select("sid,title,cid");
 
       if (error) {
         console.error("Error fetching data:", error);
         return;
       }
-      sstatusData.sort((a, b) => {
+      stencilData.sort((a, b) => {
         const sidA = a.sid.split("-").map(Number);
         const sidB = b.sid.split("-").map(Number);
 
@@ -135,16 +134,16 @@ const SelectData = ({
 
         return 0;
       });
-      // console.log(sstatusData);
+      // console.log(stencilData);
 
-      setData(sstatusData);
+      setData(stencilData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   function fetchPdf(currentStencilId) {
-    console.log("Fetching PDF for stencilId:", currentStencilId);
+    // console.log("Fetching PDF for stencilId:", currentStencilId);
     try {
       const { data, error } = supabase.storage
         .from("stencils")
@@ -166,11 +165,10 @@ const SelectData = ({
       return data.filter((item) => {
         if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
             searchTerm !== "" &&
-            item.stencils.cid != searchTerm &&
-            item.stencils.title
+            item.cid != searchTerm &&
+            item.title
               .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0) ||
-            (item.week !== week && week !== "Both")
+              .indexOf(searchTerm.toLowerCase()) < 0)
         ) {
           return false;
         }
@@ -178,11 +176,8 @@ const SelectData = ({
       });
   }, [
     data,
-    week,
     searchTerm
   ]);
-
-  // console.log(filteredData);
 
   const paginatedData = (filteredData || []).slice(
     (currentPage - 1) * 5,
@@ -225,7 +220,7 @@ const SelectData = ({
                 height="250px"
                 style={{ border: "none" }}
             ></iframe>
-            <h3>{item.stencils.title}</h3>
+            <h3>{item.title}</h3>
             <p>{item.sid}</p>
         </div>
         ))}
