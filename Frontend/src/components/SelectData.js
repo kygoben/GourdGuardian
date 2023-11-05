@@ -201,14 +201,11 @@ const SelectData = ({
         length={filteredData.length}
       />
 
-      <div className="stencil-grid">
+      <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
-        <div className="stencil-card" key={rowIndex}>
-            <iframe
+        <div className={styles.stencilCard} key={rowIndex}>
+            <iframe 
                 src={fetchPdf(item.sid)}
-                width="200px"
-                height="250px"
-                style={{ border: "none" }}
             ></iframe>
             <h3>{item.title}</h3>
             <p>{item.sid}</p>
