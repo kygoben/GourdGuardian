@@ -1,0 +1,35 @@
+.stencilGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 40px;
+    padding: 5px;
+}
+
+.stencilCard {
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stencilCard h3 {
+    margin: 5px 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.stencilCard iframe {
+    width: 100%;
+    height: 245px;
+    overflow: hidden;
+    border: "none";
+    background-color: transparent;
+    background: transparent;
+}
+
+.stencilCard p {
+    margin: 0;
+    color: #666;
+    font-weight: bold;
+}
