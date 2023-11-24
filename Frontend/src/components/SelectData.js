@@ -243,9 +243,9 @@ const SelectData = ({
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
         <div className={styles.stencilCard} key={rowIndex}>
-            <iframe 
+            <img 
                 src={fetchImg(item.sid)}
-            ></iframe>
+            ></img>
             <h3>{item.title}</h3>
             <p>{item.sid}</p>
         </div>
