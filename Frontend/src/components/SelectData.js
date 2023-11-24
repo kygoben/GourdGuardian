@@ -103,14 +103,36 @@ const SelectData = ({
   const getData = async () => {
     // console.log("Getting data");
     try {
-      const { data: stencilData, error } = await supabase
+      const { data: stencilRawData, error } = await supabase
         .from("stencils")
         .select("sid,title,cid");
+      
+      const { data: storageData, error: storageError } = await supabase
+        .storage
+        .from("stencils")
+        .list('', {limit: 50000}); // 50000 is some high integer to get all the listing of all files in the bucket
+      
+      if(storageError) { 
+        console.error("Error fetching data from storage:", error);
+        return;
+      }
 
       if (error) {
         console.error("Error fetching data:", error);
         return;
       }
+
+      console.log("storageData length:", storageData.length)
+
+      const storageFileSet = new Set();
+      for(let storageFile of storageData){
+        storageFileSet.add(storageFile.name.split('.')[0]);
+      }
+
+      const stencilData = stencilRawData.filter((data, idx) => { return storageFileSet.has(data.sid); });
+
+      console.log("stencilData length:", stencilData.length);
+
       stencilData.sort((a, b) => {
         const sidA = a.sid.split("-").map(Number);
         const sidB = b.sid.split("-").map(Number);
@@ -138,6 +160,23 @@ const SelectData = ({
       const { data, error } = supabase.storage
         .from("stencils")
         .getPublicUrl(`${currentStencilId}.pdf`);
+
+      if (error) {
+        throw error;
+      }
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  function fetchImg(currentStencilId) {
+    // console.log("Fetching PDF for stencilId:", currentStencilId);
+    try {
+      const { data, error } = supabase.storage
+        .from("stencils/JPG")
+        .getPublicUrl(`${currentStencilId}.pdf.jpg`);
 
       if (error) {
         throw error;
@@ -204,9 +243,16 @@ const SelectData = ({
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
         <div className={styles.stencilCard} key={rowIndex}>
+            {/* { item.sid[0] != '1' && <iframe 
+                src={fetchPdf(item.sid)}
+              ></iframe>}
+            {item.sid[0] == '1' && <img
+                src={fetchImg(item.sid)}
+              ></img>} */}
             <iframe 
                 src={fetchPdf(item.sid)}
             ></iframe>
+            {/* <object class="affichage-pdf" data={fetchPdf(item.sid)}></object> */}
             <h3>{item.title}</h3>
             <p>{item.sid}</p>
         </div>
