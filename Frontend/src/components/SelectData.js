@@ -175,8 +175,8 @@ const SelectData = ({
     // console.log("Fetching PDF for stencilId:", currentStencilId);
     try {
       const { data, error } = supabase.storage
-        .from("stencils/JPG")
-        .getPublicUrl(`${currentStencilId}.pdf.jpg`);
+        .from("stencils_img")
+        .getPublicUrl(`${currentStencilId}.jpg`);
 
       if (error) {
         throw error;
@@ -243,16 +243,9 @@ const SelectData = ({
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
         <div className={styles.stencilCard} key={rowIndex}>
-            {/* { item.sid[0] != '1' && <iframe 
-                src={fetchPdf(item.sid)}
-              ></iframe>}
-            {item.sid[0] == '1' && <img
-                src={fetchImg(item.sid)}
-              ></img>} */}
             <iframe 
-                src={fetchPdf(item.sid)}
+                src={fetchImg(item.sid)}
             ></iframe>
-            {/* <object class="affichage-pdf" data={fetchPdf(item.sid)}></object> */}
             <h3>{item.title}</h3>
             <p>{item.sid}</p>
         </div>
