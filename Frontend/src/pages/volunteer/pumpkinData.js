@@ -169,12 +169,14 @@ const pumpkinData = () => {
               </button>
             </div>
             <div className="w-full max-w-xs">
-              <button
-                onClick={endScreen}
-                className="text-lg border-2 border-brown-700 bg-white rounded-full cursor-pointer w-full py-2 "
-              >
-                Exit
-              </button>
+              {status !== "In Progress..." && (
+                <button
+                  onClick={endScreen}
+                  className="text-lg border-2 border-brown-700 bg-white rounded-full cursor-pointer w-full py-2 "
+                >
+                  Exit
+                </button>
+              )}
             </div>
           </div>
         </div>
