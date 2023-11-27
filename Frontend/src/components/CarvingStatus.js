@@ -116,7 +116,7 @@ function CarvingStatus({
             />
           ) : (
             <span onClick={() => setIsEditingCarvingBy(true)}>
-              {item.carving_by || "No Tracer"}
+              {item.carving_by || "No Carver"}
             </span>
           )}
         </div>
