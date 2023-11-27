@@ -33,10 +33,16 @@ const StatusData = ({
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const currentDate = new Date();
   const [showPdf, setShowPdf] = useState(false);
+  const [showName, setShowName] = useState(false); // show/hide tracer, carver name
 
   const updateShowPdf = (newValue) => {
     console.log(newValue);
     setShowPdf(newValue);
+  };
+
+  const updateShowName = (newValue) => {
+    console.log(newValue);
+    setShowName(newValue);
   };
 
   const updateItemsPerPage = (newValue) => {
@@ -78,6 +84,8 @@ const StatusData = ({
     const filteredData = week === "Both" 
         ? data 
         : data.filter(item => item.week === week);  // assuming week is a property in your data items
+
+    //TODO
     
     updateTotal(filteredData.length);
     updateFinished(filteredData.filter(item => item[stageMap[stage]]).length);
@@ -309,42 +317,22 @@ const StatusData = ({
         : ["SID", "Title", "Cutting"],
     3:
       week === "Both"
-        ? [
-            "SID",
-            "Week",
-            "Title",
-            "Tracing Start",
-            "Tracing End",
-            "Tracer",
-            "Confirm?",
-          ]
-        : [
-            "SID",
-            "Title",
-            "Tracing Start",
-            "Tracing End",
-            "Tracer",
-            "Confirm?",
-          ],
+        ? (showName 
+          ? ["SID", "Week", "Title", "Tracing Start", "Tracing End", "Tracer", "Confirm?",]
+          : ["SID", "Week", "Title", "Tracing Start", "Tracing End", "Confirm?",])
+        : (showName
+          ? ["SID", "Title", "Tracing Start", "Tracing End", "Tracer", "Confirm?",]
+          : ["SID", "Title", "Tracing Start", "Tracing End", "Confirm?",]
+          ),
     4:
       week === "Both"
-        ? [
-            "SID",
-            "Week",
-            "Title",
-            "Carving Start",
-            "Carving End",
-            "Carver",
-            "Confirm?",
-          ]
-        : [
-            "SID",
-            "Title",
-            "Carving Start",
-            "Carving End",
-            "Carver",
-            "Confirm?",
-          ],
+        ? (showName 
+          ? ["SID", "Week", "Title", "Carving Start", "Carving End", "Carver", "Confirm?",]
+          : ["SID", "Week", "Title", "Carving Start", "Carving End", "Confirm?",])
+        : (showName
+          ? ["SID", "Title", "Carving Start", "Carving End", "Carver", "Confirm?",]
+          : ["SID", "Title", "Carving Start", "Carving End", "Confirm?",]
+          ),
   };
   //if data lenth is 0 return There is no Data to show
 
@@ -361,6 +349,8 @@ const StatusData = ({
         length={filteredData.length}
         showPdf={showPdf}
         updateShowPdf={updateShowPdf}
+        showName={showName}
+        updateShowName={updateShowName}
         updateShowStatusAdd={updateShowStatusAdd}
       />
 
@@ -389,6 +379,7 @@ const StatusData = ({
                 notConfirmed={notConfirmed}
                 currentDate={currentDate}
                 showPdf={showPdf}
+                showName={showName}
                 updateShowStatusAdd={updateShowStatusAdd}
               />
             </tr>

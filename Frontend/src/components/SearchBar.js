@@ -9,6 +9,8 @@ const SearchBar = ({
   autoFocus,
   showPdf,
   updateShowPdf,
+  showName,
+  updateShowName,
   updateShowStatusAdd,
 }) => {
   useEffect(() => {}, [searchTerm]);
@@ -58,6 +60,24 @@ const SearchBar = ({
         >
           Add Stencil to Week
         </button>
+
+        <div className="flex items-center">
+          <span >Show Volunteer's Name</span>
+          <Switch
+            checked={showName}
+            onChange={() => updateShowName(!showName)}
+            onColor="#f97316"
+            onHandleColor="#f97316"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+            className="ml-2"
+          />
+        </div>
 
         <div className="flex items-center">
           <span >Show PDF</span>

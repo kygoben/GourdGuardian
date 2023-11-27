@@ -6,7 +6,7 @@ import Viewer from "./Viewer";
 import { da, it } from "date-fns/locale";
 import "@fortawesome/fontawesome-free/css/all.css";
 
-function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
+function TracingStatus({ item, handleEdit, week, currentDate, showPdf, showName }) {
   const [isEditingTracingBy, setIsEditingTracingBy] = useState(false);
   const [tracingByValue, setTracingByValue] = useState(item.tracing_by || "");
   const [tracingTemp, setTracingTemp] = useState(item.tracing_by || "");
@@ -106,6 +106,10 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
           </div>
         </div>
       </td>
+
+      {showName && (
+        
+      
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
           {isEditingTracingBy ? (
@@ -124,6 +128,7 @@ function TracingStatus({ item, handleEdit, week, currentDate, showPdf }) {
           )}
         </div>
       </td>
+      )}
       <td className={styles.tableCell}>
         <div className="flex items-center space-x-2">
           <div

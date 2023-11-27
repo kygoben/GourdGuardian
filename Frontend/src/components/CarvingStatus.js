@@ -13,7 +13,7 @@ function CarvingStatus({
   completed,
   isConfirmed,
   notConfirmed,
-  currentDate, showPdf 
+  currentDate, showPdf, showName
 }) {
 
   const [isEditingCarvingBy, setIsEditingCarvingBy] = useState(false);
@@ -103,6 +103,8 @@ function CarvingStatus({
           </div>
         </div>
       </td>
+
+      {showName && (
       <td className={styles.tableCell}>
         <div style={{ position: "relative", width: "200px" }}>
           {isEditingCarvingBy ? (
@@ -116,11 +118,12 @@ function CarvingStatus({
             />
           ) : (
             <span onClick={() => setIsEditingCarvingBy(true)}>
-              {item.carving_by || "No Tracer"}
+              {item.carving_by || "No Carver"}
             </span>
           )}
         </div>
       </td>
+      )}
       <td className={styles.tableCell}>
         <div className="flex items-center space-x-2">
           <div
