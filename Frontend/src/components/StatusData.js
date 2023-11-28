@@ -105,9 +105,13 @@ const StatusData = ({
           table: 'sstatus',
         },
         (payload) => {
-          if (payload.new) {
+          console.log("Payload happened");
+          console.log(payload)
+          console.log(payload.old ? "old ok" : "old not ok")
+          console.log(payload.new ? "new ok" : "new not ok")
+          if (payload.eventType === "UPDATE") {
             setData((currentData) => {
-              console.log(payload.new);
+              console.log("?", payload.new);
                 // Copy the current data to avoid direct mutations
                 const newData = [...currentData];
                 const updatedItem = payload.new;
@@ -127,6 +131,7 @@ const StatusData = ({
                     }
                 } else {
                     // This is a new item, so we push it to the array:
+                    console.log("So does this branch ever execute?")
                     newData.push(updatedItem);
                     newData.sort((a, b) => {
                         const sidA = a.sid.split("-").map(Number);

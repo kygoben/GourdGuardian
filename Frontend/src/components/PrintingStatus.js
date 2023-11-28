@@ -17,7 +17,7 @@ function PrintingStatus({
       <>
         <td className={styles.tableCell}>
         <Viewer stencilId={item.sid} showPdf={showPdf} />
-      </td>
+        </td>
         {week === "Both" && <td className={styles.tableCell}>{item.week}</td>}
         <td className={styles.tableCell}>{item.stencils.title}</td>
         <td className={styles.tableCell}>
