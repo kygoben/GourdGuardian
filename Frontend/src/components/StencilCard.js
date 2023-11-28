@@ -79,7 +79,7 @@ function StencilCard({
     }
   };
 
-  const backGroundColors = ["transparent", "#f97316", "#32d1af", "#47d132"];
+  const backGroundColors = ["transparent", "#9adb97", "#d18287", "#72a1d4"];
 
   return (
     <>
