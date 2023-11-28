@@ -6,6 +6,7 @@ const LeftPaneSelect = ({
   year,
   week,
   stage,
+  categoryData,
   isConfirmed,
   notConfirmed,
   notStarted,
@@ -19,6 +20,7 @@ const LeftPaneSelect = ({
   updateNotStarted,
   updateInProgress,
   updateCompleted,
+  handleToggleSelectionCategory
 }) => {
   const weeks = [1, 2, "Both"]; // Update with your desired weeks
 
@@ -68,26 +70,6 @@ const LeftPaneSelect = ({
 
   return (
     <div style={{ padding: "5px", width: "15%", top: "10px", position: "sticky" }}>
-      <div className="mb-5">
-        <label htmlFor="stage" className="mr-2 font-bold text-black">
-          Mode:
-        </label>
-        <select
-          id="stage"
-          value={stageCalc(stage)}
-          onChange={handleModeChange}
-          style={{
-            padding: "5px",
-            borderRadius: "5px",
-            border: "1px solid #333",
-          }}
-        >
-          <option value={"Printing"}>Printing</option>
-          <option value={"Cutting"}>Cutting</option>
-          <option value={"Tracing"}>Tracing</option>
-          <option value={"Carving"}>Carving</option>
-        </select>
-      </div>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="year"
@@ -145,50 +127,6 @@ const LeftPaneSelect = ({
         </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          marginBottom: "20px",
-        }}
-      >
-        <label
-          htmlFor="year"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Confirmed:
-        </label>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button
-            className={isConfirmed ? "selected" : ""}
-            onClick={handleNotConfirmedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: notConfirmed ? "#f97316" : "transparent",
-              color: notConfirmed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Not Confirmed
-          </button>
-          <button
-            className={isConfirmed ? "selected" : ""}
-            onClick={handleIsConfirmedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: isConfirmed ? "#f97316" : "transparent",
-              color: isConfirmed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Is Confirmed
-          </button>
-        </div>
-      </div>
       <div style={{ marginBottom: "20px" }}>
         <label
           htmlFor="status"
@@ -241,6 +179,28 @@ const LeftPaneSelect = ({
           </button>
         </div>
       </div>
+      <table style={{ borderCollapse: "collapse", width: "100%" }}>
+        <tbody>
+          {categoryData.map((item, index) => (
+            <tr key={`category_${item.cid}`}>
+              <button
+                // className={notStarted ? "selected" : ""}
+                onClick={() => handleToggleSelectionCategory(index)}
+                style={{
+                  padding: "5px 10px",
+                  borderRadius: "20px",
+                  backgroundColor: completed ? "#f97316" : "transparent",
+                  color: completed ? "#fff" : "#b0b0b0",
+                  border: "1px solid #333",
+                  cursor: "pointer",
+                }}
+              >
+                {item.cname}
+              </button>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

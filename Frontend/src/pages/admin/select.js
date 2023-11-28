@@ -23,10 +23,47 @@ export default function Select() {
   const [searchTerm, setSearchTerm] = useState("");
   const [finished, setFinished] = useState(0);
   const [total, setTotal] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+
+
+  useEffect(() => {
+    getInitialCategoryData();
+  }, []);
+
+  const getInitialCategoryData = async () => {
+    try {
+      const { data: cdata, error } = await supabase
+        .from('category')
+        .select('*')
+
+      if (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
+
+      setCategoryData(cdata);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const updateTotal = (newValue) => {
     // console.log(newValue);
     setTotal(newValue);
+  };
+
+  const updateCategoryData = (newValue) => {
+    setCategoryData(newValue);
+  };
+
+  const handleToggleSelectionCategory = (index) => {
+    if (0 <= index && index < categoryData.length) {
+      setCategoryData((prevCategoryData) => {
+        const newCategoryData = structuredClone(prevCategoryData);
+        newCategoryData[index].isSelected = !newCategoryData[index].isSelected;
+        return newCategoryData;
+      });
+    }
   };
 
   // async function getAdminData() {
@@ -106,7 +143,7 @@ export default function Select() {
 
   return (
     <AdminSignInPrompt>
-      <Navbar total={total} finished={finished} stage={stage}/>
+      <Navbar total={total} finished={finished} stage={stage} />
       <div style={{ display: "flex", height: "92%", overflow: "auto" }}>
         <LeftPaneSelect
           className={styles.leftPane}
@@ -118,6 +155,7 @@ export default function Select() {
           notStarted={notStarted}
           inProgress={inProgress}
           completed={completed}
+          categoryData={categoryData}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
@@ -127,11 +165,13 @@ export default function Select() {
           updateNotStarted={updateNotStarted}
           updateInProgress={updateInProgress}
           updateCompleted={updateCompleted}
+          updateCategoryData={updateCategoryData}
+          handleToggleSelectionCategory={handleToggleSelectionCategory}
         />
         <div className={styles.data}>
           {showStatusAdd && <StatusAdd
-          year={year}
-          updateShowStatusAdd={updateShowStatusAdd}
+            year={year}
+            updateShowStatusAdd={updateShowStatusAdd}
           ></StatusAdd>}
           {showQuickAdd && (
             <QuickAdd
@@ -153,11 +193,13 @@ export default function Select() {
             inProgress={inProgress}
             completed={completed}
             searchTerm={searchTerm}
+            categoryData={categoryData}
             updateShowQuickAdd={updateShowQuickAdd}
             updateShowStatusAdd={updateShowStatusAdd}
             showQuickAdd={showQuickAdd}
             updateFinished={updateFinished}
             updateTotal={updateTotal}
+            handleToggleSelectionCategory={handleToggleSelectionCategory}
             showStatusAdd={showStatusAdd}
           />
         </div>
