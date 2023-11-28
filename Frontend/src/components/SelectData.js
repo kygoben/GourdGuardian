@@ -3,6 +3,7 @@ import { supabase } from "./../../supabaseConnection.js";
 import styles from "@/styles/selectData.module.css";
 import PaginationButtons from "./PaginationButtons";
 import SearchBarSelect from "./SearchBarSelect.js";
+import StencilCard from "./StencilCard.js"
 
 const SelectData = ({
   initialData,
@@ -48,76 +49,87 @@ const SelectData = ({
       .on(
         'postgres_changes',
         {
-          event: 'update',
+          event: '*',
           schema: 'public',
           table: 'sstatus',
         },
         (payload) => {
+          console.log("Received payload", payload);
           if (payload.new) {
             setData((currentData) => {
-              console.log(payload.new);
-                // Copy the current data to avoid direct mutations
-                const newData = [...currentData];
-                const updatedItem = payload.new;
-                
+              console.log("double counted payload?", payload);
+              console.log("Payload.old:", payload.old);
+              console.log("Payload.new:", payload.new);
+              // Copy the current data to avoid direct mutations
+              const newData = structuredClone(currentData);
+              if (payload.eventType === "INSERT") {
+                const insertedItem = payload.new;
+
                 const itemIndex = newData.findIndex(
-                    (el) => el.sid === updatedItem.sid &&
-                            el.year === updatedItem.year &&
-                            el.week === updatedItem.week
+                  (el) => el.sid === insertedItem.sid &&
+                    year === insertedItem.year
                 );
-        
+
+                console.log("Inserted item idex:", itemIndex);
                 if (itemIndex !== -1) {
-                    const oldItem = newData[itemIndex];
-                    newData[itemIndex] = updatedItem;
-                    newData[itemIndex].stencils = oldItem.stencils;
-                    if(!newData[itemIndex].stencils.title){
-                      
-                    }
-                } else {
-                    // This is a new item, so we push it to the array:
-                    newData.push(updatedItem);
-                    newData.sort((a, b) => {
-                        const sidA = a.sid.split("-").map(Number);
-                        const sidB = b.sid.split("-").map(Number);
-        
-                        for (let i = 0; i < Math.max(sidA.length, sidB.length); i++) {
-                            const diff = (sidA[i] || 0) - (sidB[i] || 0);
-                            if (diff !== 0) {
-                                return diff;
-                            }
-                        }
-        
-                        return 0;
-                    });
+                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
+                  newData[itemIndex].selectionWeek++;  // if 0 becomes 1, if 2 becomes 3
                 }
-                return newData;
+              } else if (payload.eventType === "UPDATE") {
+                const updatedItem = payload.new;
+
+                const itemIndex = newData.findIndex(
+                  (el) => el.sid === updatedItem.sid &&
+                    year === updatedItem.year
+                );
+
+                console.log("Updated item idex:", itemIndex);
+                if (itemIndex !== -1) {
+                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
+                  newData[itemIndex].selectionWeek = 2;
+                }
+              } else if (payload.eventType === "DELETE") {
+                const deletedItem = payload.old;
+
+                const itemIndex = newData.findIndex(
+                  (el) => el.sid === deletedItem.sid &&
+                    year === deletedItem.year
+                );
+
+                console.log("Deleted item idex:", itemIndex);
+                if (itemIndex !== -1) {
+                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
+                  newData[itemIndex].selectionWeek = 0;
+                }
+              }
+              return newData;
             });
-        } 
+          }
         }
       )
       .subscribe();
-  
+
     return subscription;
   };
 
   const getData = async () => {
     // console.log("Getting data");
     try {
-      const { data: stencilRawData, error } = await supabase
+      const { data: stencilRawData, stencilError } = await supabase
         .from("stencils")
         .select("sid,title,cid");
-      
+
       const { data: storageData, error: storageError } = await supabase
         .storage
         .from("stencils")
-        .list('', {limit: 50000}); // 50000 is some high integer to get all the listing of all files in the bucket
-      
-      if(storageError) { 
-        console.error("Error fetching data from storage:", error);
-        return;
-      }
+        .list('', { limit: 50000 }); // 50000 is some high integer to get all the listing of all files in the bucket
 
-      if (error) {
+      const { data: sstatusData, sstatusError } = await supabase
+        .from("sstatus")
+        .select("*")
+        .eq("year", year);
+
+      if (sstatusError || stencilError || storageError) {
         console.error("Error fetching data:", error);
         return;
       }
@@ -125,11 +137,26 @@ const SelectData = ({
       console.log("storageData length:", storageData.length)
 
       const storageFileSet = new Set();
-      for(let storageFile of storageData){
+      for (const storageFile of storageData) {
         storageFileSet.add(storageFile.name.split('.')[0]);
       }
 
-      const stencilData = stencilRawData.filter((data, idx) => { return storageFileSet.has(data.sid); });
+      const stencilFilteredData = stencilRawData.filter((data, idx) => { return storageFileSet.has(data.sid); });
+
+      const sstatusMap = new Map();
+      for (const stencilStatus of sstatusData) {
+        if (sstatusMap.has(stencilStatus.sid)) {
+          sstatusMap.set(stencilStatus.sid, 3);
+        } else {
+          sstatusMap.set(stencilStatus.sid, stencilStatus.week);
+        }
+      }
+
+      const stencilData = stencilFilteredData.map((data, idx) => {
+        const newdata = { ...data };
+        newdata.selectionWeek = sstatusMap.has(newdata.sid) ? sstatusMap.get(newdata.sid) : 0;
+        return newdata;
+      });
 
       console.log("stencilData length:", stencilData.length);
 
@@ -146,7 +173,7 @@ const SelectData = ({
 
         return 0;
       });
-      // console.log(stencilData);
+      console.log("StencilData in getData():", stencilData);
 
       setData(stencilData);
     } catch (error) {
@@ -171,38 +198,23 @@ const SelectData = ({
     }
   };
 
-  function fetchImg(currentStencilId) {
-    // console.log("Fetching PDF for stencilId:", currentStencilId);
-    try {
-      const { data, error } = supabase.storage
-        .from("stencils_img")
-        .getPublicUrl(`${currentStencilId}.jpg`);
-
-      if (error) {
-        throw error;
-      }
-
-      return data.publicUrl;
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const filteredData = useMemo(() => {
-    setCurrentPage(1);
-    if (data)
+    // setCurrentPage(1);
+    if (data) {
+      console.log("Data at the start of useMemo:", data)
       return data.filter((item) => {
         if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
-            searchTerm !== "" &&
-            item.cid != searchTerm &&
-            item.title
-              .toLowerCase()
-              .indexOf(searchTerm.toLowerCase()) < 0)
+          searchTerm !== "" &&
+          item.cid != searchTerm &&
+          item.title
+            .toLowerCase()
+            .indexOf(searchTerm.toLowerCase()) < 0)
         ) {
           return false;
         }
         return true;
       });
+    }
   }, [
     data,
     searchTerm
@@ -242,15 +254,14 @@ const SelectData = ({
 
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
-        <div className={styles.stencilCard} key={rowIndex}>
-            <img 
-                src={fetchImg(item.sid)}
-            ></img>
-            <h3>{item.title}</h3>
-            <p>{item.sid}</p>
-        </div>
+          <StencilCard
+            item={item}
+            rowIndex={rowIndex}
+            key={`stencil_card_${item.sid}`}
+            year={year}
+          />
         ))}
-    </div>
+      </div>
 
 
       <PaginationButtons
