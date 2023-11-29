@@ -1,0 +1,47 @@
+.categoryBlock .notSelectedButton {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 2px 2px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #333;
+    cursor: pointer;
+    opacity: 1;
+    transition: 0.3s;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    white-space: normal !important;
+    word-wrap: break-word;
+}
+
+.categoryBlock  button:hover {
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.categoryBlock .selectedButton {
+    width: 100%;
+    padding: 5px 10px;
+    margin: 2px 2px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    white-space: normal !important;
+    word-wrap: break-word;
+    opacity: 1;
+    background-color: #ff8c00;
+    color: #fff; 
+}
+
+.categoryBlock colgroup {
+    min-width: auto !important;
+}
+
+.categoryBlock col {
+    min-width: auto !important;
+}

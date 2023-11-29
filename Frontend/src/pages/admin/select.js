@@ -23,10 +23,66 @@ export default function Select() {
   const [searchTerm, setSearchTerm] = useState("");
   const [finished, setFinished] = useState(0);
   const [total, setTotal] = useState(0);
+  const [categoryData, setCategoryData] = useState([]);
+  const [week1Total, setWeek1Total] = useState(0);
+  const [week2Total, setWeek2Total] = useState(0);
+
+  useEffect(() => {
+    getInitialCategoryData();
+  }, []);
+
+  const getInitialCategoryData = async () => {
+    try {
+      const { data: cdata, error } = await supabase
+        .from('category')
+        .select('*')
+
+      if (error) {
+        console.error("Error fetching data:", error);
+        return;
+      }
+
+      for (const category of cdata) {
+        category.isSelected = true;
+        category.selectedCount = 0;
+        category.totalCount = 0;
+      }
+
+      setCategoryData(cdata);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const updateTotal = (newValue) => {
     // console.log(newValue);
     setTotal(newValue);
+  };
+
+  const updateWeek1Total = (newValue) => {
+    console.log("New week1Total:", newValue);
+    setWeek1Total(newValue);
+  };
+
+  const updateWeek2Total = (newValue) => {
+    console.log("New week2Total:",newValue);
+    setWeek2Total(newValue);
+  };
+
+  const updateCategoryData = (newValue) => {
+    setCategoryData(newValue);
+  };
+
+  const handleToggleSelectionCategory = (index) => {
+    console.log(categoryData);
+    console.log(index);
+    if (0 <= index && index < categoryData.length) {
+      setCategoryData((prevCategoryData) => {
+        const newCategoryData = structuredClone(prevCategoryData);
+        newCategoryData[index].isSelected = !newCategoryData[index].isSelected;
+        return newCategoryData;
+      });
+    }
   };
 
   // async function getAdminData() {
@@ -103,10 +159,11 @@ export default function Select() {
     setShowStatusAdd(newValue);
   }
 
+  const numba = 2;
 
   return (
     <AdminSignInPrompt>
-      <Navbar total={total} finished={finished} stage={stage}/>
+      <Navbar total={total} finished={finished} stage={stage} />
       <div style={{ display: "flex", height: "92%", overflow: "auto" }}>
         <LeftPaneSelect
           className={styles.leftPane}
@@ -118,6 +175,9 @@ export default function Select() {
           notStarted={notStarted}
           inProgress={inProgress}
           completed={completed}
+          categoryData={categoryData}
+          week1Total={week1Total}
+          week2Total={week2Total}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
@@ -127,11 +187,15 @@ export default function Select() {
           updateNotStarted={updateNotStarted}
           updateInProgress={updateInProgress}
           updateCompleted={updateCompleted}
+          updateCategoryData={updateCategoryData}
+          handleToggleSelectionCategory={handleToggleSelectionCategory}
+          updateWeek1Total={updateWeek1Total}
+          updateWeek2Total={updateWeek2Total}
         />
         <div className={styles.data}>
           {showStatusAdd && <StatusAdd
-          year={year}
-          updateShowStatusAdd={updateShowStatusAdd}
+            year={year}
+            updateShowStatusAdd={updateShowStatusAdd}
           ></StatusAdd>}
           {showQuickAdd && (
             <QuickAdd
@@ -153,12 +217,19 @@ export default function Select() {
             inProgress={inProgress}
             completed={completed}
             searchTerm={searchTerm}
+            categoryData={categoryData}
+            week1Total={week1Total}
+            week2Total={week2Total}
             updateShowQuickAdd={updateShowQuickAdd}
             updateShowStatusAdd={updateShowStatusAdd}
             showQuickAdd={showQuickAdd}
             updateFinished={updateFinished}
             updateTotal={updateTotal}
+            handleToggleSelectionCategory={handleToggleSelectionCategory}
             showStatusAdd={showStatusAdd}
+            updateCategoryData={updateCategoryData}
+            updateWeek1Total={updateWeek1Total}
+            updateWeek2Total={updateWeek2Total}
           />
         </div>
       </div>

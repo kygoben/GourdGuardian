@@ -1,11 +1,13 @@
 import React from "react";
 import { useEffect } from "react";
 import { supabase } from "../../supabaseConnection.js";
+import styles from "@/styles/leftPaneSelect.module.css";
 
 const LeftPaneSelect = ({
   year,
   week,
   stage,
+  categoryData,
   isConfirmed,
   notConfirmed,
   notStarted,
@@ -19,6 +21,7 @@ const LeftPaneSelect = ({
   updateNotStarted,
   updateInProgress,
   updateCompleted,
+  handleToggleSelectionCategory
 }) => {
   const weeks = [1, 2, "Both"]; // Update with your desired weeks
 
@@ -68,36 +71,21 @@ const LeftPaneSelect = ({
 
   return (
     <div style={{ padding: "5px", width: "15%", top: "10px", position: "sticky" }}>
-      <div className="mb-5">
-        <label htmlFor="stage" className="mr-2 font-bold text-black">
-          Mode:
-        </label>
-        <select
-          id="stage"
-          value={stageCalc(stage)}
-          onChange={handleModeChange}
-          style={{
-            padding: "5px",
-            borderRadius: "5px",
-            border: "1px solid #333",
-          }}
-        >
-          <option value={"Printing"}>Printing</option>
-          <option value={"Cutting"}>Cutting</option>
-          <option value={"Tracing"}>Tracing</option>
-          <option value={"Carving"}>Carving</option>
-        </select>
-      </div>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <label
           htmlFor="year"
           style={{ marginRight: "10px", fontWeight: "bold" }}
         >
           Year:
         </label>
-        <div style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", "justifyContent": "center", textAlign: "center" }}>
           <button
-            style={{ padding: "5px", borderRadius: "50%" }}
+            style={{
+              padding: "5px",
+              borderRadius: "50%",
+              marginRight: "10px",
+              textAlign: "center"
+            }}
             onClick={() => handleYearChange(year - 1)}
           >
             &#8592;
@@ -109,7 +97,8 @@ const LeftPaneSelect = ({
             style={{
               padding: "5px",
               borderRadius: "50%",
-              marginLeft: "10px"
+              marginLeft: "10px",
+              textAlign: "center"
             }}
             onClick={() => handleYearChange(year + 1)}
           >
@@ -117,128 +106,32 @@ const LeftPaneSelect = ({
           </button>
         </div>
       </div>
-      <div>
-        <label
-          htmlFor="week"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Week:
-        </label>
-        <div style={{ display: "flex", gap: "10px" }}>
-          {weeks.map((w) => (
-            <button
-              key={w}
-              className={week === w ? "selected" : ""}
-              onClick={() => updateWeek(w)}
-              style={{
-                padding: "5px 10px",
-                borderRadius: "20px",
-                backgroundColor: week === w ? "#f97316" : "transparent",
-                color: week === w ? "#fff" : "#b0b0b0",
-                border: "1px solid #333",
-                cursor: "pointer",
-              }}
-            >
-              {w}
-            </button>
+
+      <div className={styles.categoryBlock} style={{ position: "relative", height: "80%", overflow: "auto" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: "95%"}}>
+          {categoryData.map((item, index) => (
+            <div key={`category_${item.cid}`} style={{ width: "100%" }}>
+              <button
+                // className={notStarted ? "selected" : ""}
+                onClick={() => handleToggleSelectionCategory(index)}
+                className={item.isSelected ? styles.selectedButton : styles.notSelectedButton}
+              // style={{
+              //   width: "90%",
+              //   diplay: "block",
+              //   padding: "5px 10px",
+              //   borderRadius: "20px",
+              //   backgroundColor: completed ? "#f97316" : "transparent",
+              //   color: completed ? "#fff" : "#b0b0b0",
+              //   border: "1px solid #333",
+              //   cursor: "pointer",
+              //   margin: "auto",
+              // }}
+              >
+                {`${item.cname}\n`}
+                <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b>
+              </button>
+            </div>
           ))}
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          marginBottom: "20px",
-        }}
-      >
-        <label
-          htmlFor="year"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Confirmed:
-        </label>
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button
-            className={isConfirmed ? "selected" : ""}
-            onClick={handleNotConfirmedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: notConfirmed ? "#f97316" : "transparent",
-              color: notConfirmed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Not Confirmed
-          </button>
-          <button
-            className={isConfirmed ? "selected" : ""}
-            onClick={handleIsConfirmedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: isConfirmed ? "#f97316" : "transparent",
-              color: isConfirmed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Is Confirmed
-          </button>
-        </div>
-      </div>
-      <div style={{ marginBottom: "20px" }}>
-        <label
-          htmlFor="status"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Status:
-        </label>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <button
-            // className={notStarted ? "selected" : ""}
-            onClick={handleNotStartedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: notStarted ? "#f97316" : "transparent",
-              color: notStarted ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Not Started
-          </button>
-
-          <button
-            onClick={handleInProgressToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: inProgress ? "#f97316" : "transparent",
-              color: inProgress ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            In Progress
-          </button>
-          <button
-            // className={notStarted ? "selected" : ""}
-            onClick={handleCompletedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: completed ? "#f97316" : "transparent",
-              color: completed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Completed
-          </button>
         </div>
       </div>
     </div>

@@ -10,9 +10,14 @@ const SelectData = ({
   year,
   week,
   searchTerm,
+  categoryData,
   updateSearchTerm,
   updateShowQuickAdd,
-  showStatusAdd
+  showStatusAdd,
+  handleToggleSelectionCategory,
+  updateCategoryData,
+  updateWeek1Total,
+  updateWeek2Total
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -201,14 +206,21 @@ const SelectData = ({
   const filteredData = useMemo(() => {
     // setCurrentPage(1);
     if (data) {
-      console.log("Data at the start of useMemo:", data)
+      // console.log("Data at the start of useMemo:", data);
+      const categories = new Set();
+      for(const category of categoryData) {
+        if(category.isSelected){
+          categories.add(category.cid);
+        }
+      }
       return data.filter((item) => {
         if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
           searchTerm !== "" &&
           item.cid != searchTerm &&
           item.title
             .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) < 0)
+            .indexOf(searchTerm.toLowerCase()) < 0) ||
+            (!categories.has(item.cid))
         ) {
           return false;
         }
@@ -217,8 +229,42 @@ const SelectData = ({
     }
   }, [
     data,
-    searchTerm
+    searchTerm,
+    categoryData
   ]);
+
+  useEffect(() => {
+    if(data){
+      const newCategoryData = structuredClone(categoryData);
+      for(const cat of newCategoryData) {
+        cat.selectedCount = 0;
+        cat.totalCount = 0;
+      }
+      let newWeek1Total = 0;
+      let newWeek2Total = 0;
+      for(const stencil of data) {
+        const idx = newCategoryData.findIndex(
+          (el) => el.cid === stencil.cid
+        );
+        if(idx != -1){
+          if(stencil.selectionWeek !== 0){
+            newCategoryData[idx].selectedCount += 1;
+          }
+          newCategoryData[idx].totalCount += 1;
+        }
+        if(stencil.selectionWeek === 3 || stencil.selectionWeek === 1) {
+          newWeek1Total += 1;
+        }
+        if(stencil.selectionWeek === 3 || stencil.selectionWeek === 2) {
+          newWeek2Total += 1;
+        }
+      }
+      console.log(newCategoryData);
+      updateCategoryData(newCategoryData);
+      updateWeek1Total(newWeek1Total);
+      updateWeek2Total(newWeek2Total);
+    }
+  }, [data]);
 
   const paginatedData = (filteredData || []).slice(
     (currentPage - 1) * itemsPerPage,
