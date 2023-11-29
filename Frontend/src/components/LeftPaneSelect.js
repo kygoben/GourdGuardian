@@ -125,7 +125,7 @@ const LeftPaneSelect = ({
           </button>
         </div>
       </div>
-      <div style={{textAlign: "center", position: "relative", height: "75%"}}>
+      <div style={{textAlign: "center", position: "relative", height: "70%"}}>
         <label
           htmlFor="categories"
           style={{ marginRight: "10px", fontWeight: "bold"}}
