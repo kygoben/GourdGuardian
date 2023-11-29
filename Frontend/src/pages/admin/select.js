@@ -35,8 +35,8 @@ export default function Select() {
   const getInitialCategoryData = async () => {
     try {
       const { data: cdata, error } = await supabase
-        .from('category')
-        .select('*')
+        .from("category")
+        .select("*");
 
       if (error) {
         console.error("Error fetching data:", error);
@@ -44,7 +44,7 @@ export default function Select() {
       }
 
       for (const category of cdata) {
-        category.isSelected = true;
+        category.isSelected = false;
         category.selectedCount = 0;
         category.totalCount = 0;
       }
@@ -66,7 +66,7 @@ export default function Select() {
   };
 
   const updateWeek2Total = (newValue) => {
-    console.log("New week2Total:",newValue);
+    console.log("New week2Total:", newValue);
     setWeek2Total(newValue);
   };
 
@@ -81,14 +81,32 @@ export default function Select() {
   const handleToggleSelectionCategory = (index) => {
     console.log(categoryData);
     console.log(index);
-    if (0 <= index && index < categoryData.length) {
-      setCategoryData((prevCategoryData) => {
-        const newCategoryData = structuredClone(prevCategoryData);
-        newCategoryData[index].isSelected = !newCategoryData[index].isSelected;
-        return newCategoryData;
-      });
-    }
+  
+    setCategoryData((prevCategoryData) => {
+      const newCategoryData = structuredClone(prevCategoryData);
+  
+      for (let i = 0; i < newCategoryData.length; i++) {
+        if(index<0){
+          newCategoryData[i].isSelected = true;
+        }else if (i === index) {
+          newCategoryData[i].isSelected = true;
+        } else {
+          newCategoryData[i].isSelected = false;
+        }
+      }
+      return newCategoryData;
+    });
   };
+  
+
+    // if (0 <= index && index < categoryData.length) {
+    //   setCategoryData((prevCategoryData) => {
+    //     const newCategoryData = structuredClone(prevCategoryData);
+    //     newCategoryData[index].isSelected = !newCategoryData[index].isSelected;
+    //     return newCategoryData;
+    //   });
+    // }
+  // };
 
   // async function getAdminData() {
   //   console.log("getAdminData");
@@ -162,7 +180,7 @@ export default function Select() {
 
   const updateShowStatusAdd = (newValue) => {
     setShowStatusAdd(newValue);
-  }
+  };
 
   const numba = 2;
 
@@ -200,10 +218,12 @@ export default function Select() {
           updateUniqueTotal={updateUniqueTotal}
         />
         <div className={styles.data}>
-          {showStatusAdd && <StatusAdd
-            year={year}
-            updateShowStatusAdd={updateShowStatusAdd}
-          ></StatusAdd>}
+          {showStatusAdd && (
+            <StatusAdd
+              year={year}
+              updateShowStatusAdd={updateShowStatusAdd}
+            ></StatusAdd>
+          )}
           {showQuickAdd && (
             <QuickAdd
               stage={stage}
