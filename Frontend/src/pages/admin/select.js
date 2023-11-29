@@ -24,7 +24,8 @@ export default function Select() {
   const [finished, setFinished] = useState(0);
   const [total, setTotal] = useState(0);
   const [categoryData, setCategoryData] = useState([]);
-
+  const [week1Total, setWeek1Total] = useState(0);
+  const [week2Total, setWeek2Total] = useState(0);
 
   useEffect(() => {
     getInitialCategoryData();
@@ -41,8 +42,10 @@ export default function Select() {
         return;
       }
 
-      for(const category of cdata){
+      for (const category of cdata) {
         category.isSelected = true;
+        category.selectedCount = 0;
+        category.totalCount = 0;
       }
 
       setCategoryData(cdata);
@@ -54,6 +57,16 @@ export default function Select() {
   const updateTotal = (newValue) => {
     // console.log(newValue);
     setTotal(newValue);
+  };
+
+  const updateWeek1Total = (newValue) => {
+    console.log("New week1Total:", newValue);
+    setWeek1Total(newValue);
+  };
+
+  const updateWeek2Total = (newValue) => {
+    console.log("New week2Total:",newValue);
+    setWeek2Total(newValue);
   };
 
   const updateCategoryData = (newValue) => {
@@ -163,6 +176,8 @@ export default function Select() {
           inProgress={inProgress}
           completed={completed}
           categoryData={categoryData}
+          week1Total={week1Total}
+          week2Total={week2Total}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
@@ -174,6 +189,8 @@ export default function Select() {
           updateCompleted={updateCompleted}
           updateCategoryData={updateCategoryData}
           handleToggleSelectionCategory={handleToggleSelectionCategory}
+          updateWeek1Total={updateWeek1Total}
+          updateWeek2Total={updateWeek2Total}
         />
         <div className={styles.data}>
           {showStatusAdd && <StatusAdd
@@ -201,6 +218,8 @@ export default function Select() {
             completed={completed}
             searchTerm={searchTerm}
             categoryData={categoryData}
+            week1Total={week1Total}
+            week2Total={week2Total}
             updateShowQuickAdd={updateShowQuickAdd}
             updateShowStatusAdd={updateShowStatusAdd}
             showQuickAdd={showQuickAdd}
@@ -208,6 +227,9 @@ export default function Select() {
             updateTotal={updateTotal}
             handleToggleSelectionCategory={handleToggleSelectionCategory}
             showStatusAdd={showStatusAdd}
+            updateCategoryData={updateCategoryData}
+            updateWeek1Total={updateWeek1Total}
+            updateWeek2Total={updateWeek2Total}
           />
         </div>
       </div>

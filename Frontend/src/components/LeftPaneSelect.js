@@ -127,7 +127,8 @@ const LeftPaneSelect = ({
               //   margin: "auto",
               // }}
               >
-                {item.cname}
+                {`${item.cname}\n`}
+                <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b>
               </button>
             </div>
           ))}
