@@ -125,40 +125,50 @@ const LeftPaneSelect = ({
           </button>
         </div>
       </div>
-      <div style={{textAlign: "center", position: "relative", height: "70%"}}>
-        <label
-          htmlFor="categories"
-          style={{ marginRight: "10px", fontWeight: "bold"}}
-        >
-          Categories:
-        </label>
 
-        <div className={styles.categoryBlock} style={{ position: "relative", height: "100%", overflow: "auto" }}>
-          <div style={{ display: "flex", flexDirection: "column", width: "95%" }}>
-            {categoryData.map((item, index) => (
-              <div key={`category_${item.cid}`} style={{ width: "100%" }}>
-                <button
-                  // className={notStarted ? "selected" : ""}
-                  onClick={() => handleToggleSelectionCategory(index)}
-                  className={item.isSelected ? styles.selectedButton : styles.notSelectedButton}
-                // style={{
-                //   width: "90%",
-                //   diplay: "block",
-                //   padding: "5px 10px",
-                //   borderRadius: "20px",
-                //   backgroundColor: completed ? "#f97316" : "transparent",
-                //   color: completed ? "#fff" : "#b0b0b0",
-                //   border: "1px solid #333",
-                //   cursor: "pointer",
-                //   margin: "auto",
-                // }}
-                >
-                  {`${item.cname}\n`}
-                  <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b>
-                </button>
-              </div>
-            ))}
-          </div>
+      <div className={styles.categoryBlock} style={{ position: "relative", height: "65%", overflow: "auto" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: "95%"}}>
+        <button
+                // className={notStarted ? "selected" : ""}
+                onClick={() => handleToggleSelectionCategory(-1)}
+              // style={{
+              //   width: "90%",
+              //   diplay: "block",
+              //   padding: "5px 10px",
+              //   borderRadius: "20px",
+              //   backgroundColor: completed ? "#f97316" : "transparent",
+              //   color: completed ? "#fff" : "#b0b0b0",
+              //   border: "1px solid #333",
+              //   cursor: "pointer",
+              //   margin: "auto",
+              // }}
+              >
+                All
+                {/* <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b> */}
+              </button>
+          {categoryData.map((item, index) => (
+            <div key={`category_${item.cid}`} style={{ width: "100%" }}>
+              <button
+                // className={notStarted ? "selected" : ""}
+                onClick={() => handleToggleSelectionCategory(index)}
+                className={item.isSelected ? styles.selectedButton : styles.notSelectedButton}
+              // style={{
+              //   width: "90%",
+              //   diplay: "block",
+              //   padding: "5px 10px",
+              //   borderRadius: "20px",
+              //   backgroundColor: completed ? "#f97316" : "transparent",
+              //   color: completed ? "#fff" : "#b0b0b0",
+              //   border: "1px solid #333",
+              //   cursor: "pointer",
+              //   margin: "auto",
+              // }}
+              >
+                {`${item.cname}\n`}
+                <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b>
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
