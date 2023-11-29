@@ -41,6 +41,10 @@ export default function Select() {
         return;
       }
 
+      for(const category of cdata){
+        category.isSelected = true;
+      }
+
       setCategoryData(cdata);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -57,6 +61,8 @@ export default function Select() {
   };
 
   const handleToggleSelectionCategory = (index) => {
+    console.log(categoryData);
+    console.log(index);
     if (0 <= index && index < categoryData.length) {
       setCategoryData((prevCategoryData) => {
         const newCategoryData = structuredClone(prevCategoryData);
@@ -140,6 +146,7 @@ export default function Select() {
     setShowStatusAdd(newValue);
   }
 
+  const numba = 2;
 
   return (
     <AdminSignInPrompt>

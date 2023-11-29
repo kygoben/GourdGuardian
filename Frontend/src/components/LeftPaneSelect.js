@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { supabase } from "../../supabaseConnection.js";
+import styles from "@/styles/leftPaneSelect.module.css";
 
 const LeftPaneSelect = ({
   year,
@@ -70,16 +71,21 @@ const LeftPaneSelect = ({
 
   return (
     <div style={{ padding: "5px", width: "15%", top: "10px", position: "sticky" }}>
-      <div style={{ marginBottom: "20px" }}>
+      <div style={{ marginBottom: "20px", textAlign: "center" }}>
         <label
           htmlFor="year"
           style={{ marginRight: "10px", fontWeight: "bold" }}
         >
           Year:
         </label>
-        <div style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", "justifyContent": "center", textAlign: "center" }}>
           <button
-            style={{ padding: "5px", borderRadius: "50%" }}
+            style={{
+              padding: "5px",
+              borderRadius: "50%",
+              marginRight: "10px",
+              textAlign: "center"
+            }}
             onClick={() => handleYearChange(year - 1)}
           >
             &#8592;
@@ -91,7 +97,8 @@ const LeftPaneSelect = ({
             style={{
               padding: "5px",
               borderRadius: "50%",
-              marginLeft: "10px"
+              marginLeft: "10px",
+              textAlign: "center"
             }}
             onClick={() => handleYearChange(year + 1)}
           >
@@ -99,108 +106,33 @@ const LeftPaneSelect = ({
           </button>
         </div>
       </div>
-      <div>
-        <label
-          htmlFor="week"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Week:
-        </label>
-        <div style={{ display: "flex", gap: "10px" }}>
-          {weeks.map((w) => (
-            <button
-              key={w}
-              className={week === w ? "selected" : ""}
-              onClick={() => updateWeek(w)}
-              style={{
-                padding: "5px 10px",
-                borderRadius: "20px",
-                backgroundColor: week === w ? "#f97316" : "transparent",
-                color: week === w ? "#fff" : "#b0b0b0",
-                border: "1px solid #333",
-                cursor: "pointer",
-              }}
-            >
-              {w}
-            </button>
-          ))}
-        </div>
-      </div>
 
-      <div style={{ marginBottom: "20px" }}>
-        <label
-          htmlFor="status"
-          style={{ marginRight: "10px", fontWeight: "bold" }}
-        >
-          Status:
-        </label>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <button
-            // className={notStarted ? "selected" : ""}
-            onClick={handleNotStartedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: notStarted ? "#f97316" : "transparent",
-              color: notStarted ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Not Started
-          </button>
-
-          <button
-            onClick={handleInProgressToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: inProgress ? "#f97316" : "transparent",
-              color: inProgress ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            In Progress
-          </button>
-          <button
-            // className={notStarted ? "selected" : ""}
-            onClick={handleCompletedToggle}
-            style={{
-              padding: "5px 10px",
-              borderRadius: "20px",
-              backgroundColor: completed ? "#f97316" : "transparent",
-              color: completed ? "#fff" : "#b0b0b0",
-              border: "1px solid #333",
-              cursor: "pointer",
-            }}
-          >
-            Completed
-          </button>
-        </div>
-      </div>
-      <table style={{ borderCollapse: "collapse", width: "100%" }}>
-        <tbody>
+      <div className={styles.categoryBlock} style={{ position: "relative", height: "80%", overflow: "auto" }}>
+        <div style={{ display: "flex", flexDirection: "column", width: "95%"}}>
           {categoryData.map((item, index) => (
-            <tr key={`category_${item.cid}`}>
+            <div key={`category_${item.cid}`} style={{ width: "100%" }}>
               <button
                 // className={notStarted ? "selected" : ""}
                 onClick={() => handleToggleSelectionCategory(index)}
-                style={{
-                  padding: "5px 10px",
-                  borderRadius: "20px",
-                  backgroundColor: completed ? "#f97316" : "transparent",
-                  color: completed ? "#fff" : "#b0b0b0",
-                  border: "1px solid #333",
-                  cursor: "pointer",
-                }}
+                className={item.isSelected ? styles.selectedButton : styles.notSelectedButton}
+              // style={{
+              //   width: "90%",
+              //   diplay: "block",
+              //   padding: "5px 10px",
+              //   borderRadius: "20px",
+              //   backgroundColor: completed ? "#f97316" : "transparent",
+              //   color: completed ? "#fff" : "#b0b0b0",
+              //   border: "1px solid #333",
+              //   cursor: "pointer",
+              //   margin: "auto",
+              // }}
               >
                 {item.cname}
               </button>
-            </tr>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

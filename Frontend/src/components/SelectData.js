@@ -10,9 +10,11 @@ const SelectData = ({
   year,
   week,
   searchTerm,
+  categoryData,
   updateSearchTerm,
   updateShowQuickAdd,
-  showStatusAdd
+  showStatusAdd,
+  handleToggleSelectionCategory
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -201,14 +203,21 @@ const SelectData = ({
   const filteredData = useMemo(() => {
     // setCurrentPage(1);
     if (data) {
-      console.log("Data at the start of useMemo:", data)
+      console.log("Data at the start of useMemo:", data);
+      const categories = new Set();
+      for(const category of categoryData) {
+        if(category.isSelected){
+          categories.add(category.cid);
+        }
+      }
       return data.filter((item) => {
         if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
           searchTerm !== "" &&
           item.cid != searchTerm &&
           item.title
             .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) < 0)
+            .indexOf(searchTerm.toLowerCase()) < 0) ||
+            (!categories.has(item.cid))
         ) {
           return false;
         }
@@ -217,7 +226,8 @@ const SelectData = ({
     }
   }, [
     data,
-    searchTerm
+    searchTerm,
+    categoryData
   ]);
 
   const paginatedData = (filteredData || []).slice(

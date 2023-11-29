@@ -15,7 +15,7 @@
 
 .stencilCard:hover iframe {
     transform: scale(2.5);
-  }
+}
 
 .stencilCard h3 {
     margin: 5px 0;
