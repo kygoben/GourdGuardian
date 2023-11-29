@@ -17,7 +17,7 @@ const PaginationButtons = ({
     cursor: "pointer",
     fontSize: "16px",
     margin: "0 5px",
-    boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+    boxShadow: "0 0 5px rgba(0, 0, 0, 0.5)",
   };
 
 
@@ -28,9 +28,10 @@ const PaginationButtons = ({
         justifyContent: "space-between",
         alignItems: "center",
         color: "#b0b0b0",
-        padding: "10px",
-        bottom: "10px",
+        padding: "10px 10px 15px 10px",
+        bottom: "0px",
         position: "sticky",
+        backgroundColor: "white"
       }}
     >
 
