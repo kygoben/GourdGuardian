@@ -10,7 +10,7 @@ import { supabase } from "../../../supabaseConnection.js";
 import StatusAdd from "@/components/StatusAdd";
 
 export default function Select() {
-  const [year, setYear] = useState(new Date().getFullYear());
+  const [year, setYear] = useState(new Date().getFullYear()+1);
   const [week, setWeek] = useState(1);
   const [stage, setStage] = useState(1);
   const [isConfirmed, setIsConfirmed] = useState(true);
