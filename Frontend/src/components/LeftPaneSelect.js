@@ -126,7 +126,7 @@ const LeftPaneSelect = ({
         </div>
       </div>
 
-      <div className={styles.categoryBlock} style={{ position: "relative", height: "80%", overflow: "auto" }}>
+      <div className={styles.categoryBlock} style={{ position: "relative", height: "65%", overflow: "auto" }}>
         <div style={{ display: "flex", flexDirection: "column", width: "95%"}}>
           {categoryData.map((item, index) => (
             <div key={`category_${item.cid}`} style={{ width: "100%" }}>
