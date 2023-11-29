@@ -16,6 +16,8 @@ const LeftPaneSelect = ({
   updateYear,
   updateWeek,
   updateStage,
+  week1Total,
+  week2Total,
   updateIsConfirmed,
   updateNotConfirmed,
   updateNotStarted,
@@ -103,6 +105,22 @@ const LeftPaneSelect = ({
             onClick={() => handleYearChange(year + 1)}
           >
             &#8594;
+          </button>
+        </div>
+
+        <div>
+          <button className={styles.weekButton} style={{ backgroundColor: "#9adb97"}}>
+            Week 1: {week1Total}
+          </button>
+        </div>
+        <div>
+          <button className={styles.weekButton} style={{ backgroundColor: "#d18287"}}>
+            Week 2: {week2Total}
+          </button>
+        </div>
+        <div>
+          <button className={styles.weekButton} style={{ backgroundColor: "#72a1d4"}}>
+            Both: {week1Total+week2Total}
           </button>
         </div>
       </div>

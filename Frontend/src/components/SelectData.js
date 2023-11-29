@@ -16,6 +16,8 @@ const SelectData = ({
   showStatusAdd,
   handleToggleSelectionCategory,
   updateCategoryData,
+  week1Total,
+  week2Total,
   updateWeek1Total,
   updateWeek2Total
 }) => {
