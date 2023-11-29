@@ -18,8 +18,10 @@ const SelectData = ({
   updateCategoryData,
   week1Total,
   week2Total,
+  uniqueTotal,
   updateWeek1Total,
-  updateWeek2Total
+  updateWeek2Total,
+  updateUniqueTotal,
 }) => {
   const [data, setData] = useState(initialData || []);
   const [currentPage, setCurrentPage] = useState(1);
@@ -244,6 +246,7 @@ const SelectData = ({
       }
       let newWeek1Total = 0;
       let newWeek2Total = 0;
+      let newUniqueTotal = 0;
       for(const stencil of data) {
         const idx = newCategoryData.findIndex(
           (el) => el.cid === stencil.cid
@@ -260,11 +263,19 @@ const SelectData = ({
         if(stencil.selectionWeek === 3 || stencil.selectionWeek === 2) {
           newWeek2Total += 1;
         }
+        // if(stencil.selectionWeek > 0) { //for unique stencils
+        //   newUniqueTotal += 1;
+        // }
+
+      if(stencil.selectionWeek === 3) { //for unique stencils
+          newUniqueTotal += 1;
+        }
       }
       console.log(newCategoryData);
       updateCategoryData(newCategoryData);
       updateWeek1Total(newWeek1Total);
       updateWeek2Total(newWeek2Total);
+      updateUniqueTotal(newUniqueTotal);
     }
   }, [data]);
 

@@ -26,6 +26,7 @@ export default function Select() {
   const [categoryData, setCategoryData] = useState([]);
   const [week1Total, setWeek1Total] = useState(0);
   const [week2Total, setWeek2Total] = useState(0);
+  const [uniqueTotal, setUniqueTotal] = useState(0);
 
   useEffect(() => {
     getInitialCategoryData();
@@ -67,6 +68,10 @@ export default function Select() {
   const updateWeek2Total = (newValue) => {
     console.log("New week2Total:",newValue);
     setWeek2Total(newValue);
+  };
+
+  const updateUniqueTotal = (newValue) => {
+    setUniqueTotal(newValue);
   };
 
   const updateCategoryData = (newValue) => {
@@ -178,6 +183,7 @@ export default function Select() {
           categoryData={categoryData}
           week1Total={week1Total}
           week2Total={week2Total}
+          uniqueTotal={uniqueTotal}
           updateYear={updateYear}
           updateWeek={updateWeek}
           updateStage={updateStage}
@@ -191,6 +197,7 @@ export default function Select() {
           handleToggleSelectionCategory={handleToggleSelectionCategory}
           updateWeek1Total={updateWeek1Total}
           updateWeek2Total={updateWeek2Total}
+          updateUniqueTotal={updateUniqueTotal}
         />
         <div className={styles.data}>
           {showStatusAdd && <StatusAdd
@@ -220,6 +227,7 @@ export default function Select() {
             categoryData={categoryData}
             week1Total={week1Total}
             week2Total={week2Total}
+            uniqueTotal={uniqueTotal}
             updateShowQuickAdd={updateShowQuickAdd}
             updateShowStatusAdd={updateShowStatusAdd}
             showQuickAdd={showQuickAdd}
@@ -230,6 +238,7 @@ export default function Select() {
             updateCategoryData={updateCategoryData}
             updateWeek1Total={updateWeek1Total}
             updateWeek2Total={updateWeek2Total}
+            updateUniqueTotal={updateUniqueTotal}
           />
         </div>
       </div>

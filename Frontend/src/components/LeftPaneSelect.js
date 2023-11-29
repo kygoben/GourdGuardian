@@ -18,6 +18,7 @@ const LeftPaneSelect = ({
   updateStage,
   week1Total,
   week2Total,
+  uniqueTotal,
   updateIsConfirmed,
   updateNotConfirmed,
   updateNotStarted,
@@ -120,7 +121,7 @@ const LeftPaneSelect = ({
         </div>
         <div>
           <button className={styles.weekButton} style={{ backgroundColor: "#72a1d4"}}>
-            Both: {week1Total+week2Total}
+            Both: {uniqueTotal}
           </button>
         </div>
       </div>
