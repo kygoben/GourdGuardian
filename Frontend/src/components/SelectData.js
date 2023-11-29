@@ -24,9 +24,16 @@ const SelectData = ({
   updateUniqueTotal,
 }) => {
   const [data, setData] = useState(initialData || []);
+  const [storageData, setStorageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
+  const [showAllStencils, setShowAllStencils] = useState(false);
   const currentDate = new Date();
+
+  const updateShowAllStencils = (newValue) => {
+    console.log(newValue);
+    setShowAllStencils(newValue);
+  };
 
   const updateItemsPerPage = (newValue) => {
     setItemsPerPage(newValue);
@@ -128,7 +135,7 @@ const SelectData = ({
         .from("stencils")
         .select("sid,title,cid");
 
-      const { data: storageData, error: storageError } = await supabase
+      const { data: newStorageData, error: storageError } = await supabase
         .storage
         .from("stencils")
         .list('', { limit: 50000 }); // 50000 is some high integer to get all the listing of all files in the bucket
@@ -143,14 +150,25 @@ const SelectData = ({
         return;
       }
 
-      console.log("storageData length:", storageData.length)
+      console.log("Raw stencil data length:", stencilRawData.length);
+      console.log("storageData length:", newStorageData.length);
 
       const storageFileSet = new Set();
-      for (const storageFile of storageData) {
+      for (const storageFile of newStorageData) {
         storageFileSet.add(storageFile.name.split('.')[0]);
       }
 
-      const stencilFilteredData = stencilRawData.filter((data, idx) => { return storageFileSet.has(data.sid); });
+      for (const stencil of stencilRawData) {
+        stencil.pdfAvailable = storageFileSet.has(stencil.sid);
+      }
+
+      // const stencilFilteredData = stencilRawData.filter((data, idx) => {
+      //   return showAllStencils || storageFileSet.has(data.sid);
+      // });
+      // const missingPdfData = stencilRawData.filter((data, idx) => { return !storageFileSet.has(data.sid); });
+      // console.log("Filtered stencil data length:", stencilFilteredData.length);
+      // console.log("Missing count:", missingPdfData.length)
+      // console.log(missingPdfData);
 
       const sstatusMap = new Map();
       for (const stencilStatus of sstatusData) {
@@ -161,7 +179,7 @@ const SelectData = ({
         }
       }
 
-      const stencilData = stencilFilteredData.map((data, idx) => {
+      const stencilData = stencilRawData.map((data, idx) => {
         const newdata = { ...data };
         newdata.selectionWeek = sstatusMap.has(newdata.sid) ? sstatusMap.get(newdata.sid) : 0;
         return newdata;
@@ -185,6 +203,7 @@ const SelectData = ({
       console.log("StencilData in getData():", stencilData);
 
       setData(stencilData);
+      setStorageData(newStorageData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -211,9 +230,18 @@ const SelectData = ({
     // setCurrentPage(1);
     if (data) {
       // console.log("Data at the start of useMemo:", data);
+      const storageFileSet = new Set();
+      for (const storageFile of storageData) {
+        storageFileSet.add(storageFile.name.split('.')[0]);
+      }
+      for (const stencil of data) {
+        stencil.pdfAvailable = storageFileSet.has(stencil.sid);
+      }
+      
+      console.log("filtering in usememo", storageData.length);
       const categories = new Set();
-      for(const category of categoryData) {
-        if(category.isSelected){
+      for (const category of categoryData) {
+        if (category.isSelected) {
           categories.add(category.cid);
         }
       }
@@ -224,7 +252,8 @@ const SelectData = ({
           item.title
             .toLowerCase()
             .indexOf(searchTerm.toLowerCase()) < 0) ||
-            (!categories.has(item.cid))
+          (!categories.has(item.cid)) ||
+          !(showAllStencils || storageFileSet.has(item.sid))
         ) {
           return false;
         }
@@ -234,40 +263,42 @@ const SelectData = ({
   }, [
     data,
     searchTerm,
-    categoryData
+    categoryData,
+    showAllStencils,
+    storageData
   ]);
 
   useEffect(() => {
-    if(data){
+    if (data) {
       const newCategoryData = structuredClone(categoryData);
-      for(const cat of newCategoryData) {
+      for (const cat of newCategoryData) {
         cat.selectedCount = 0;
         cat.totalCount = 0;
       }
       let newWeek1Total = 0;
       let newWeek2Total = 0;
       let newUniqueTotal = 0;
-      for(const stencil of data) {
+      for (const stencil of data) {
         const idx = newCategoryData.findIndex(
           (el) => el.cid === stencil.cid
         );
-        if(idx != -1){
-          if(stencil.selectionWeek !== 0){
+        if (idx != -1) {
+          if (stencil.selectionWeek !== 0) {
             newCategoryData[idx].selectedCount += 1;
           }
           newCategoryData[idx].totalCount += 1;
         }
-        if(stencil.selectionWeek === 3 || stencil.selectionWeek === 1) {
+        if (stencil.selectionWeek === 3 || stencil.selectionWeek === 1) {
           newWeek1Total += 1;
         }
-        if(stencil.selectionWeek === 3 || stencil.selectionWeek === 2) {
+        if (stencil.selectionWeek === 3 || stencil.selectionWeek === 2) {
           newWeek2Total += 1;
         }
         // if(stencil.selectionWeek > 0) { //for unique stencils
         //   newUniqueTotal += 1;
         // }
 
-      if(stencil.selectionWeek === 3) { //for unique stencils
+        if (stencil.selectionWeek === 3) { //for unique stencils
           newUniqueTotal += 1;
         }
       }
@@ -309,6 +340,8 @@ const SelectData = ({
         itemsPerPage={itemsPerPage}
         updateItemsPerPage={updateItemsPerPage}
         length={filteredData.length}
+        showAllStencils={showAllStencils}
+        updateShowAllStencils={updateShowAllStencils}
       />
 
       <div className={styles.stencilGrid}>

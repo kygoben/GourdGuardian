@@ -5,14 +5,16 @@ import Switch from "react-switch";
 const SearchBarSelect = ({
   searchTerm,
   updateSearchTerm,
-  autoFocus
+  autoFocus,
+  showAllStencils,
+  updateShowAllStencils
 }) => {
-  useEffect(() => {}, [searchTerm]);
+  useEffect(() => { }, [searchTerm]);
 
   const updateSearchTermDebounced = debounce(updateSearchTerm, 300);
 
   return (
-    <div className="flex items-center justify-between space-x-4 w-full" style={{top: "10px", position: "sticky"}}>
+    <div className="flex items-center justify-between space-x-4 w-full" style={{ top: "10px", position: "sticky" }}>
       <div className="relative w-48">
         <input
           id="search"
@@ -39,7 +41,26 @@ const SearchBarSelect = ({
           </span>
         )}
       </div>
-    </div>
+      <div className="flex items-center space-x-4">
+        <div className="flex items-center">
+          <span> Show all stencils </span>
+          <Switch
+            checked={showAllStencils}
+            onChange={() => updateShowAllStencils(!showAllStencils)}
+            onColor="#f97316"
+            onHandleColor="#f97316"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+            className="ml-2"
+          />
+        </div>
+      </div>
+    </div >
   );
 };
 
