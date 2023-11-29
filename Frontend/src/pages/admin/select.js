@@ -44,7 +44,7 @@ export default function Select() {
       }
 
       for (const category of cdata) {
-        category.isSelected = false;
+        category.isSelected = true;
         category.selectedCount = 0;
         category.totalCount = 0;
       }
