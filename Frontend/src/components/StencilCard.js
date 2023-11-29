@@ -15,18 +15,31 @@ function StencilCard({
     // console.log("item", item);
   }, []);
 
-  function fetchImg(currentStencilId) {
+  function fetchImg(stencil) {
     // console.log("Fetching PDF for stencilId:", currentStencilId);
+
     try {
-      const { data, error } = supabase.storage
-        .from("stencils_img")
-        .getPublicUrl(`${currentStencilId}.jpg`);
+      if (!stencil.pdfAvailable) {
+        const { data, error } = supabase.storage
+          .from("extras")
+          .getPublicUrl(`unavailablePdf.jpg`);
 
-      if (error) {
-        throw error;
+        if (error) {
+          throw error;
+        }
+
+        return data.publicUrl;
+      } else {
+        const { data, error } = supabase.storage
+          .from("stencils_img")
+          .getPublicUrl(`${stencil.sid}.jpg`);
+
+        if (error) {
+          throw error;
+        }
+
+        return data.publicUrl;
       }
-
-      return data.publicUrl;
     } catch (error) {
       console.error("Error:", error);
     }
@@ -94,7 +107,7 @@ function StencilCard({
         }}
       >
         <img
-          src={fetchImg(item.sid)}
+          src={fetchImg(item)}
         ></img>
         <h3>{item.title}</h3>
         <p>{item.sid}</p>
