@@ -132,7 +132,7 @@ const LeftPaneSelect = ({
               className={styles.selectedButton}
               onClick={() => handleToggleSelectionCategory(-1)}
               style={{ fontWeight: "bold" }}>
-              All
+              Show All
         </button>
           {categoryData.map((item, index) => (
             <div key={`category_${item.cid}`} style={{ width: "100%" }}>
