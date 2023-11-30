@@ -7,6 +7,7 @@ import { supabase } from "../../../supabaseConnection.js";
 
 const Stencils = () => {
   const [stage, setStage] = useState(1);
+  const [pdfUrl, setPdfUrl] = useState(null);
   const [finished, setFinished] = useState(0);
   const [total, setTotal] = useState(0);
   const [sid, setSid] = useState('');
@@ -26,6 +27,23 @@ const Stencils = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const fetchPdf = async (e) => {
+    console.log("Fetching PDF for stencilId:", sid);
+    try {
+      const { data, error } = await supabase.storage
+        .from("stencils")
+        .createSignedUrl(`${sid}.pdf`, 60);
+
+      if (error) {
+        throw error;
+      }
+
+      setPdfUrl(data?.signedUrl);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -188,6 +206,7 @@ const Stencils = () => {
 
       if (data) {
         setStencil(data);
+        fetchPdf();
       } else {
         setStencil({
           title: '',
@@ -425,6 +444,18 @@ const Stencils = () => {
               }
             />
           </div>
+          {pdfUrl && (
+            <div className={styles.inputContainer}>
+              <label> PDF: </label>
+              <iframe
+                src={`${pdfUrl}`}
+                width="330vw"
+                height="460vh"
+                style={{ border: "none", padding: "10px", }}>
+              </iframe>
+            </div>
+          )}
+
           <div className={styles.buttonContainer}>
             <button onClick={createStencil}>Create</button>
             <button onClick={updateStencil}>Update</button>
