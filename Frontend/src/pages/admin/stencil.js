@@ -478,7 +478,6 @@ const Stencils = () => {
           <div className={styles.buttonContainer}>
             <button onClick={createCategory}>Create</button>
             <button onClick={updateCategory}>Update</button>
-            <button onClick={deleteCategory}>Delete</button>
           </div>
         </div>
       </div>

@@ -129,23 +129,11 @@ const LeftPaneSelect = ({
       <div className={styles.categoryBlock} style={{ position: "relative", height: "65%", overflow: "auto" }}>
         <div style={{ display: "flex", flexDirection: "column", width: "95%"}}>
         <button
-                // className={notStarted ? "selected" : ""}
-                onClick={() => handleToggleSelectionCategory(-1)}
-              // style={{
-              //   width: "90%",
-              //   diplay: "block",
-              //   padding: "5px 10px",
-              //   borderRadius: "20px",
-              //   backgroundColor: completed ? "#f97316" : "transparent",
-              //   color: completed ? "#fff" : "#b0b0b0",
-              //   border: "1px solid #333",
-              //   cursor: "pointer",
-              //   margin: "auto",
-              // }}
-              >
-                All
-                {/* <b>{`(${item.isSelected ? item.selectedCount : 0}/${item.isSelected ? item.totalCount : 0})`}</b> */}
-              </button>
+              className={styles.selectedButton}
+              onClick={() => handleToggleSelectionCategory(-1)}
+              style={{ fontWeight: "bold" }}>
+              All
+        </button>
           {categoryData.map((item, index) => (
             <div key={`category_${item.cid}`} style={{ width: "100%" }}>
               <button
