@@ -11,10 +11,11 @@
     border-radius: 5px;
     padding: 15px;
     text-align: center;
+    transition: 0.3s;
 }
 
-.stencilCard:hover iframe {
-    transform: scale(2.5);
+.stencilCard:hover {
+    box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.3);
 }
 
 .stencilCard h3 {

@@ -186,7 +186,7 @@ export default function Select() {
 
   return (
     <AdminSignInPrompt>
-      <Navbar total={total} finished={finished} stage={stage} />
+      <Navbar total={total} finished={finished} stage={stage} showProgress={false} />
       <div style={{ display: "flex", height: "92%", overflow: "auto" }}>
         <LeftPaneSelect
           className={styles.leftPane}
