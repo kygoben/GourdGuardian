@@ -15,7 +15,7 @@ const Navbar = ({ total, finished, stage, showProgress }) => {
   let bgColor = "";
   switch (stage) {
     case 1:
-      bgColor = "bg-orange-500";
+      bgColor = "bg-white";
       break;
     case 2:
       bgColor = "bg-purple-500";
