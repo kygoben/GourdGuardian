@@ -65,6 +65,7 @@ const SelectData = ({
   const fetchAndMergePDFs = async (pdfUrls) => {
     const mergedPdfDoc = await PDFDocument.create();
 
+    let missingPDFs = [];
     console.log("pdfUrls:", pdfUrls);
 
     for (const url of pdfUrls) {
@@ -74,11 +75,13 @@ const SelectData = ({
       response = await fetch(url);}
       catch(error){
         console.log("error:", error);
-        window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
+        // window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
+        missingPDFs.push(url);
         continue;
       }
       if (!response.ok) {
-        window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
+        // window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
+        missingPDFs.push(url);
         console.log("response:", response);
         continue;
         // throw new Error(`Failed to fetch PDF: ${response.statusText}`);
@@ -96,6 +99,8 @@ const SelectData = ({
       );
       copiedPages.forEach((page) => mergedPdfDoc.addPage(page));
     }
+
+    window.alert("Missing PDFs: " + missingPDFs);
     console.log("mergedPdfDoc:", mergedPdfDoc);
     console.log("COMPLETE");
 
