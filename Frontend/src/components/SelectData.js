@@ -136,6 +136,48 @@ const SelectData = ({
     await printMergedPDF(stencilIDs);
   };
 
+  const markAsPrinted = async () => {
+    console.log("Marking as printed");
+
+      try {
+        const { data, error } = await supabase
+          .from('sstatus')  // Replace 'status' with your actual table name
+          .update({ printing_confirmed: 1 })
+          .eq('year', year);
+
+    
+        if (error) {
+          throw error;
+        }
+    
+        console.log('Update successful:', data);
+      } catch (error) {
+        console.error('Error updating records:', error);
+      }
+    };
+
+    const markAsNotPrinted = async () => {
+      console.log("Marking as printed");
+  
+        try {
+          const { data, error } = await supabase
+            .from('sstatus')  // Replace 'status' with your actual table name
+            .update({ printing_confirmed: 0 })
+            .eq('year', year);
+  
+      
+          if (error) {
+            throw error;
+          }
+      
+          console.log('Update successful:', data);
+        } catch (error) {
+          console.error('Error updating records:', error);
+        }
+      };
+    
+
+
   const subscribe = async (data) => {
     // console.log(data);
     const subscription = supabase
@@ -423,6 +465,8 @@ const SelectData = ({
         updateShowAllStencils={updateShowAllStencils}
         printStencils={printStencils}
         mergedPdfUrl={mergedPdfUrl}
+        markAsPrinted={markAsPrinted}
+        markAsNotPrinted={markAsNotPrinted}
       />
 
       {/* <div className="ml-8">

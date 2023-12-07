@@ -10,6 +10,8 @@ const SearchBarSelect = ({
   updateShowAllStencils,
   printStencils,
   mergedPdfUrl,
+  markAsPrinted,
+  markAsNotPrinted,
 }) => {
   useEffect(() => { }, [searchTerm]);
 
@@ -45,7 +47,7 @@ const SearchBarSelect = ({
       </div>
       <div className="flex items-center">
         <button
-          className="px-4 py-1 rounded bg-blue-500 text-white"
+          className="px-1 py-1 rounded bg-orange-500 text-white"  // Adjusted padding and background color
           onClick={printStencils}
         >
           Generate PDF
@@ -56,11 +58,23 @@ const SearchBarSelect = ({
             href={mergedPdfUrl}
             target="_blank"
             rel="noreferrer"
-            className="px-4 py-1 rounded bg-blue-500 text-white ml-2"
+            className="px-3 py-1 rounded bg-orange-500 text-white ml-2"  // Adjusted padding and background color
           >
             Print
           </a>
         )}
+        <button
+          className="px-3 py-1 rounded bg-orange-500 text-white ml-2"  // Adjusted padding and background color
+          onClick={markAsPrinted}
+        >
+          Mark as printed
+        </button>
+        <button
+          className="px-3 py-1 rounded bg-orange-500 text-white ml-2"  // Adjusted padding and background color
+          onClick={markAsNotPrinted}
+        >
+          Mark as not printed
+        </button>
       </div>
       <div className="flex items-center ">
         <div className="flex items-center">
