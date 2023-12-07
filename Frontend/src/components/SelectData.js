@@ -74,9 +74,11 @@ const SelectData = ({
       response = await fetch(url);}
       catch(error){
         console.log("error:", error);
+        window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
         continue;
       }
       if (!response.ok) {
+        window.alert("Error fetching the stencil at " + url + ". Please Add the stencil.");
         console.log("response:", response);
         continue;
         // throw new Error(`Failed to fetch PDF: ${response.statusText}`);
