@@ -14,7 +14,7 @@ const SearchBarSelect = ({
   const updateSearchTermDebounced = debounce(updateSearchTerm, 300);
 
   return (
-    <div className="flex items-center justify-between space-x-4 w-full" style={{ top: "10px", position: "sticky" }}>
+    <div className="flex items-center justify-between w-full" style={{ top: "15px", position: "sticky", backgroundColor: "white"}}>
       <div className="relative w-48">
         <input
           id="search"
@@ -41,7 +41,7 @@ const SearchBarSelect = ({
           </span>
         )}
       </div>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center ">
         <div className="flex items-center">
           <span> Show all stencils </span>
           <Switch

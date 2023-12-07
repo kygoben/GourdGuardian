@@ -3,7 +3,8 @@ import { supabase } from "./../../supabaseConnection.js";
 import styles from "@/styles/selectData.module.css";
 import PaginationButtons from "./PaginationButtons";
 import SearchBarSelect from "./SearchBarSelect.js";
-import StencilCard from "./StencilCard.js"
+import StencilCard from "./StencilCard.js";
+import { PDFDocument } from "pdf-lib";
 
 const SelectData = ({
   initialData,
@@ -28,6 +29,8 @@ const SelectData = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
   const [showAllStencils, setShowAllStencils] = useState(false);
+  const [mergedPdfUrl, setMergedPdfUrl] = useState(null);
+
   const currentDate = new Date();
 
   const updateShowAllStencils = (newValue) => {
@@ -45,6 +48,7 @@ const SelectData = ({
 
   useEffect(() => {
     getData();
+    console.log("data", data);
     let subscription;
     console.log("subscribing");
     (async () => {
@@ -58,16 +62,90 @@ const SelectData = ({
     };
   }, [year, showStatusAdd]);
 
+  const fetchAndMergePDFs = async (pdfUrls) => {
+    const mergedPdfDoc = await PDFDocument.create();
+
+    console.log("pdfUrls:", pdfUrls);
+
+    for (const url of pdfUrls) {
+      console.log("url:", url);
+      let response = 0;
+      try{
+      response = await fetch(url);}
+      catch(error){
+        console.log("error:", error);
+        continue;
+      }
+      if (!response.ok) {
+        console.log("response:", response);
+        continue;
+        // throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+      }
+      const contentType = response.headers.get("content-type");
+      if (!contentType.includes("application/pdf")) {
+        throw new Error(`URL did not return a PDF: ${contentType}`);
+      }
+
+      const arrayBuffer = await response.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer);
+      const copiedPages = await mergedPdfDoc.copyPages(
+        pdfDoc,
+        pdfDoc.getPageIndices()
+      );
+      copiedPages.forEach((page) => mergedPdfDoc.addPage(page));
+    }
+    console.log("mergedPdfDoc:", mergedPdfDoc);
+    console.log("COMPLETE");
+
+    const pdfBytes = await mergedPdfDoc.save(); // Use save() instead of saveAsBlob()
+  return new Blob([pdfBytes], { type: "application/pdf" });
+  };
+
+  const printMergedPDF = async (stencilIDs) => {
+    const pdfUrls = stencilIDs.map((sid) => fetchPdf(sid));
+    const mergedPdfBlob = await fetchAndMergePDFs(pdfUrls);
+    const blobUrl = URL.createObjectURL(mergedPdfBlob);
+  
+    setMergedPdfUrl(blobUrl); // Update state with the Blob URL
+  };
+  
+
+  const fetchStencilsToPrint = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("sstatus")
+        .select("sid")
+        .neq("printing_confirmed", 1)
+        .eq("year", 2024);
+
+      if (error) {
+        throw error;
+      }
+
+      return data.map((item) => item.sid);
+    } catch (error) {
+      console.error("Error fetching stencils to print:", error);
+      return [];
+    }
+  };
+
+  const printStencils = async () => {
+    console.log("Printing stencils");
+    const stencilIDs = await fetchStencilsToPrint();
+    console.log("stencilIDs:", stencilIDs);
+    await printMergedPDF(stencilIDs);
+  };
+
   const subscribe = async (data) => {
     // console.log(data);
     const subscription = supabase
-      .channel('schema-db-changes')
+      .channel("schema-db-changes")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'sstatus',
+          event: "*",
+          schema: "public",
+          table: "sstatus",
         },
         (payload) => {
           console.log("Received payload", payload);
@@ -82,39 +160,48 @@ const SelectData = ({
                 const insertedItem = payload.new;
 
                 const itemIndex = newData.findIndex(
-                  (el) => el.sid === insertedItem.sid &&
-                    year === insertedItem.year
+                  (el) =>
+                    el.sid === insertedItem.sid && year === insertedItem.year
                 );
 
                 console.log("Inserted item idex:", itemIndex);
                 if (itemIndex !== -1) {
-                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
-                  newData[itemIndex].selectionWeek++;  // if 0 becomes 1, if 2 becomes 3
+                  console.log(
+                    "Selection Week:",
+                    newData[itemIndex].selectionWeek
+                  );
+                  newData[itemIndex].selectionWeek++; // if 0 becomes 1, if 2 becomes 3
                 }
               } else if (payload.eventType === "UPDATE") {
                 const updatedItem = payload.new;
 
                 const itemIndex = newData.findIndex(
-                  (el) => el.sid === updatedItem.sid &&
-                    year === updatedItem.year
+                  (el) =>
+                    el.sid === updatedItem.sid && year === updatedItem.year
                 );
 
                 console.log("Updated item idex:", itemIndex);
                 if (itemIndex !== -1) {
-                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
+                  console.log(
+                    "Selection Week:",
+                    newData[itemIndex].selectionWeek
+                  );
                   newData[itemIndex].selectionWeek = 2;
                 }
               } else if (payload.eventType === "DELETE") {
                 const deletedItem = payload.old;
 
                 const itemIndex = newData.findIndex(
-                  (el) => el.sid === deletedItem.sid &&
-                    year === deletedItem.year
+                  (el) =>
+                    el.sid === deletedItem.sid && year === deletedItem.year
                 );
 
                 console.log("Deleted item idex:", itemIndex);
                 if (itemIndex !== -1) {
-                  console.log("Selection Week:", newData[itemIndex].selectionWeek);
+                  console.log(
+                    "Selection Week:",
+                    newData[itemIndex].selectionWeek
+                  );
                   newData[itemIndex].selectionWeek = 0;
                 }
               }
@@ -135,10 +222,8 @@ const SelectData = ({
         .from("stencils")
         .select("sid,title,cid");
 
-      const { data: newStorageData, error: storageError } = await supabase
-        .storage
-        .from("stencils")
-        .list('', { limit: 50000 }); // 50000 is some high integer to get all the listing of all files in the bucket
+      const { data: newStorageData, error: storageError } =
+        await supabase.storage.from("stencils").list("", { limit: 50000 }); // 50000 is some high integer to get all the listing of all files in the bucket
 
       const { data: sstatusData, sstatusError } = await supabase
         .from("sstatus")
@@ -155,7 +240,7 @@ const SelectData = ({
 
       const storageFileSet = new Set();
       for (const storageFile of newStorageData) {
-        storageFileSet.add(storageFile.name.split('.')[0]);
+        storageFileSet.add(storageFile.name.split(".")[0]);
       }
 
       for (const stencil of stencilRawData) {
@@ -181,7 +266,9 @@ const SelectData = ({
 
       const stencilData = stencilRawData.map((data, idx) => {
         const newdata = { ...data };
-        newdata.selectionWeek = sstatusMap.has(newdata.sid) ? sstatusMap.get(newdata.sid) : 0;
+        newdata.selectionWeek = sstatusMap.has(newdata.sid)
+          ? sstatusMap.get(newdata.sid)
+          : 0;
         return newdata;
       });
 
@@ -224,7 +311,7 @@ const SelectData = ({
     } catch (error) {
       console.error("Error:", error);
     }
-  };
+  }
 
   const filteredData = useMemo(() => {
     // setCurrentPage(1);
@@ -232,12 +319,12 @@ const SelectData = ({
       // console.log("Data at the start of useMemo:", data);
       const storageFileSet = new Set();
       for (const storageFile of storageData) {
-        storageFileSet.add(storageFile.name.split('.')[0]);
+        storageFileSet.add(storageFile.name.split(".")[0]);
       }
       for (const stencil of data) {
         stencil.pdfAvailable = storageFileSet.has(stencil.sid);
       }
-      
+
       console.log("filtering in usememo", storageData.length);
       const categories = new Set();
       for (const category of categoryData) {
@@ -246,13 +333,12 @@ const SelectData = ({
         }
       }
       return data.filter((item) => {
-        if ((item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
-          searchTerm !== "" &&
-          item.cid != searchTerm &&
-          item.title
-            .toLowerCase()
-            .indexOf(searchTerm.toLowerCase()) < 0) ||
-          (!categories.has(item.cid)) ||
+        if (
+          (item.sid.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0 &&
+            searchTerm !== "" &&
+            item.cid != searchTerm &&
+            item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) < 0) ||
+          !categories.has(item.cid) ||
           !(showAllStencils || storageFileSet.has(item.sid))
         ) {
           return false;
@@ -260,13 +346,7 @@ const SelectData = ({
         return true;
       });
     }
-  }, [
-    data,
-    searchTerm,
-    categoryData,
-    showAllStencils,
-    storageData
-  ]);
+  }, [data, searchTerm, categoryData, showAllStencils, storageData]);
 
   useEffect(() => {
     if (data) {
@@ -279,9 +359,7 @@ const SelectData = ({
       let newWeek2Total = 0;
       let newUniqueTotal = 0;
       for (const stencil of data) {
-        const idx = newCategoryData.findIndex(
-          (el) => el.cid === stencil.cid
-        );
+        const idx = newCategoryData.findIndex((el) => el.cid === stencil.cid);
         if (idx != -1) {
           if (stencil.selectionWeek !== 0) {
             newCategoryData[idx].selectedCount += 1;
@@ -298,7 +376,8 @@ const SelectData = ({
         //   newUniqueTotal += 1;
         // }
 
-        if (stencil.selectionWeek === 3) { //for unique stencils
+        if (stencil.selectionWeek === 3) {
+          //for unique stencils
           newUniqueTotal += 1;
         }
       }
@@ -344,6 +423,17 @@ const SelectData = ({
         updateShowAllStencils={updateShowAllStencils}
       />
 
+      <div className="ml-8">
+        <button onClick={() => printStencils()}>Print All Stencils</button>
+      </div>
+      {mergedPdfUrl && (
+      <div>
+        <iframe src={mergedPdfUrl} width="100%" height="500px" />
+        <button onClick={() => window.open(mergedPdfUrl, '_blank').print()}>
+          Print Merged PDF
+        </button>
+      </div>
+    )}
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
           <StencilCard
@@ -354,7 +444,6 @@ const SelectData = ({
           />
         ))}
       </div>
-
 
       <PaginationButtons
         autoFocus={false}
