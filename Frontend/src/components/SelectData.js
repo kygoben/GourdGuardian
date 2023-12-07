@@ -116,7 +116,7 @@ const SelectData = ({
         .from("sstatus")
         .select("sid")
         .neq("printing_confirmed", 1)
-        .eq("year", 2024);
+        .eq("year", year);
 
       if (error) {
         throw error;
@@ -421,19 +421,21 @@ const SelectData = ({
         length={filteredData.length}
         showAllStencils={showAllStencils}
         updateShowAllStencils={updateShowAllStencils}
+        printStencils={printStencils}
+        mergedPdfUrl={mergedPdfUrl}
       />
 
-      <div className="ml-8">
+      {/* <div className="ml-8">
         <button onClick={() => printStencils()}>Print All Stencils</button>
-      </div>
-      {mergedPdfUrl && (
+      </div> */}
+      {/* {mergedPdfUrl && (
       <div>
         <iframe src={mergedPdfUrl} width="100%" height="500px" />
         <button onClick={() => window.open(mergedPdfUrl, '_blank').print()}>
           Print Merged PDF
         </button>
       </div>
-    )}
+    )} */}
       <div className={styles.stencilGrid}>
         {paginatedData.map((item, rowIndex) => (
           <StencilCard

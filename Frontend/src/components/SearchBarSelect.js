@@ -7,7 +7,9 @@ const SearchBarSelect = ({
   updateSearchTerm,
   autoFocus,
   showAllStencils,
-  updateShowAllStencils
+  updateShowAllStencils,
+  printStencils,
+  mergedPdfUrl,
 }) => {
   useEffect(() => { }, [searchTerm]);
 
@@ -39,6 +41,25 @@ const SearchBarSelect = ({
           >
             x
           </span>
+        )}
+      </div>
+      <div className="flex items-center">
+        <button
+          className="px-4 py-1 rounded bg-blue-500 text-white"
+          onClick={printStencils}
+        >
+          Generate PDF
+        </button>
+
+        {mergedPdfUrl && (
+          <a
+            href={mergedPdfUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="px-4 py-1 rounded bg-blue-500 text-white ml-2"
+          >
+            Print
+          </a>
         )}
       </div>
       <div className="flex items-center ">
