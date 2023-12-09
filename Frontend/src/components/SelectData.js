@@ -198,7 +198,7 @@ const SelectData = ({
         },
         (payload) => {
           console.log("Received payload", payload);
-          if (payload.new) {
+          if (payload.eventType !== "UPDATE" || payload.new.week  !== payload.old.week) {
             setData((currentData) => {
               console.log("double counted payload?", payload);
               console.log("Payload.old:", payload.old);
@@ -221,7 +221,7 @@ const SelectData = ({
                   );
                   newData[itemIndex].selectionWeek++; // if 0 becomes 1, if 2 becomes 3
                 }
-              } else if (payload.eventType === "UPDATE") {
+              } else if (payload.eventType === "UPDATE" && payload.new.week == 2) {
                 const updatedItem = payload.new;
 
                 const itemIndex = newData.findIndex(
